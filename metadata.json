@@ -1,0 +1,6 @@
+{
+  "name": "ভবঘুরে - ট্যুরস অ্যান্ড ট্রাভেলস",
+  "description": "অপূর্ব সুন্দর বাংলাদেশ ভ্রমণের সেরা অফার এবং ট্যুরিস্ট স্পট প্যাকেজ বুকিং প্ল্যাটফর্ম",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
