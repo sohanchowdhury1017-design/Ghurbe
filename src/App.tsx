@@ -27,10 +27,10 @@ export default function App() {
   const [packages] = useState<TourPackage[]>(POPULAR_PACKAGES);
   const [searchFilter, setSearchFilter] = useState<SearchFilterState | null>(null);
 
-  // Helper to parse current path to a dedicated page route
-  const resolveRouteFromPath = (path: string): { route: RouteName; pkg: TourPackage | null } => {
-    const clean = path.replace(/^\/+|\/+$/g, '').trim().toLowerCase();
-    if (!clean || clean === 'home') return { route: 'home', pkg: null };
+  // Helper to match a slug or route token
+  const matchRoute = (cleanToken: string): { route: RouteName; pkg: TourPackage | null } | null => {
+    const clean = cleanToken.replace(/^\/+|\/+$/g, '').trim().toLowerCase();
+    if (!clean || clean === 'home' || clean === 'index.html') return { route: 'home', pkg: null };
     if (clean === 'packages' || clean === 'tours') return { route: 'packages', pkg: null };
     if (clean === 'gallery') return { route: 'gallery', pkg: null };
     if (clean === 'why-us' || clean === 'about') return { route: 'why-us', pkg: null };
@@ -46,10 +46,45 @@ export default function App() {
     if (matched) {
       return { route: 'package-detail', pkg: matched };
     }
+    return null;
+  };
+
+  // Helper to parse current path or hash to a dedicated page route (GitHub Pages friendly)
+  const resolveRouteFromLocation = (): { route: RouteName; pkg: TourPackage | null } => {
+    // 1. Check URL Hash (e.g., #/packages or #/kuakata or #packages)
+    if (window.location.hash) {
+      const hashToken = window.location.hash.replace(/^#\/?/, '').trim();
+      const matchedByHash = matchRoute(hashToken);
+      if (matchedByHash) return matchedByHash;
+    }
+
+    // 2. Check query parameter (e.g., ?p=/packages from 404 redirect)
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryRoute = urlParams.get('p') || urlParams.get('page');
+    if (queryRoute) {
+      const matchedByQuery = matchRoute(queryRoute);
+      if (matchedByQuery) return matchedByQuery;
+    }
+
+    // 3. Check pathname (extracting last segment for GitHub Pages subfolder support)
+    const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '').trim();
+    if (!pathname || pathname === 'index.html') return { route: 'home', pkg: null };
+
+    const directMatch = matchRoute(pathname);
+    if (directMatch) return directMatch;
+
+    // Check the last path segment (in case of /repo-name/packages or /repo-name/kuakata)
+    const segments = pathname.split('/').filter(Boolean);
+    if (segments.length > 0) {
+      const lastSeg = segments[segments.length - 1];
+      const segMatch = matchRoute(lastSeg);
+      if (segMatch) return segMatch;
+    }
+
     return { route: 'home', pkg: null };
   };
 
-  const initialRouteInfo = resolveRouteFromPath(window.location.pathname);
+  const initialRouteInfo = resolveRouteFromLocation();
   const [currentRoute, setCurrentRoute] = useState<RouteName>(initialRouteInfo.route);
   const [currentRoutePackage, setCurrentRoutePackage] = useState<TourPackage | null>(initialRouteInfo.pkg);
 
@@ -127,10 +162,25 @@ export default function App() {
     }
   }, [currentUser]);
 
-  // Handle URL changes via Browser Back / Forward buttons (popstate)
+  const getRepoBasePath = () => {
+    const pathname = window.location.pathname;
+    if (!pathname || pathname === '/' || pathname === '/index.html') return '';
+    const segments = pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
+    const known = ['packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home'];
+    if (segments.length > 0) {
+      const first = segments[0].toLowerCase();
+      const isPkg = packages.some((p) => p.slug.toLowerCase() === first || p.id.toLowerCase() === first || first === 'kuakata');
+      if (!known.includes(first) && !isPkg && !first.endsWith('.html')) {
+        return `/${segments[0]}`;
+      }
+    }
+    return '';
+  };
+
+  // Handle URL changes via Browser Back / Forward buttons (popstate) & Hash change
   useEffect(() => {
-    const handlePopState = () => {
-      const { route, pkg } = resolveRouteFromPath(window.location.pathname);
+    const handleLocationChange = () => {
+      const { route, pkg } = resolveRouteFromLocation();
       setCurrentRoute(route);
       setCurrentRoutePackage(pkg);
 
@@ -150,8 +200,12 @@ export default function App() {
       }
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
   }, [packages]);
 
   // Handle modal scroll locking and escape key for dialogs
@@ -179,42 +233,49 @@ export default function App() {
     };
   }, [bookingModalPackage, myBookingsOpen, authModalOpen]);
 
-  // Dedicated Route Navigation with Browser URL History Sync
+  // Dedicated Route Navigation with Browser URL History Sync (GitHub Pages friendly)
   const navigateTo = (target: RouteName | string, pkg?: TourPackage | null) => {
-    let newPath = '/';
+    const repoBase = getRepoBasePath();
+    let subPath = '';
     let newTitle = 'ঘুরবে (Ghurbe) — সাশ্রয়ী ও নিরাপদ ট্যুর প্যাকেজ';
     let newRoute: RouteName = 'home';
     let targetPkg: TourPackage | null = null;
 
     if (target === 'packages') {
-      newPath = '/packages';
+      subPath = '/packages';
       newTitle = 'সকল ভ্রমণ প্যাকেজ | ঘুরবে (Ghurbe)';
       newRoute = 'packages';
     } else if (target === 'gallery') {
-      newPath = '/gallery';
+      subPath = '/gallery';
       newTitle = 'ভ্রমণ ফটো গ্যালারি | ঘুরবে (Ghurbe)';
       newRoute = 'gallery';
     } else if (target === 'why-us') {
-      newPath = '/why-us';
+      subPath = '/why-us';
       newTitle = 'কেন ঘুরবে সেরা পছন্দ | ঘুরবে (Ghurbe)';
       newRoute = 'why-us';
     } else if (target === 'contact') {
-      newPath = '/contact';
+      subPath = '/contact';
       newTitle = 'যোগাযোগ ও সাপোর্ট | ঘুরবে (Ghurbe)';
       newRoute = 'contact';
     } else if ((target === 'package-detail' || target === 'detail') && pkg) {
       const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
-      newPath = `/${slugName}`;
+      subPath = `/${slugName}`;
       newTitle = `${pkg.title} | ghurbe.site/${slugName}`;
       newRoute = 'package-detail';
       targetPkg = pkg;
     } else {
-      newPath = '/';
+      subPath = '';
       newTitle = 'ঘুরবে (Ghurbe) — সাশ্রয়ী ও নিরাপদ ট্যুর প্যাকেজ';
       newRoute = 'home';
     }
 
-    window.history.pushState({ route: newRoute, packageId: targetPkg?.id }, '', newPath);
+    const fullPath = repoBase ? `${repoBase}${subPath || '/'}` : (subPath || '/');
+
+    try {
+      window.history.pushState({ route: newRoute, packageId: targetPkg?.id }, '', fullPath);
+    } catch {
+      window.location.hash = subPath || '#/';
+    }
     setCurrentRoute(newRoute);
     setCurrentRoutePackage(targetPkg);
     document.title = newTitle;
