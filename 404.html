@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ঘুরবে (Ghurbe) — ট্যুরস অ্যান্ড ট্রাভেলস</title>
+    <script>
+      // Single Page App redirect for GitHub Pages & Custom Domain
+      var l = window.location;
+      var isCustomDomain = l.hostname.indexOf('github.io') === -1;
+      
+      if (isCustomDomain) {
+        // Custom domain root: e.g. ghurbe.com/packages -> ghurbe.com/#/packages
+        var fullPath = l.pathname.replace(/^\/+/, '');
+        var redirectUrl = l.protocol + '//' + l.host + '/#' + (fullPath ? '/' + fullPath : '') + (l.search ? '&' + l.search.slice(1) : '') + l.hash;
+        window.location.replace(redirectUrl);
+      } else {
+        // GitHub Pages project repository: e.g. user.github.io/repo/packages
+        var segments = l.pathname.slice(1).split('/');
+        var repoName = segments[0] || '';
+        var remainingPath = segments.slice(1).join('/');
+        var redirectUrl = l.protocol + '//' + l.host + '/' + repoName + '/#' + (remainingPath ? '/' + remainingPath : '') + (l.search ? '&' + l.search.slice(1) : '') + l.hash;
+        window.location.replace(redirectUrl);
+      }
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to Ghurbe Travels...</p>
+  </body>
+</html>
