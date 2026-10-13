@@ -26,11 +26,12 @@ export const POPULAR_PACKAGES: TourPackage[] = [
     badge: '🔥 ৩ রাত ২ দিন · ৩৫৯৯৳',
     isHighlighted: true,
     highlightBadge: '🌊 মাত্র ৩,৫৯৯ টাকায় কুয়াকাটা ৩ রাত ২ দিন ভ্রমণ! 🌅',
-    coverImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    coverImage: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/images.jpg',
     gallery: [
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80',
+      'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/images.jpg',
+      'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg',
+      'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875448/images_1.jpg',
+      'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875448/360_F_2026660087_hwuCgKPf2tr3WHKjvPXPwzrTD390BLWe.jpg',
     ],
     shortDesc: '৩ রাত ২ দিন প্যাকেজ! একই সৈকতে সূর্যোদয় ও সূর্যাস্ত! বগুড়া, রংপুর ও গাইবান্ধার ভ্রমণপ্রেমীদের জন্য বিশেষ আয়োজন। ১ রাত হোটেলে থাকা ও ৫ বেলা খাবার। জনপ্রতি মাত্র ৩,৫৯৯৳, কাপল ৭,৯৯৯৳।',
     fullDesc: '🌊 মাত্র ৩,৫৯৯ টাকায় সাগরকন্যা কুয়াকাটা ৩ রাত ২ দিন ভ্রমণ! 🌅\nএকই সৈকতে সূর্যোদয় ও সূর্যাস্ত দেখার অসাধারণ অভিজ্ঞতা নিতে প্রস্তুত তো? ৩ রাত ২ দিনের এই ভ্রমণে ১ রাত মানসম্মত হোটেলে থাকা ও ২ রাত আরামদায়ক বাস জার্নি অন্তর্ভুক্ত। সাপ্তাহিক ছুটিতে পরিবার, বন্ধু কিংবা প্রিয় মানুষটির সঙ্গে ঘুরে আসুন বাংলাদেশের অন্যতম সুন্দর সমুদ্রসৈকত সাগরকন্যা কুয়াকাটা। বগুড়া, রংপুর ও গাইবান্ধার ভ্রমণপ্রেমীদের জন্য ঘুরবে ট্যুর অ্যান্ড ট্রাভেল নিয়ে এসেছে আনন্দ, প্রকৃতি ও স্মরণীয় মুহূর্তে ভরা বিশেষ ট্যুর প্যাকেজ।',
@@ -691,11 +692,32 @@ export const TRAVELER_REVIEWS: TravelerReview[] = [
 
 export const GALLERY_ITEMS = [
   {
-    id: 'gal-kuakata',
-    title: 'কুয়াকাটায় রক্তিম সূর্যোদয় ও লাল কাঁকড়ার চর',
+    id: 'gal-kuakata-1',
+    title: 'কুয়াকাটা সৈকতের দিগন্ত ও ঢেউ',
     spot: 'কুয়াকাটা সৈকত, পটুয়াখালী',
     category: 'সমুদ্র ও সৈকত',
-    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80',
+    imageUrl: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/images.jpg',
+  },
+  {
+    id: 'gal-kuakata-2',
+    title: 'সাগরকন্যার মনোরম সমুদ্র সৈকত ও আকাশ',
+    spot: 'কুয়াকাটা সি-বিচ',
+    category: 'সমুদ্র ও সৈকত',
+    imageUrl: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg',
+  },
+  {
+    id: 'gal-kuakata-3',
+    title: 'কুয়াকাটা সৈকতের রক্তিম সূর্যাস্তের দৃশ্য',
+    spot: 'কুয়াকাটা সানসেট পয়েন্ট',
+    category: 'সমুদ্র ও সৈকত',
+    imageUrl: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875448/images_1.jpg',
+  },
+  {
+    id: 'gal-kuakata-4',
+    title: 'শান্ত সাগর ও স্নিগ্ধ সৈকত তীর',
+    spot: 'কুয়াকাটা জাতীয় উদ্যান ও বিচ',
+    category: 'সমুদ্র ও সৈকত',
+    imageUrl: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875448/360_F_2026660087_hwuCgKPf2tr3WHKjvPXPwzrTD390BLWe.jpg',
   },
   {
     id: 'gal-1',

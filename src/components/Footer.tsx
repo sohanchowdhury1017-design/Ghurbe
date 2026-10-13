@@ -60,8 +60,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings }) =>
                 </button>
               </li>
               <li>
-                <button onClick={onOpenBookings} className="hover:text-sky-400 transition-colors">
-                  আমার বুকিং ভাউচার
+                <button onClick={() => onNavigate('why-us')} className="hover:text-sky-400 transition-colors">
+                  আমাদের সম্পর্কে ও সুবিধা
                 </button>
               </li>
               <li>

@@ -79,19 +79,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {link.label}
               </button>
             ))}
-
-            <button
-              onClick={onOpenBookings}
-              className="px-3 py-1.5 text-xs lg:text-sm font-semibold rounded-xl transition-all whitespace-nowrap cursor-pointer flex items-center gap-1.5 text-slate-700 hover:text-blue-600 hover:bg-white/80"
-            >
-              <CalendarCheck className="w-4 h-4 text-blue-600" />
-              <span>বুকিং</span>
-              {bookingsCount > 0 && (
-                <span className="bg-[#881337] text-white text-[10px] font-extrabold px-1.5 py-0.2 rounded-full tabular-nums shadow-xs">
-                  {bookingsCount}
-                </span>
-              )}
-            </button>
           </nav>
 
           {/* Action Zone */}
@@ -123,21 +110,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
 
-          {/* Mobile Action & Menu Button */}
+          {/* Mobile Menu Button */}
           <div className="flex lg:hidden items-center gap-1.5">
-            <button
-              type="button"
-              onClick={onOpenBookings}
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-slate-700 hover:text-blue-600 active:bg-slate-100 relative cursor-pointer"
-              aria-label="বুকিং তালিকা"
-            >
-              <CalendarCheck className="w-5 h-5 text-blue-600 stroke-[2.25]" />
-              {bookingsCount > 0 && (
-                <span className="absolute top-1 right-1 bg-gradient-to-r from-[#881337] to-[#9f1239] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center tabular-nums shadow-xs border border-white">
-                  {bookingsCount}
-                </span>
-              )}
-            </button>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -173,24 +147,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {link.label}
                 </button>
               ))}
-
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenBookings();
-                }}
-                className="flex items-center justify-between px-3.5 py-2.5 text-base font-bold text-slate-700 hover:bg-slate-50 rounded-xl cursor-pointer"
-              >
-                <span className="flex items-center gap-2.5">
-                  <CalendarCheck className="w-4 h-4 text-blue-600 stroke-[2.25]" />
-                  <span>আমার বুকিং</span>
-                </span>
-                {bookingsCount > 0 && (
-                  <span className="bg-[#881337] text-white text-xs font-black px-2 py-0.5 rounded-full tabular-nums">
-                    {bookingsCount} টি
-                  </span>
-                )}
-              </button>
             </div>
 
             {/* Direct hotline & user account bar */}

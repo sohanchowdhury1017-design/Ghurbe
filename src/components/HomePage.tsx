@@ -53,7 +53,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       id: 'sea',
       label: 'সমুদ্র ও সৈকত',
       desc: 'কুয়াকাটা, সেন্টমার্টিন ও কক্সবাজার',
-      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+      image: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/images.jpg',
       tag: 'সৈকত ও ঢেউ',
       badge: 'কুয়াকাটা ৩৫৯৯৳',
     },

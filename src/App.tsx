@@ -464,15 +464,25 @@ export default function App() {
         }}
       />
 
-      {/* Floating Re-Open Badge for Kuakata 12 Nov Tour Countdown */}
+      {/* Floating Badge for Kuakata 12 Nov Tour Countdown (Attractive Emerald & Sky Blue Theme, No Red, No Ping) */}
       {!kuakataPopupOpen && (
         <button
-          onClick={() => setKuakataPopupOpen(true)}
-          className="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 z-30 px-3.5 py-2 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white rounded-full shadow-2xl border-2 border-sky-400/50 text-[11px] sm:text-xs font-black flex items-center gap-2 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md hover:border-sky-300"
-          title="১২ নভেম্বর কুয়াকাটা ট্যুরের কাউন্টডাউন ও সিট দেখুন"
+          onClick={() => {
+            const kuakataPkg = packages.find((p) => p.id === 'kuakata-beach');
+            if (kuakataPkg) {
+              handleViewDetails(kuakataPkg);
+            } else {
+              setKuakataPopupOpen(true);
+            }
+          }}
+          className="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 z-30 px-3.5 py-2.5 bg-gradient-to-r from-slate-950 via-blue-950 to-slate-900 text-white rounded-full shadow-2xl border-2 border-emerald-400 text-[11px] sm:text-xs font-black flex items-center gap-2 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md hover:border-emerald-300 ring-2 ring-emerald-500/20"
+          title="১২ নভেম্বর কুয়াকাটা ট্যুরের বিস্তারিত পেজ দেখুন"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping shrink-0" />
-          <span>🌊 ১২ নভেম্বর কুয়াকাটা (২৪ সিট বাকি)</span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_#34d399]" />
+          <span className="text-emerald-300">🌊 ১২ নভেম্বর কুয়াকাটা</span>
+          <span className="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/30 text-[10px] font-bold">
+            ২৪ সিট বাকি
+          </span>
         </button>
       )}
     </div>
