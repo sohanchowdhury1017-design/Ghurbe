@@ -4,13 +4,23 @@
     <meta charset="utf-8">
     <title>ঘুরবে (Ghurbe) — ট্যুরস অ্যান্ড ট্রাভেলস</title>
     <script>
-      // Single Page App redirect for GitHub Pages
-      // Keeps the path and forwards to index.html with query/hash
-      var pathSegmentsToKeep = 1;
+      // Single Page App redirect for GitHub Pages & Custom Domain
       var l = window.location;
-      var path = l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/');
-      var redirectUrl = l.protocol + '//' + l.host + '/' + l.pathname.slice(1).split('/')[0] + '/#' + (path ? '/' + path : '') + (l.search ? '&' + l.search.slice(1) : '') + l.hash;
-      window.location.replace(redirectUrl);
+      var isCustomDomain = l.hostname.indexOf('github.io') === -1;
+      
+      if (isCustomDomain) {
+        // Custom domain root: e.g. ghurbe.com/packages -> ghurbe.com/#/packages
+        var fullPath = l.pathname.replace(/^\/+/, '');
+        var redirectUrl = l.protocol + '//' + l.host + '/#' + (fullPath ? '/' + fullPath : '') + (l.search ? '&' + l.search.slice(1) : '') + l.hash;
+        window.location.replace(redirectUrl);
+      } else {
+        // GitHub Pages project repository: e.g. user.github.io/repo/packages
+        var segments = l.pathname.slice(1).split('/');
+        var repoName = segments[0] || '';
+        var remainingPath = segments.slice(1).join('/');
+        var redirectUrl = l.protocol + '//' + l.host + '/' + repoName + '/#' + (remainingPath ? '/' + remainingPath : '') + (l.search ? '&' + l.search.slice(1) : '') + l.hash;
+        window.location.replace(redirectUrl);
+      }
     </script>
   </head>
   <body>

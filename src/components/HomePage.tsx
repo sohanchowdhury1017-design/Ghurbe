@@ -61,7 +61,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       id: 'hills',
       label: 'পাহাড় ও মেঘ',
       desc: 'সাজেক ভ্যালি, বান্দরবান ও খাগড়াছড়ি',
-      image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
+      image: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791876748/Meghraj-Resort.jpg',
       tag: 'মেঘের রাজ্য',
       badge: 'সাজেক ট্যুর',
     },
