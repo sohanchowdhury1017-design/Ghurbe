@@ -67,14 +67,39 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 lg:py-24 w-full">
         <div className="max-w-3xl space-y-3.5 sm:space-y-4 text-left">
-          {/* Subtle trust kicker with Maroon accent */}
+          {/* Subtle trust kicker with Social Media and Promotion Badges */}
           <div className="flex items-center gap-2 flex-wrap">
             <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white/95 text-[11px] sm:text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-sky-300" />
               <span>১০০% রূপসী বাংলাদেশ ট্যুরিজম পার্টনার</span>
             </div>
+            
+            <a
+              href="https://facebook.com/ghurbe.bd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white text-[11px] sm:text-xs font-extrabold shadow-md transition-all active:scale-95 border border-white/30"
+            >
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+              <span>facebook.com/ghurbe.bd</span>
+            </a>
+
+            <a
+              href="https://youtube.com/@Ghurbe-ঘুরবে"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FF0000] hover:bg-[#FF0000]/90 text-white text-[11px] sm:text-xs font-extrabold shadow-md transition-all active:scale-95 border border-white/30"
+            >
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              <span>YouTube: @Ghurbe-ঘুরবে</span>
+            </a>
+
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#881337] to-[#9f1239] text-white text-[11px] sm:text-xs font-black shadow-md border border-rose-300/30">
-              <span>🌊 কুয়াকাটা স্পেশাল ৩৫৯৯৳ (৩ রাত ২ দিন)</span>
+              <span>🌊 কুয়াকাটা মেগা অফার ৩৫৯৯৳ (১২ নভেম্বর)</span>
             </div>
           </div>
 

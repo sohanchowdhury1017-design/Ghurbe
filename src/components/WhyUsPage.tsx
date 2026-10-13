@@ -21,7 +21,7 @@ export const WhyUsPage: React.FC<WhyUsPageProps> = ({
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 py-6 sm:py-10 space-y-8 sm:space-y-12">
+    <div className="min-h-screen bg-sky-dots py-6 sm:py-10 space-y-8 sm:space-y-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between gap-4">

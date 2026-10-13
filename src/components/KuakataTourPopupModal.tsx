@@ -141,7 +141,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
             <div className="flex items-center gap-3">
               <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border border-slate-200 shadow-sm">
                 <img
-                  src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/images.jpg"
+                  src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg"
                   alt="কুয়াকাটা সৈকত"
                   className="w-full h-full object-cover"
                 />
@@ -164,9 +164,12 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
 
                 <div className="flex items-center justify-between text-xs pt-0.5">
                   <span className="text-[11px] text-slate-500 font-medium">রংপুর, বগুড়া থেকে যাত্রা</span>
-                  <span className="font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-200">
-                    ৩৫৯৯ ৳ <span className="text-[10px] font-normal text-slate-500">/জন</span>
-                  </span>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="line-through text-[11px] text-slate-400">৳৯,৮৭০</span>
+                    <span className="font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-200">
+                      ৩,৫৯৯ ৳ <span className="text-[10px] font-normal text-slate-500">/জন</span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -278,7 +281,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
         {/* Hero Banner Header */}
         <div className="relative h-44 sm:h-52 overflow-hidden bg-slate-950">
           <img
-            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80"
+            src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg"
             alt="কুয়াকাটা আগামী ট্যুর ১২ নভেম্বর"
             className="w-full h-full object-cover object-center scale-105"
           />

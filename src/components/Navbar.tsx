@@ -37,6 +37,53 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
+      {/* Top Professional Agency Announcement Strip */}
+      <div className="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-900 text-white text-[11px] py-1.5 px-3.5 border-b border-sky-400/20">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 truncate">
+            <span className="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full shrink-0">
+              আগামী ট্যুর
+            </span>
+            <span className="truncate text-slate-200 font-medium">
+              🌊 কুয়াকাটা ৩ রাত ২ দিন (১২ নভেম্বর) — রংপুর ও বগুড়া থেকে নিশ্চিত যাত্রা
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <a
+              href="https://facebook.com/ghurbe.bd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
+              title="ঘুরবে ফেসবুক পেজ"
+            >
+              <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+              <span>Facebook</span>
+            </a>
+
+            <a
+              href="https://youtube.com/@Ghurbe-ঘুরবে"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FF0000] hover:bg-[#FF0000]/90 text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
+              title="ঘুরবে ইউটিউব চ্যানেল"
+            >
+              <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              <span>YouTube</span>
+            </a>
+
+            <a href="tel:09658865593" className="hidden sm:inline-flex items-center gap-1 text-slate-300 hover:text-white font-bold text-[10px] ml-2">
+              <PhoneCall className="w-3 h-3 text-sky-400" />
+              <span>09658-865593</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20 gap-4 sm:gap-8">
           {/* Brand Zone */}

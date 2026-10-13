@@ -332,7 +332,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800">
+    <div className="min-h-screen bg-sky-dots flex flex-col font-sans text-slate-800">
       {/* Top Navbar */}
       <Navbar
         onOpenBookings={() => setMyBookingsOpen(true)}

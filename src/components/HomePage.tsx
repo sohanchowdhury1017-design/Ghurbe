@@ -241,7 +241,175 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
         </div>
 
-        {/* 5. Trust & Why Ghurbe Highlights (Lightweight 3-item card) */}
+        {/* 5. Official Social Media Channels & Video Updates (Facebook & YouTube Showcase) */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block">আমাদের অফিসিয়াল সোশ্যাল মিডিয়া</span>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900">যুক্ত থাকুন আমাদের ফেসবুক ও ইউটিউব কমিউনিটিতে</h2>
+              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">ট্যুরের সাম্প্রতিক ভিডিও, পর্যটকদের অভিজ্ঞতা ও লাইভ আপডেট দেখতে ফলো করুন</p>
+            </div>
+            <span className="text-xs font-bold text-slate-500 bg-slate-100 py-1 px-3 rounded-full self-start md:self-auto">
+              ✓ অফিসিয়াল ভেরিফাইড চ্যানেল
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            {/* Facebook Card */}
+            <a
+              href="https://facebook.com/ghurbe.bd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#1877F2]/10 via-white to-blue-50/50 border border-[#1877F2]/30 hover:border-[#1877F2] hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-12 h-12 rounded-2xl bg-[#1877F2] text-white flex items-center justify-center shadow-md shadow-[#1877F2]/30 group-hover:scale-105 transition-transform">
+                    <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-black text-[#1877F2] bg-blue-100/80 px-2.5 py-1 rounded-full border border-blue-200">
+                    অফিসিয়াল পেজ
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#1877F2] transition-colors">
+                  Ghurbe - ঘুরবে (Facebook)
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  facebook.com/ghurbe.bd — নিয়মিত ট্যুর ফটো, লাইভ আপডেট, কাস্টমার রিভিউ এবং নতুন অফারের জন্য ফলো করুন।
+                </p>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs font-bold text-[#1877F2]">
+                <span>পেজ ভিজিট ও লাইক দিন</span>
+                <span className="group-hover:translate-x-1 transition-transform">লাইক করুন →</span>
+              </div>
+            </a>
+
+            {/* YouTube Card */}
+            <a
+              href="https://youtube.com/@Ghurbe-ঘুরবে"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-[#FF0000]/10 via-white to-red-50/50 border border-[#FF0000]/30 hover:border-[#FF0000] hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-12 h-12 rounded-2xl bg-[#FF0000] text-white flex items-center justify-center shadow-md shadow-[#FF0000]/30 group-hover:scale-105 transition-transform">
+                    <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                  </div>
+                  <span className="text-[11px] font-black text-[#FF0000] bg-red-100/80 px-2.5 py-1 rounded-full border border-red-200">
+                    ইউটিউব চ্যানেল
+                  </span>
+                </div>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 group-hover:text-[#FF0000] transition-colors">
+                  ঘুরবে অফিসিয়াল চ্যানেল (YouTube)
+                </h3>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  youtube.com/@Ghurbe-ঘুরবে — প্রতিটি ট্যুর স্পটের বিস্তারিত ভ্রমণ ভিডিও, ট্রাভেল ভ্লগ ও অভিজ্ঞতা দেখতে সাবস্ক্রাইব করুন।
+                </p>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs font-bold text-[#FF0000]">
+                <span>চ্যানেল সাবস্ক্রাইব করুন</span>
+                <span className="group-hover:translate-x-1 transition-transform">ভিডিও দেখুন →</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        {/* 5. How It Works: ৪টি সহজ ধাপে নিশ্চিত বুকিং (Professional Travel Agency Flow) */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xs">
+          <div className="text-center max-w-xl mx-auto mb-8">
+            <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block">সহজ প্রক্রিয়া</span>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900">মাত্র ৪টি সহজ ধাপে আপনার ভ্রমণ নিশ্চিত করুন</h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">কোনো ঝামেলা ছাড়াই অনলাইনে বিকাশ বা নগদে সিট বুকিং করুন</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative">
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-center relative group hover:border-sky-300 transition-all">
+              <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white font-black text-sm flex items-center justify-center mx-auto mb-3 shadow-md shadow-blue-500/20">
+                ০১
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 mb-1">প্যাকেজ নির্বাচন</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">কুয়াকাটা, সাজেক বা সেন্টমার্টিনের পছন্দের প্যাকেজ ও তারিখ বাছাই করুন।</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-center relative group hover:border-sky-300 transition-all">
+              <div className="w-10 h-10 rounded-2xl bg-sky-600 text-white font-black text-sm flex items-center justify-center mx-auto mb-3 shadow-md shadow-sky-500/20">
+                ০২
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 mb-1">তথ্য ও সদস্য সংখ্যা</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">ভ্রমণকারীর নাম, মোবাইল নম্বর এবং কাপল বা সিঙ্গেল প্ল্যান নির্ধারণ করুন।</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-center relative group hover:border-sky-300 transition-all">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center mx-auto mb-3 shadow-md shadow-emerald-500/20">
+                ০৩
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 mb-1">বিকাশ/নগদে বুকিং মানি</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">মাত্র ৩০% অগ্রিম প্রদান করে নিরাপদে আপনার কাঙ্ক্ষিত আসন লক করুন।</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-center relative group hover:border-sky-300 transition-all">
+              <div className="w-10 h-10 rounded-2xl bg-purple-600 text-white font-black text-sm flex items-center justify-center mx-auto mb-3 shadow-md shadow-purple-500/20">
+                ০৪
+              </div>
+              <h4 className="font-bold text-sm text-slate-900 mb-1">ডিজিটাল ভাউচার গ্রহণ</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">তাৎক্ষণিক স্ক্রিনে ও মেসেজে অফিসিয়াল কনফার্মেশন ভাউচার সংগ্রহ করুন।</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 6. Upcoming Departure Dates Calendar (ভ্রমণের আসন্ন তারিখ তালিকা) */}
+        <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white rounded-3xl p-6 sm:p-8 border border-sky-400/30 shadow-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <span className="text-xs font-bold text-sky-400 uppercase tracking-wider block">শিডিউল ক্যালেন্ডার</span>
+              <h2 className="text-xl sm:text-2xl font-black text-white">আসন্ন নিশ্চিত ট্যুর ব্যাচ ও যাত্রার তারিখ</h2>
+            </div>
+            <button
+              onClick={onNavigateToPackages}
+              className="self-start sm:self-auto px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-sky-300 border border-white/20 transition-all cursor-pointer"
+            >
+              সকল ব্যাচ দেখুন →
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:border-sky-400/60 transition-all">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-300/30">১২ নভেম্বর ২০২৬</span>
+                <span className="text-[11px] text-emerald-300 font-bold">২৪ সিট বাকি</span>
+              </div>
+              <h4 className="font-bold text-sm text-white">🌊 কুয়াকাটা সাগরকন্যা ৩ রাত ২ দিন</h4>
+              <p className="text-xs text-slate-300 mt-1">রংপুর, বগুড়া ও গাইবান্ধা পিকআপ। মেগা অফার: ৩৫৯৯৳ (নিয়মিত ৯,৮৭০৳)</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:border-sky-400/60 transition-all">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black text-sky-300 bg-sky-400/20 px-2 py-0.5 rounded-full border border-sky-300/30">২০ নভেম্বর ২০২৬</span>
+                <span className="text-[11px] text-sky-300 font-bold">বুকিং চলছে</span>
+              </div>
+              <h4 className="font-bold text-sm text-white">☁️ সাজেক ভ্যালি মেঘের রাজ্য ৩ দিন ২ রাত</h4>
+              <p className="text-xs text-slate-300 mt-1">ঢাকা ও উত্তরবঙ্গ সংযোগ। কংলাক পাহাড় ও রুইলুই পাড়া।</p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:border-sky-400/60 transition-all">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-black text-emerald-300 bg-emerald-400/20 px-2 py-0.5 rounded-full border border-emerald-300/30">২৭ নভেম্বর ২০২৬</span>
+                <span className="text-[11px] text-emerald-300 font-bold">নতুন ব্যাচ</span>
+              </div>
+              <h4 className="font-bold text-sm text-white">⛵ টাঙ্গুয়ার হাওর বিলাসবহুল হাউসবোট</h4>
+              <p className="text-xs text-slate-300 mt-1">সুনামগঞ্জ, নীলাদ্রি লেক ও বারিক্কা টিলা ভ্রমণ।</p>
+            </div>
+          </div>
+        </div>
+
+        {/* 7. Trust & Why Ghurbe Highlights (Lightweight 3-item card) */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-xs">
           <div className="text-center max-w-xl mx-auto mb-6">
             <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block">আমাদের প্রতিশ্রুতি</span>

@@ -15,7 +15,18 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     touch-action: manipulation;
+    background-color: #f8fcff;
+    background-image: radial-gradient(rgba(2, 132, 199, 0.28) 1.2px, transparent 1.2px);
+    background-size: 26px 26px;
+    background-attachment: fixed;
   }
+}
+
+/* Very Soft Pastel Sky Blue Base + Gentle Subtle Blue Dots */
+.bg-sky-dots {
+  background-color: #f8fcff;
+  background-image: radial-gradient(rgba(2, 132, 199, 0.28) 1.2px, transparent 1.2px);
+  background-size: 26px 26px;
 }
 
 /* Hide scrollbars for swipeable pill carousels on mobile */

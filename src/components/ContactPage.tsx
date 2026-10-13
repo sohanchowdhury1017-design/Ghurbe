@@ -31,15 +31,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       hours: 'সকাল ১০:০০ - রাত ৮:০০',
     },
     {
-      city: 'ঢাকা লিয়াজোঁ অফিস',
-      address: 'মতিঝিল বাণিজ্যিক এলাকা, ঢাকা-১০০০',
-      phone: '০১৬০০-১২৩৪৫৬',
-      hours: 'সকাল ৯:০০ - সন্ধ্যা ৬:০০',
+      city: 'ঢাকা কর্পোরেট অফিস',
+      address: 'ধানমন্ডি ৯/এ, ঢাকা, বাংলাদেশ',
+      phone: '০৯৬৫৮-৮৬৫৫৯৩',
+      hours: 'সকাল ৯:০০ - রাত ৮:০০',
     },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 py-6 sm:py-10 space-y-8 sm:space-y-12">
+    <div className="min-h-screen bg-sky-dots py-6 sm:py-10 space-y-8 sm:space-y-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between gap-4">

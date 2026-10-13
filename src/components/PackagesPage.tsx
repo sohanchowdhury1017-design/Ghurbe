@@ -85,7 +85,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 py-6 sm:py-10">
+    <div className="min-h-screen bg-sky-dots py-6 sm:py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Breadcrumb & Navigation */}
         <div className="flex items-center justify-between gap-4">
