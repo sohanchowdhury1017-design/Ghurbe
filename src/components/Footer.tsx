@@ -32,11 +32,42 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings }) =>
               অপূর্ব সুন্দর বাংলাদেশ ভ্রমণের বিশ্বস্ত ভ্রমণ সঙ্গী। পরিবার ও বন্ধুদের নিয়ে নিরাপদ, প্রিমিয়াম ও সাশ্রয়ী ভ্রমণ সেবা উপভোগ করুন।
             </p>
 
-            <div className="pt-2 flex items-center gap-3 text-xs text-slate-400">
-              <span className="flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-emerald-400" />
-                গভর্নমেন্ট রেজিস্টার্ড ট্রাভেল এজেন্সি
-              </span>
+            <div className="pt-2 flex flex-col gap-2.5">
+              <div className="flex items-center gap-3 text-xs text-slate-400">
+                <span className="flex items-center gap-1.5">
+                  <Shield className="w-4 h-4 text-emerald-400" />
+                  গভর্নমেন্ট রেজিস্টার্ড ট্রাভেল এজেন্সি
+                </span>
+              </div>
+
+              {/* Official Social Media Channels */}
+              <div className="flex items-center gap-2 pt-1">
+                <a
+                  href="https://facebook.com/ghurbe.bd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1877F2]/20 hover:bg-[#1877F2] text-blue-300 hover:text-white border border-[#1877F2]/40 transition-all text-xs font-bold shadow-xs cursor-pointer active:scale-95"
+                  title="Ghurbe অফিসিয়াল ফেসবুক পেজ"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                  <span>facebook.com/ghurbe.bd</span>
+                </a>
+
+                <a
+                  href="https://youtube.com/@Ghurbe-ঘুরবে"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FF0000]/20 hover:bg-[#FF0000] text-red-300 hover:text-white border border-[#FF0000]/40 transition-all text-xs font-bold shadow-xs cursor-pointer active:scale-95"
+                  title="Ghurbe অফিসিয়াল ইউটিউব চ্যানেল"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  <span>@Ghurbe-ঘুরবে</span>
+                </a>
+              </div>
             </div>
           </div>
 

@@ -75,24 +75,24 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           </div>
         </div>
 
-        {/* Quick Hotline & WhatsApp Action Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Quick Hotline, WhatsApp, Facebook & YouTube Action Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <a
-            href="tel:01700123456"
-            className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-blue-500 shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
+            href="tel:09658865593"
+            className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-blue-500 shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform">
-                <PhoneCall className="w-6 h-6" />
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform shrink-0">
+                <PhoneCall className="w-5 h-5" />
               </div>
-              <div>
-                <span className="text-xs text-slate-500 font-semibold block">সরাসরি কল করুন (২৪/৭)</span>
-                <strong className="text-lg sm:text-xl font-black text-slate-900 block group-hover:text-blue-600 transition-colors">
-                  ০১৭০০-১২৩৪৫৬
+              <div className="min-w-0">
+                <span className="text-[11px] text-slate-500 font-semibold block truncate">হটলাইন (২৪/৭)</span>
+                <strong className="text-sm sm:text-base font-black text-slate-900 block group-hover:text-blue-600 transition-colors truncate">
+                  09658-865593
                 </strong>
               </div>
             </div>
-            <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded-xl">
+            <span className="text-[11px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-xl shrink-0">
               কল দিন
             </span>
           </a>
@@ -101,21 +101,69 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             href="https://wa.me/8801700123456?text=আমি%20ঘুরবে%20ট্যুর%20প্যাকেজ%20সম্পর্কে%20জানতে%20চাই"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-500 shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
+            className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-500 shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform">
-                <MessageCircle className="w-6 h-6" />
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform shrink-0">
+                <MessageCircle className="w-5 h-5" />
               </div>
-              <div>
-                <span className="text-xs text-slate-500 font-semibold block">হোয়াটসঅ্যাপ চ্যাট ও পরামর্শ</span>
-                <strong className="text-lg sm:text-xl font-black text-slate-900 block group-hover:text-emerald-600 transition-colors">
-                  WhatsApp Helpline
+              <div className="min-w-0">
+                <span className="text-[11px] text-slate-500 font-semibold block truncate">হোয়াটসঅ্যাপ চ্যাট</span>
+                <strong className="text-sm sm:text-base font-black text-slate-900 block group-hover:text-emerald-600 transition-colors truncate">
+                  WhatsApp Support
                 </strong>
               </div>
             </div>
-            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-xl">
-              মেসেজ দিন
+            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl shrink-0">
+              চ্যাট
+            </span>
+          </a>
+
+          <a
+            href="https://facebook.com/ghurbe.bd"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#1877F2] shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-blue-50 text-[#1877F2] flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform shrink-0">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </div>
+              <div className="min-w-0">
+                <span className="text-[11px] text-slate-500 font-semibold block truncate">অফিসিয়াল ফেসবুক পেজ</span>
+                <strong className="text-sm sm:text-base font-black text-slate-900 block group-hover:text-[#1877F2] transition-colors truncate">
+                  ghurbe.bd
+                </strong>
+              </div>
+            </div>
+            <span className="text-[11px] font-bold text-[#1877F2] bg-blue-50 px-2.5 py-1 rounded-xl shrink-0">
+              পেজ দেখুন
+            </span>
+          </a>
+
+          <a
+            href="https://youtube.com/@Ghurbe-ঘুরবে"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-[#FF0000] shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-red-50 text-[#FF0000] flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform shrink-0">
+                <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <div className="min-w-0">
+                <span className="text-[11px] text-slate-500 font-semibold block truncate">ইউটিউব চ্যানেল</span>
+                <strong className="text-sm sm:text-base font-black text-slate-900 block group-hover:text-[#FF0000] transition-colors truncate">
+                  @Ghurbe-ঘুরবে
+                </strong>
+              </div>
+            </div>
+            <span className="text-[11px] font-bold text-[#FF0000] bg-red-50 px-2.5 py-1 rounded-xl shrink-0">
+              সাবস্ক্রাইব
             </span>
           </a>
         </div>
