@@ -297,6 +297,14 @@ export default function App() {
 
     try {
       window.history.pushState({ route: newRoute, packageId: targetPkg?.id }, '', fullPath);
+      if (subPath) {
+        const cleanHash = subPath.replace(/^\//, '');
+        if (window.location.hash.replace(/^#\/?/, '') !== cleanHash) {
+          window.location.hash = cleanHash;
+        }
+      } else if (window.location.hash) {
+        window.location.hash = '';
+      }
     } catch {
       window.location.hash = subPath || '#/';
     }
