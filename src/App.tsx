@@ -11,6 +11,7 @@ import { PackageDetailPage } from './components/PackageDetailPage';
 import { GalleryPage } from './components/GalleryPage';
 import { WhyUsPage } from './components/WhyUsPage';
 import { ContactPage } from './components/ContactPage';
+import { StatsPage } from './components/StatsPage';
 import { BookingModal } from './components/BookingModal';
 import { MyBookingsModal } from './components/MyBookingsModal';
 import { WhatsAppChat } from './components/WhatsAppChat';
@@ -21,7 +22,7 @@ import { KuakataTourPopupModal } from './components/KuakataTourPopupModal';
 import { POPULAR_PACKAGES } from './data/packagesData';
 import { TourPackage, BookingRecord, SearchFilterState } from './types/travel';
 
-type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact';
+type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats';
 
 export default function App() {
   const [packages] = useState<TourPackage[]>(POPULAR_PACKAGES);
@@ -33,6 +34,7 @@ export default function App() {
     if (!clean || clean === 'home' || clean === 'index.html') return { route: 'home', pkg: null };
     if (clean === 'packages' || clean === 'tours') return { route: 'packages', pkg: null };
     if (clean === 'gallery') return { route: 'gallery', pkg: null };
+    if (clean === 'stats' || clean === 'reviews' || clean === 'achievements') return { route: 'stats', pkg: null };
     if (clean === 'why-us' || clean === 'about') return { route: 'why-us', pkg: null };
     if (clean === 'contact' || clean === 'faq') return { route: 'contact', pkg: null };
 
@@ -380,6 +382,14 @@ export default function App() {
           />
         )}
 
+        {currentRoute === 'stats' && (
+          <StatsPage
+            onBackToHome={() => navigateTo('home')}
+            onNavigateToPackages={() => navigateTo('packages')}
+            onOpenContact={() => navigateTo('contact')}
+          />
+        )}
+
         {currentRoute === 'contact' && (
           <ContactPage
             onBackToHome={() => navigateTo('home')}
@@ -398,6 +408,7 @@ export default function App() {
             onNavigateToGallery={() => navigateTo('gallery')}
             onNavigateToWhyUs={() => navigateTo('why-us')}
             onNavigateToContact={() => navigateTo('contact')}
+            onNavigateToStats={() => navigateTo('stats')}
           />
         )}
       </main>

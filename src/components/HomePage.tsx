@@ -30,6 +30,7 @@ interface HomePageProps {
   onNavigateToGallery: () => void;
   onNavigateToWhyUs: () => void;
   onNavigateToContact: () => void;
+  onNavigateToStats?: () => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
@@ -42,6 +43,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onNavigateToGallery,
   onNavigateToWhyUs,
   onNavigateToContact,
+  onNavigateToStats,
 }) => {
   const kuakataPkg = packages.find((p) => p.id === 'kuakata-beach') || packages[0];
   
@@ -136,6 +138,66 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </div>
         )}
+
+        {/* 2.5 High-Impact Live Stats Strip (১,১৪৪+ হ্যাপি পর্যটক, ৩৬৭+ সফল ট্যুর, ৪.৯ রেটিং) */}
+        <div 
+          onClick={onNavigateToStats}
+          className="bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-sky-300 transition-all cursor-pointer group"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">
+                আমাদের লাইভ অর্জন ও বিশ্বস্ততা
+              </span>
+            </div>
+            <span className="text-xs font-bold text-blue-600 group-hover:translate-x-1 transition-transform flex items-center gap-1">
+              <span>বিস্তারিত রিভিউ ও পরিসংখ্যান দেখুন</span>
+              <ChevronRight className="w-4 h-4" />
+            </span>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2.5 sm:gap-4 text-center">
+            {/* Stat 1 */}
+            <div className="p-3 sm:p-4 rounded-2xl bg-sky-50/70 border border-sky-100/90 hover:bg-sky-100/70 transition-colors">
+              <div className="flex items-center justify-center gap-1 text-blue-600 mb-1">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div className="text-lg sm:text-3xl font-black text-slate-900 font-mono tracking-tight">
+                ১,১৪৪+
+              </div>
+              <p className="text-[10px] sm:text-xs text-slate-600 font-bold mt-0.5">
+                টোটাল হ্যাপি পর্যটক
+              </p>
+            </div>
+
+            {/* Stat 2 */}
+            <div className="p-3 sm:p-4 rounded-2xl bg-teal-50/70 border border-teal-100/90 hover:bg-teal-100/70 transition-colors">
+              <div className="flex items-center justify-center gap-1 text-teal-600 mb-1">
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div className="text-lg sm:text-3xl font-black text-slate-900 font-mono tracking-tight">
+                ৩৬৭+
+              </div>
+              <p className="text-[10px] sm:text-xs text-slate-600 font-bold mt-0.5">
+                সফল ট্যুর সম্পন্ন
+              </p>
+            </div>
+
+            {/* Stat 3 */}
+            <div className="p-3 sm:p-4 rounded-2xl bg-amber-50/70 border border-amber-100/90 hover:bg-amber-100/70 transition-colors">
+              <div className="flex items-center justify-center gap-1 text-amber-500 mb-1">
+                <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-amber-400" />
+              </div>
+              <div className="text-lg sm:text-3xl font-black text-slate-900 font-mono tracking-tight">
+                ৪.৯
+              </div>
+              <p className="text-[10px] sm:text-xs text-slate-600 font-bold mt-0.5">
+                রেটিং (৫-এর মধ্যে)
+              </p>
+            </div>
+          </div>
+        </div>
 
         {/* 3. Clean Quick Destination Categories (Comfortable & Compact on Phone) */}
         <div>

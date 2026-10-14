@@ -31,7 +31,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const totalPrice = packageType === 'couple' && pkg.couplePrice
     ? pkg.couplePrice
     : pkg.price * guestsCount;
-  const advanceAmount = Math.round(totalPrice * 0.3); // 30% advance booking money
+  // Booking money is exactly 1,000 taka per traveler (or 2,000 for couple)
+  const advanceAmount = packageType === 'couple' ? 2000 : 1000 * guestsCount;
   const payableAmount = paymentType === 'full' ? totalPrice : advanceAmount;
 
   const handleSubmitDetails = (e: React.FormEvent) => {
@@ -323,7 +324,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         : 'border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    <p className="text-xs font-bold text-blue-900">৩০% বুকিং ডিপোজিট</p>
+                    <p className="text-xs font-bold text-blue-900">মাত্র ১,০০০৳ বুকিং মানি</p>
                     <p className="text-sm font-bold text-slate-900 mt-0.5 tabular-nums">৳ {advanceAmount.toLocaleString('en-IN')}</p>
                     <p className="text-[10px] text-slate-500 mt-0.5">বাকি টাকা যাত্রা শুরুর দিন প্রদেয়</p>
                   </button>
