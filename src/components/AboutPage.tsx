@@ -14,7 +14,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   onNavigateToContact,
 }) => {
   const ceo = TEAM_MEMBERS.find((m) => m.id === 'ceo') || TEAM_MEMBERS[0];
-  const otherMembers = TEAM_MEMBERS.filter((m) => m.id !== 'ceo');
+  const ed = TEAM_MEMBERS.find((m) => m.id === 'executive-director');
+  const otherMembers = TEAM_MEMBERS.filter((m) => m.id !== 'ceo' && m.id !== 'executive-director');
 
   return (
     <div className="min-h-screen bg-sky-dots py-6 sm:py-10 space-y-8 sm:space-y-12">
@@ -97,7 +98,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               {/* Left Column: CEO Portrait & Credentials */}
               <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
                 <div className="relative group">
-                  <div className="w-52 h-64 sm:w-60 sm:h-72 rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-blue-500/30 bg-slate-100">
+                  <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-blue-500/30 bg-slate-100">
                     <img
                       src={ceo.avatar}
                       alt={ceo.name}
@@ -106,7 +107,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   </div>
 
                   {/* Verified Badge */}
-                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 lg:left-6 lg:translate-x-0 bg-blue-600 text-white text-[11px] font-black px-3.5 py-1 rounded-full shadow-lg flex items-center gap-1.5 border-2 border-white whitespace-nowrap">
+                  <div className="absolute bottom-3 left-3 bg-blue-600/95 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5 border border-white/50 backdrop-blur-xs whitespace-nowrap">
                     <CheckCircle2 className="w-3.5 h-3.5 text-sky-200" />
                     <span>FOUNDER & CEO</span>
                   </div>
@@ -210,6 +211,105 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </div>
         </section>
 
+        {/* Executive Director Spotlight (মাহিম ইবনে খুদি - Executive Director) */}
+        {ed && (
+          <section className="bg-white rounded-3xl border-2 border-emerald-300/80 shadow-xl overflow-hidden relative">
+            {/* Header Accent */}
+            <div className="bg-gradient-to-r from-slate-950 via-emerald-950 to-slate-900 text-white px-6 sm:px-10 py-5 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-600/30 border border-emerald-400/40 flex items-center justify-center shrink-0">
+                  <Briefcase className="w-5 h-5 text-emerald-300" />
+                </div>
+                <div>
+                  <span className="text-[11px] uppercase font-black tracking-widest text-emerald-300 block">
+                    EXECUTIVE LEADERSHIP & OPERATIONS
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-black text-white">
+                    Executive Director | নির্বাহী পরিচালক
+                  </h2>
+                </div>
+              </div>
+
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-xs font-bold text-slate-200 border border-white/20">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span>Executive Board Member</span>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-10 lg:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                {/* Photo & Identity */}
+                <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
+                  <div className="relative group">
+                    <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-emerald-500/30 bg-slate-100">
+                      <img
+                        src={ed.avatar}
+                        alt={ed.name}
+                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+
+                    {/* Verified Badge */}
+                    <div className="absolute bottom-3 left-3 bg-emerald-700/95 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5 border border-white/50 backdrop-blur-xs whitespace-nowrap">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-200" />
+                      <span>EXECUTIVE DIRECTOR</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 space-y-1">
+                    <h3 className="text-2xl font-black text-slate-900 tracking-tight">
+                      {ed.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm font-bold text-emerald-700">
+                      Executive Director (নির্বাহী পরিচালক)
+                    </p>
+                    <p className="text-xs text-slate-500 font-medium">
+                      Ghurbe Tours & Travels Bangladesh
+                    </p>
+                  </div>
+                </div>
+
+                {/* Description & Operational Vision */}
+                <div className="lg:col-span-8 space-y-5 text-slate-800">
+                  <div className="border-l-4 border-emerald-600 pl-4 sm:pl-5 space-y-1">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 leading-tight tracking-tight">
+                      "প্রতিটি ট্যুরিস্টের স্বাচ্ছন্দ্য, নিরাপত্তা ও আনন্দময় অভিজ্ঞতাই আমাদের ব্রত।"
+                    </h3>
+                    <p className="text-xs sm:text-sm font-bold text-emerald-700 uppercase tracking-widest">
+                      Executive Leadership & Operational Excellence
+                    </p>
+                  </div>
+
+                  <div className="space-y-3.5 text-xs sm:text-sm lg:text-[15px] leading-relaxed text-slate-700">
+                    <p>
+                      ঘুরবে-এর সার্বিক প্রশাসনিক নেতৃত্ব, প্রতিটি ট্যুরের নিখুঁত অপারেশনস ও সার্ভিস কোয়ালিটি নিয়ন্ত্রণে প্রত্যক্ষ ভূমিকা পালন করছেন <strong>মাহিম ইবনে খুদি</strong>। প্রতিটি ভ্রমণ যেন সুশৃঙ্খল, ঝামেলামুক্ত ও স্মরণীয় হয়ে ওঠে—তা নিশ্চিতে তিনি সদা তৎপর।
+                    </p>
+                    <p>
+                      ফিল্ড অপারেশনস থেকে শুরু করে বিলাসবহুল এসি বাস পরিবহন, অভিজাত রিসোর্ট বুকিং এবং পর্যটকদের ব্যক্তিগত চাহিদার পূর্ণ সমাধান প্রদানে তাঁর রয়েছে অবিচল দায়বদ্ধতা। সততা, সময়ানুবর্তিতা ও আন্তরিক সেবাই ঘুরবে পরিবারের এগিয়ে চলার প্রেরণা।
+                    </p>
+                  </div>
+
+                  {/* Highlights Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <div className="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200 text-xs">
+                      <span className="font-black text-emerald-900 block mb-1">অপারেশনস কন্ট্রোল</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">প্রতিটি ব্যাচের হোটেল, ট্রান্সপোর্ট ও নিরাপত্তা নিশ্চিতকরণ</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-sky-50/80 border border-sky-200 text-xs">
+                      <span className="font-black text-blue-900 block mb-1">কোয়ালিটি অ্যাসুরেন্স</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">কোনো লুকানো চার্জহীন শতভাগ প্রিমিয়াম সার্ভিস বজায় রাখা</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs">
+                      <span className="font-black text-amber-900 block mb-1">২৪/৭ যাত্রী সহায়তা</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">ভ্রমণকালে যেকোনো জরুরি প্রয়োজনে সার্বক্ষণিক সমন্বয়</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* All Other Company Employees & Management Team */}
         <div className="space-y-6">
           <div className="text-center max-w-xl mx-auto">
@@ -254,12 +354,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <span className="text-slate-400 font-medium">দক্ষতা:</span>
                     <strong className="text-blue-700 truncate max-w-[180px]">{member.specialty}</strong>
                   </div>
-                  {member.phone && (
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="text-slate-400 font-medium">যোগাযোগ:</span>
-                      <strong className="text-slate-800 font-mono">{member.phone}</strong>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}

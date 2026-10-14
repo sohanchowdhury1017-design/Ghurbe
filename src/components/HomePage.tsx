@@ -571,19 +571,28 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               <div className="flex items-center gap-3.5 mb-3">
-                <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0 border-2 border-blue-500 shadow-sm bg-slate-100">
-                  <img
-                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791996595/WhatsApp_Image_2026-10-14_at_10.45.55_PM.jpg"
-                    alt="MD SAMSUL ARAFIN - Founder & CEO"
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
-                  />
+                <div className="flex -space-x-3">
+                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border-2 border-blue-500 shadow-sm bg-slate-100 z-10">
+                    <img
+                      src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791998110/WhatsApp_Image_2026-10-14_at_11.13.05_PM.jpg"
+                      alt="MD SAMSUL ARAFIN - Founder & CEO"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border-2 border-emerald-500 shadow-sm bg-slate-100">
+                    <img
+                      src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791996767/WhatsApp_Image_2026-10-14_at_10.52.07_PM.jpg"
+                      alt="মাহিম ইবনে খুদি - Executive Director"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
+                    />
+                  </div>
                 </div>
                 <div>
-                  <h4 className="text-base font-black text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
-                    MD SAMSUL ARAFIN
+                  <h4 className="text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
+                    এক্সিকিউটিভ লিডারশিপ
                   </h4>
-                  <p className="text-xs font-bold text-blue-700">Founder & CEO, Ghurbe</p>
-                  <p className="text-[11px] text-slate-500">প্রতিষ্ঠাতা ও প্রধান নির্বাহী কর্মকর্তা</p>
+                  <p className="text-xs font-bold text-blue-700">MD SAMSUL ARAFIN & মাহিম ইবনে খুদি</p>
+                  <p className="text-[11px] text-slate-500">Founder & CEO | Executive Director</p>
                 </div>
               </div>
 
@@ -593,7 +602,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
 
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
-              <span>সিইও বার্তা ও সম্পূর্ণ টিম ডিরেক্টরি</span>
+              <span>লিডারশিপ বার্তা ও টিম পরিচিতি</span>
               <span className="group-hover:translate-x-1 transition-transform">About Us দেখুন →</span>
             </div>
           </div>

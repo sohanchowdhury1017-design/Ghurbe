@@ -529,7 +529,7 @@ export default function App() {
       />
 
       {/* Floating Badge for Kuakata 12 Nov Tour Countdown (Attractive Emerald & Sky Blue Theme, No Red, No Ping) */}
-      {!kuakataPopupOpen && (
+      {!kuakataPopupOpen && currentRoute !== 'about' && (
         <button
           onClick={() => {
             const kuakataPkg = packages.find((p) => p.id === 'kuakata-beach');
