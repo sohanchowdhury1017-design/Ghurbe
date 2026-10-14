@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Home Page -->
+  <url>
+    <loc>https://ghurbe.com/</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791744358/ghurbe_bd_logo.png</image:loc>
+      <image:title>ঘুরবে - ট্যুরস অ্যান্ড ট্রাভেলস বাংলাদেশ</image:title>
+    </image:image>
+  </url>
+
+  <!-- Kuakata Tour Spotlight (Mega Offer 3599 Tk) -->
+  <url>
+    <loc>https://ghurbe.com/#kuakata</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg</image:loc>
+      <image:title>কুয়াকাটা সাগরকন্যা ৩ রাত ২ দিন মেগা অফার প্যাকেজ</image:title>
+    </image:image>
+  </url>
+
+  <!-- Tour Packages Page -->
+  <url>
+    <loc>https://ghurbe.com/#packages</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Our Achievements & Reviews Page (1144+ Tourists) -->
+  <url>
+    <loc>https://ghurbe.com/#stats</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Gallery Page -->
+  <url>
+    <loc>https://ghurbe.com/#gallery</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Why Choose Us Page -->
+  <url>
+    <loc>https://ghurbe.com/#why-us</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Contact & Office Page (Dhanmondi 9/A, Dhaka) -->
+  <url>
+    <loc>https://ghurbe.com/#contact</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+</urlset>
