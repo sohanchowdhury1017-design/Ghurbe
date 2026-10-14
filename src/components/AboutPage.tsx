@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Users, ShieldCheck, Award, Heart, Phone, Mail, MapPin, Sparkles, CheckCircle2, ChevronRight, Briefcase, Quote, Star, Check } from 'lucide-react';
+import { ArrowLeft, Users, ShieldCheck, Award, Heart, MapPin, Sparkles, CheckCircle2, ChevronRight, Briefcase, Quote, Star, Check } from 'lucide-react';
 import { TEAM_MEMBERS } from '../data/blogAndTeamData';
 
 interface AboutPageProps {
@@ -122,24 +122,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   <p className="text-xs text-slate-500 font-medium">
                     Ghurbe Tours & Travels Bangladesh
                   </p>
-                </div>
-
-                {/* Direct Contact Badges */}
-                <div className="w-full pt-2 flex flex-col gap-2 text-xs font-semibold text-slate-700">
-                  <a
-                    href="tel:09658865593"
-                    className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 hover:bg-sky-50 border border-slate-200 transition-colors"
-                  >
-                    <Phone className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>হটলাইন: 09658-865593</span>
-                  </a>
-                  <a
-                    href="mailto:ceo@ghurbe.com"
-                    className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 hover:bg-sky-50 border border-slate-200 transition-colors"
-                  >
-                    <Mail className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>অফিসিয়াল ইমেইল: ceo@ghurbe.com</span>
-                  </a>
                 </div>
 
                 {/* Core Commitments Pill Box */}

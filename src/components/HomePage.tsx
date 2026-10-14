@@ -571,9 +571,9 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               <div className="flex items-center gap-3.5 mb-3">
-                <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0 border-2 border-blue-500 shadow-sm">
+                <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0 border-2 border-blue-500 shadow-sm bg-slate-100">
                   <img
-                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791992165/WhatsApp_Image_2026-10-14_at_8.57.25_PM.jpg"
+                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791996595/WhatsApp_Image_2026-10-14_at_10.45.55_PM.jpg"
                     alt="MD SAMSUL ARAFIN - Founder & CEO"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
                   />
