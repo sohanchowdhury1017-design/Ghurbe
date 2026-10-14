@@ -86,3 +86,35 @@ export interface TravelerReview {
   date: string;
   text: string;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  destination: string;
+  category: string;
+  readTime: string;
+  author: string;
+  authorRole: string;
+  authorAvatar: string;
+  date: string;
+  coverImage: string;
+  summary: string;
+  content: string[];
+  tips: string[];
+  bestTimeToVisit: string;
+  budgetGuide: string;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  department: string;
+  phone?: string;
+  email?: string;
+  avatar: string;
+  experience: string;
+  bio: string;
+  specialty: string;
+}

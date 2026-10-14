@@ -25,7 +25,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
       style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0.65rem)' }}
     >
       <div className="max-w-md mx-auto grid grid-cols-4 items-center justify-around gap-1 text-center">
-        {/* হোম */}
+        {/* Home */}
         <button
           type="button"
           onClick={() => onNavigate('hero')}
@@ -36,10 +36,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Home className={`w-5 h-5 transition-transform ${activeSection === 'hero' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-          <span className="text-[11px] mt-1 font-semibold leading-tight">হোম</span>
+          <span className="text-[11px] mt-1 font-semibold leading-tight">Home</span>
         </button>
 
-        {/* ট্যুর প্যাকেজ */}
+        {/* Tour Packages */}
         <button
           type="button"
           onClick={() => onNavigate('packages')}
@@ -50,10 +50,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Compass className={`w-5 h-5 transition-transform ${activeSection === 'packages' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-          <span className="text-[11px] mt-1 font-semibold leading-tight">প্যাকেজ</span>
+          <span className="text-[11px] mt-1 font-semibold leading-tight">Packages</span>
         </button>
 
-        {/* গ্যালারি */}
+        {/* Gallery */}
         <button
           type="button"
           onClick={() => onNavigate('gallery')}
@@ -64,10 +64,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Image className={`w-5 h-5 transition-transform ${activeSection === 'gallery' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-          <span className="text-[11px] mt-1 font-semibold leading-tight">গ্যালারি</span>
+          <span className="text-[11px] mt-1 font-semibold leading-tight">Gallery</span>
         </button>
 
-        {/* যোগাযোগ */}
+        {/* Contact */}
         <button
           type="button"
           onClick={() => onNavigate('contact')}
@@ -78,7 +78,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
           }`}
         >
           <Phone className={`w-5 h-5 transition-transform ${activeSection === 'contact' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-          <span className="text-[11px] mt-1 font-semibold leading-tight">যোগাযোগ</span>
+          <span className="text-[11px] mt-1 font-semibold leading-tight">Contact</span>
         </button>
       </div>
     </nav>

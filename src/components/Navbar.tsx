@@ -23,12 +23,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { id: 'hero', label: 'হোম' },
-    { id: 'packages', label: 'ট্যুর প্যাকেজ' },
-    { id: 'stats', label: 'আমাদের অর্জন (১,১৪৪+ পর্যটক)' },
-    { id: 'gallery', label: 'আমাদের গ্যালারি' },
-    { id: 'why-us', label: 'কেন ঘুরবে' },
-    { id: 'contact', label: 'যোগাযোগ' },
+    { id: 'hero', label: 'Home' },
+    { id: 'packages', label: 'Tour Packages' },
+    { id: 'blog', label: 'Travel Blog' },
+    { id: 'about', label: 'About Us' },
+    { id: 'stats', label: '1,144+ Travelers' },
+    { id: 'gallery', label: 'Gallery' },
+    { id: 'contact', label: 'Contact' },
   ];
 
   const handleLinkClick = (id: string) => {
@@ -112,21 +113,31 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Nav Links styled as interactive buttons */}
-          <nav className="hidden md:flex items-center gap-1.5 p-1 bg-slate-100/70 rounded-2xl border border-slate-200/80">
-            {navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => handleLinkClick(link.id)}
-                className={`px-3 py-1.5 text-xs lg:text-sm font-semibold rounded-xl transition-all whitespace-nowrap cursor-pointer ${
-                  activeSection === link.id
-                    ? 'bg-blue-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
-                }`}
-              >
-                {link.label}
-              </button>
-            ))}
+          {/* Nav Links styled as ultra-posh executive pill island */}
+          <nav className="hidden lg:flex items-center gap-1 p-1.5 bg-slate-100/85 backdrop-blur-md rounded-full border border-slate-200/90 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <button
+                  key={link.id}
+                  onClick={() => handleLinkClick(link.id)}
+                  className={`relative flex items-center gap-1.5 px-3.5 py-1.5 text-xs xl:text-[13px] font-semibold rounded-full transition-all duration-200 whitespace-nowrap cursor-pointer select-none ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 via-blue-600 to-sky-600 text-white shadow-sm shadow-blue-500/30 font-bold scale-[1.02]'
+                      : 'text-slate-600 hover:text-slate-950 hover:bg-white/90'
+                  }`}
+                >
+                  {link.id === 'stats' && (
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                        isActive ? 'bg-sky-200' : 'bg-emerald-500 animate-pulse'
+                      }`}
+                    />
+                  )}
+                  <span>{link.label}</span>
+                </button>
+              );
+            })}
           </nav>
 
           {/* Action Zone */}
@@ -144,16 +155,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={onLogout}
                   className="text-xs text-rose-600 hover:text-rose-700 ml-2 font-medium hover:underline cursor-pointer"
                 >
-                  লগআউট
+                  Sign Out
                 </button>
               </div>
             ) : (
               <button
                 onClick={onOpenAuth}
-                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 rounded-xl shadow-xs shadow-blue-500/20 transition-all hover:shadow active:scale-98 whitespace-nowrap cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2 text-xs xl:text-sm font-bold text-white bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 rounded-full shadow-xs shadow-blue-500/20 transition-all hover:shadow active:scale-98 whitespace-nowrap cursor-pointer"
               >
-                <User className="w-4 h-4" />
-                <span>লগইন করুন</span>
+                <User className="w-3.5 h-3.5" />
+                <span>Sign In</span>
               </button>
             )}
           </div>
@@ -182,29 +193,52 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative z-40 lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-4 shadow-2xl animate-fade-in">
             {/* Nav links */}
             <div className="flex flex-col space-y-1">
-              {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() => handleLinkClick(link.id)}
-                  className={`text-left px-3.5 py-2.5 text-base font-bold rounded-xl transition-all cursor-pointer ${
-                    activeSection === link.id
-                      ? 'bg-blue-50 text-blue-700 font-extrabold'
-                      : 'text-slate-700 hover:bg-slate-50'
-                  }`}
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.id;
+                return (
+                  <button
+                    key={link.id}
+                    onClick={() => handleLinkClick(link.id)}
+                    className={`flex items-center justify-between text-left px-4 py-2.5 text-sm font-bold rounded-2xl transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-gradient-to-r from-blue-600 to-sky-600 text-white shadow-sm font-extrabold'
+                        : 'text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5">
+                      {link.id === 'stats' && (
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            isActive ? 'bg-white' : 'bg-emerald-500 animate-pulse'
+                          }`}
+                        />
+                      )}
+                      <span>{link.label}</span>
+                    </div>
+                    {link.id === 'stats' && (
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          isActive
+                            ? 'bg-white/20 text-white'
+                            : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                        }`}
+                      >
+                        Verified
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             {/* Direct hotline & user account bar */}
             <div className="pt-3 border-t border-slate-100 space-y-2.5">
               <a
-                href="tel:01700123456"
+                href="tel:09658865593"
                 className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-2 border border-slate-200/90 transition-colors"
               >
                 <PhoneCall className="w-4 h-4 text-blue-600" />
-                <span>জরুরি হেল্পলাইন: ০১৭০০-১২৩৪৫৬ (২৪/৭)</span>
+                <span>24/7 Helpline: 09658-865593</span>
               </a>
 
               {user ? (
@@ -225,7 +259,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     }}
                     className="text-xs font-bold text-rose-600 hover:underline px-2 py-1"
                   >
-                    লগআউট
+                    Sign Out
                   </button>
                 </div>
               ) : (
@@ -237,7 +271,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-white bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 rounded-xl shadow-md shadow-blue-500/20 active:scale-98 transition-all cursor-pointer"
                 >
                   <User className="w-4 h-4" />
-                  <span>লগইন বা সাইন আপ করুন</span>
+                  <span>Sign In / Register</span>
                 </button>
               )}
             </div>

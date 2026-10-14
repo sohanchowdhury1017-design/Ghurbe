@@ -12,6 +12,8 @@ import { GalleryPage } from './components/GalleryPage';
 import { WhyUsPage } from './components/WhyUsPage';
 import { ContactPage } from './components/ContactPage';
 import { StatsPage } from './components/StatsPage';
+import { BlogPage } from './components/BlogPage';
+import { AboutPage } from './components/AboutPage';
 import { BookingModal } from './components/BookingModal';
 import { MyBookingsModal } from './components/MyBookingsModal';
 import { WhatsAppChat } from './components/WhatsAppChat';
@@ -22,7 +24,7 @@ import { KuakataTourPopupModal } from './components/KuakataTourPopupModal';
 import { POPULAR_PACKAGES } from './data/packagesData';
 import { TourPackage, BookingRecord, SearchFilterState } from './types/travel';
 
-type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats';
+type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about';
 
 export default function App() {
   const [packages] = useState<TourPackage[]>(POPULAR_PACKAGES);
@@ -35,7 +37,9 @@ export default function App() {
     if (clean === 'packages' || clean === 'tours') return { route: 'packages', pkg: null };
     if (clean === 'gallery') return { route: 'gallery', pkg: null };
     if (clean === 'stats' || clean === 'reviews' || clean === 'achievements') return { route: 'stats', pkg: null };
-    if (clean === 'why-us' || clean === 'about') return { route: 'why-us', pkg: null };
+    if (clean === 'blog' || clean === 'blogs' || clean === 'articles' || clean === 'travel-tips' || clean === 'tips' || clean === 'packing' || clean === 'packing-list') return { route: 'blog', pkg: null };
+    if (clean === 'about' || clean === 'team' || clean === 'employees') return { route: 'about', pkg: null };
+    if (clean === 'why-us') return { route: 'why-us', pkg: null };
     if (clean === 'contact' || clean === 'faq') return { route: 'contact', pkg: null };
 
     // Check if it matches any package slug or id e.g. /Kuakata or /sajek-valley
@@ -168,7 +172,7 @@ export default function App() {
     const pathname = window.location.pathname;
     if (!pathname || pathname === '/' || pathname === '/index.html') return '';
     const segments = pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
-    const known = ['packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home'];
+    const known = ['packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home', 'blog', 'blogs', 'stats', 'reviews', 'team', 'travel-tips'];
     if (segments.length > 0) {
       const first = segments[0].toLowerCase();
       const isPkg = packages.some((p) => p.slug.toLowerCase() === first || p.id.toLowerCase() === first || first === 'kuakata');
@@ -197,6 +201,12 @@ export default function App() {
         document.title = 'কেন ঘুরবে সেরা পছন্দ | ঘুরবে (Ghurbe)';
       } else if (route === 'contact') {
         document.title = 'যোগাযোগ ও সাপোর্ট | ঘুরবে (Ghurbe)';
+      } else if (route === 'blog') {
+        document.title = 'ট্রাভেল ব্লগ ও গাইড | ঘুরবে (Ghurbe)';
+      } else if (route === 'about') {
+        document.title = 'আমাদের টিম ও কর্মকর্তা | ঘুরবে (Ghurbe)';
+      } else if (route === 'stats') {
+        document.title = 'আমাদের অর্জন ও ট্রাভেলার রিভিউ | ঘুরবে (Ghurbe)';
       } else {
         document.title = 'ঘুরবে (Ghurbe) — সাশ্রয়ী ও নিরাপদ ট্যুর প্যাকেজ';
       }
@@ -259,6 +269,18 @@ export default function App() {
       subPath = '/contact';
       newTitle = 'যোগাযোগ ও সাপোর্ট | ঘুরবে (Ghurbe)';
       newRoute = 'contact';
+    } else if (target === 'blog' || target === 'blogs' || target === 'travel-tips') {
+      subPath = '/blog';
+      newTitle = 'ট্রাভেল ব্লগ ও গাইড | ঘুরবে (Ghurbe)';
+      newRoute = 'blog';
+    } else if (target === 'about' || target === 'team') {
+      subPath = '/about';
+      newTitle = 'আমাদের টিম ও কর্মকর্তা | ঘুরবে (Ghurbe)';
+      newRoute = 'about';
+    } else if (target === 'stats' || target === 'reviews') {
+      subPath = '/stats';
+      newTitle = 'আমাদের অর্জন ও ট্রাভেলার রিভিউ | ঘুরবে (Ghurbe)';
+      newRoute = 'stats';
     } else if ((target === 'package-detail' || target === 'detail') && pkg) {
       const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
       subPath = `/${slugName}`;
@@ -295,6 +317,12 @@ export default function App() {
       navigateTo('why-us');
     } else if (sectionId === 'contact') {
       navigateTo('contact');
+    } else if (sectionId === 'blog' || sectionId === 'blogs' || sectionId === 'travel-tips') {
+      navigateTo('blog');
+    } else if (sectionId === 'about' || sectionId === 'team') {
+      navigateTo('about');
+    } else if (sectionId === 'stats' || sectionId === 'reviews') {
+      navigateTo('stats');
     } else {
       navigateTo('home');
     }
@@ -390,6 +418,21 @@ export default function App() {
           />
         )}
 
+        {currentRoute === 'blog' && (
+          <BlogPage
+            onBackToHome={() => navigateTo('home')}
+            onNavigateToPackages={() => navigateTo('packages')}
+          />
+        )}
+
+        {currentRoute === 'about' && (
+          <AboutPage
+            onBackToHome={() => navigateTo('home')}
+            onNavigateToPackages={() => navigateTo('packages')}
+            onNavigateToContact={() => navigateTo('contact')}
+          />
+        )}
+
         {currentRoute === 'contact' && (
           <ContactPage
             onBackToHome={() => navigateTo('home')}
@@ -409,6 +452,8 @@ export default function App() {
             onNavigateToWhyUs={() => navigateTo('why-us')}
             onNavigateToContact={() => navigateTo('contact')}
             onNavigateToStats={() => navigateTo('stats')}
+            onNavigateToBlog={() => navigateTo('blog')}
+            onNavigateToAbout={() => navigateTo('about')}
           />
         )}
       </main>

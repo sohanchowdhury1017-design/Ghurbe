@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, Heart, Shield } from 'lucide-react';
+import { Phone, Mail, MapPin, Heart, Shield, Luggage } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -93,6 +93,31 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings }) =>
               <li>
                 <button onClick={() => onNavigate('why-us')} className="hover:text-sky-400 transition-colors">
                   আমাদের সম্পর্কে ও সুবিধা
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('blog')} className="hover:text-sky-400 transition-colors">
+                  ট্রাভেল ব্লগ ও গাইড
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    onNavigate('blog');
+                    setTimeout(() => {
+                      const el = document.getElementById('travel-tips-section');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
+                  className="hover:text-sky-300 transition-colors flex items-center gap-1.5 text-sky-400 font-medium"
+                >
+                  <Luggage className="w-3.5 h-3.5" />
+                  <span>প্যাকিং লিস্ট ও টিপস হাব</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('about')} className="hover:text-sky-400 transition-colors">
+                  আমাদের টিম ও কর্মকর্তা (About)
                 </button>
               </li>
               <li>

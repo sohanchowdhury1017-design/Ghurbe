@@ -31,6 +31,8 @@ interface HomePageProps {
   onNavigateToWhyUs: () => void;
   onNavigateToContact: () => void;
   onNavigateToStats?: () => void;
+  onNavigateToBlog?: () => void;
+  onNavigateToAbout?: () => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
@@ -44,6 +46,8 @@ export const HomePage: React.FC<HomePageProps> = ({
   onNavigateToWhyUs,
   onNavigateToContact,
   onNavigateToStats,
+  onNavigateToBlog,
+  onNavigateToAbout,
 }) => {
   const kuakataPkg = packages.find((p) => p.id === 'kuakata-beach') || packages[0];
   
@@ -519,6 +523,79 @@ export const HomePage: React.FC<HomePageProps> = ({
               <span>কেন ঘুরবে বিস্তারিত পেজ দেখুন</span>
               <ChevronRight className="w-4 h-4" />
             </button>
+          </div>
+        </div>
+
+        {/* 8. Travel Blog & Leadership/Team Preview Card */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Blog Highlight Card */}
+          <div 
+            onClick={onNavigateToBlog}
+            className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-xs hover:shadow-md hover:border-blue-400 transition-all cursor-pointer group flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-black text-blue-600 uppercase tracking-wider bg-blue-50 px-2.5 py-1 rounded-lg">
+                  ট্রাভেল ব্লগ ও গাইড
+                </span>
+                <span className="text-xs font-bold text-slate-400 group-hover:text-blue-600 transition-colors">
+                  সকল গাইড পড়ুন →
+                </span>
+              </div>
+              <h3 className="text-lg font-black text-slate-900 group-hover:text-blue-600 transition-colors">
+                কুয়াকাটা, সাজেক ও টাঙ্গুয়ার হাওরের ভ্রমণ গল্প ও নির্দেশিকা
+              </h3>
+              <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                কোথায় থাকবেন, কীভাবে কম খরচে ঘুরবেন, কী খাবেন এবং পরিবার নিয়ে ভ্রমণের জরুরি টিপস জানতে আমাদের অফিসিয়াল ব্লগ পড়ুন।
+              </p>
+            </div>
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
+              <span>৪টি পূর্ণাঙ্গ ভ্রমণ গাইড দেখুন</span>
+              <span className="group-hover:translate-x-1 transition-transform">ব্লগ খুলুন →</span>
+            </div>
+          </div>
+
+          {/* Leadership & CEO Highlight Card */}
+          <div 
+            onClick={onNavigateToAbout}
+            className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-xs hover:shadow-xl hover:border-blue-400 transition-all cursor-pointer group flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-black text-blue-700 uppercase tracking-wider bg-blue-50 px-2.5 py-1 rounded-lg">
+                  Message from the CEO (About)
+                </span>
+                <span className="text-xs font-bold text-slate-400 group-hover:text-blue-700 transition-colors">
+                  সম্পূর্ণ বার্তা পড়ুন →
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3.5 mb-3">
+                <div className="relative w-14 h-14 rounded-2xl overflow-hidden shrink-0 border-2 border-blue-500 shadow-sm">
+                  <img
+                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791992165/WhatsApp_Image_2026-10-14_at_8.57.25_PM.jpg"
+                    alt="MD SAMSUL ARAFIN - Founder & CEO"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
+                  />
+                </div>
+                <div>
+                  <h4 className="text-base font-black text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
+                    MD SAMSUL ARAFIN
+                  </h4>
+                  <p className="text-xs font-bold text-blue-700">Founder & CEO, Ghurbe</p>
+                  <p className="text-[11px] text-slate-500">প্রতিষ্ঠাতা ও প্রধান নির্বাহী কর্মকর্তা</p>
+                </div>
+              </div>
+
+              <p className="text-xs text-slate-600 leading-relaxed italic bg-sky-50/60 p-3 rounded-xl border border-sky-100">
+                "Your trust sets the standard for every journey. When you choose Ghurbe, you entrust us with your time, your budget, and an experience that matters to you."
+              </p>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
+              <span>সিইও বার্তা ও সম্পূর্ণ টিম ডিরেক্টরি</span>
+              <span className="group-hover:translate-x-1 transition-transform">About Us দেখুন →</span>
+            </div>
           </div>
         </div>
 
