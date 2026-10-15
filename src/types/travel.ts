@@ -87,6 +87,20 @@ export interface TravelerReview {
   text: string;
 }
 
+export interface BlogSubsection {
+  title: string;
+  description: string;
+}
+
+export interface BlogSection {
+  number?: string;
+  heading: string;
+  subheading?: string;
+  body: string[];
+  subsections?: BlogSubsection[];
+  highlights?: string[];
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -99,8 +113,17 @@ export interface BlogPost {
   authorAvatar: string;
   date: string;
   coverImage: string;
+  imageAlt?: string;
   summary: string;
   content: string[];
+  sections?: BlogSection[];
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    primaryKeywords?: string[];
+    secondaryKeywords?: string[];
+  };
+  disclaimer?: string;
   tips: string[];
   bestTimeToVisit: string;
   budgetGuide: string;
