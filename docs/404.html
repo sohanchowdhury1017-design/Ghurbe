@@ -4,25 +4,23 @@
     <meta charset="utf-8">
     <title>ঘুরবে (Ghurbe) — ট্যুরস অ্যান্ড ট্রাভেলস</title>
     <script>
-      // Single Page App clean redirect without '#' hash
+      // Single Page Apps for GitHub Pages
+      // MIT License - https://github.com/rafgraph/spa-github-pages
+      var pathSegmentsToKeep = 0;
       var l = window.location;
-      var cleanPath = l.pathname.replace(/^\/+/, '');
-      if (cleanPath && cleanPath !== 'index.html') {
-        var isCustomDomain = l.hostname.indexOf('github.io') === -1;
-        if (isCustomDomain) {
-          window.location.replace(l.protocol + '//' + l.host + '/?p=' + encodeURIComponent(cleanPath) + (l.search ? '&' + l.search.slice(1) : ''));
-        } else {
-          var segments = l.pathname.slice(1).split('/');
-          var repoName = segments[0] || '';
-          var remaining = segments.slice(1).join('/');
-          window.location.replace(l.protocol + '//' + l.host + '/' + repoName + '/?p=' + encodeURIComponent(remaining) + (l.search ? '&' + l.search.slice(1) : ''));
-        }
-      } else {
-        window.location.replace('/');
+      var isCustomDomain = l.hostname.indexOf('github.io') === -1;
+      if (!isCustomDomain) {
+        pathSegmentsToKeep = 1;
       }
+      l.replace(
+        l.protocol + '//' + l.host + (pathSegmentsToKeep ? '/' + l.pathname.slice(1).split('/')[0] : '') + '/?' +
+        (l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') ? 'p=/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') : '') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
     </script>
   </head>
   <body>
-    <p>Redirecting to Ghurbe Travels...</p>
   </body>
 </html>
