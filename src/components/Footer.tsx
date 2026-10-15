@@ -76,68 +76,168 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings }) =>
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">দ্রুত নেভিগেশন</h4>
             <ul className="space-y-2 text-xs sm:text-sm">
               <li>
-                <button onClick={() => onNavigate('hero')} className="hover:text-sky-400 transition-colors">
-                  হোম পেজ
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('packages')} className="hover:text-sky-400 transition-colors">
-                  জনপ্রিয় ট্যুর প্যাকেজ
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('gallery')} className="hover:text-sky-400 transition-colors">
-                  ভ্রমণ ছবির গ্যালারি
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('why-us')} className="hover:text-sky-400 transition-colors">
-                  আমাদের সম্পর্কে ও সুবিধা
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('blog')} className="hover:text-sky-400 transition-colors">
-                  ট্রাভেল ব্লগ ও গাইড
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onNavigate('blog');
-                    setTimeout(() => {
-                      const el = document.getElementById('travel-tips-section');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
+                <a
+                  href="/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('hero');
                   }}
-                  className="hover:text-sky-300 transition-colors flex items-center gap-1.5 text-sky-400 font-medium"
+                  className="hover:text-sky-400 transition-colors"
                 >
-                  <Luggage className="w-3.5 h-3.5" />
-                  <span>প্যাকিং লিস্ট ও টিপস হাব</span>
-                </button>
+                  হোম পেজ
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('about')} className="hover:text-sky-400 transition-colors">
+                <a
+                  href="/packages"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('packages');
+                  }}
+                  className="hover:text-sky-400 transition-colors"
+                >
+                  জনপ্রিয় ট্যুর প্যাকেজ
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/kuakata-travel-guide"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('kuakata-travel-guide');
+                  }}
+                  className="hover:text-sky-400 transition-colors"
+                >
+                  কুয়াকাটা ভ্রমণ গাইড ২০২৬
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/gallery"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('gallery');
+                  }}
+                  className="hover:text-sky-400 transition-colors"
+                >
+                  ভ্রমণ ছবির গ্যালারি
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/why-us"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('why-us');
+                  }}
+                  className="hover:text-sky-400 transition-colors"
+                >
+                  আমাদের সম্পর্কে ও সুবিধা
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/blog"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('blog');
+                  }}
+                  className="hover:text-sky-400 transition-colors"
+                >
+                  ট্রাভেল ব্লগ ও গাইড
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/about"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('about');
+                  }}
+                  className="hover:text-sky-400 transition-colors"
+                >
                   আমাদের টিম ও কর্মকর্তা (About)
-                </button>
+                </a>
               </li>
               <li>
-                <button onClick={() => onNavigate('contact')} className="hover:text-sky-400 transition-colors">
+                <a
+                  href="/contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('contact');
+                  }}
+                  className="hover:text-sky-400 transition-colors"
+                >
                   যোগাযোগ ও সহায়তা
-                </button>
+                </a>
               </li>
             </ul>
           </div>
 
-          {/* Popular Destinations */}
+          {/* Leadership & Top Spots */}
           <div className="space-y-3">
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider">জনপ্রিয় বাংলাদেশ স্পট</h4>
-            <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
-              <li className="hover:text-white cursor-pointer" onClick={() => onNavigate('packages')}>সাজেক ভ্যালি মেঘের রাজ্য</li>
-              <li className="hover:text-white cursor-pointer" onClick={() => onNavigate('packages')}>সেন্টমার্টিন প্রবাল দ্বীপ</li>
-              <li className="hover:text-white cursor-pointer" onClick={() => onNavigate('packages')}>টাঙ্গুয়ার হাওর ও নীলাদ্রি লেক</li>
-              <li className="hover:text-white cursor-pointer" onClick={() => onNavigate('packages')}>কক্সবাজার ও ইনানী মেরিন ড্রাইভ</li>
-              <li className="hover:text-white cursor-pointer" onClick={() => onNavigate('packages')}>বান্দরবান নীলগিরি ও নাফাখুম</li>
-              <li className="hover:text-white cursor-pointer" onClick={() => onNavigate('packages')}>সিলেট রাতারগুল ও বিছানাকান্দি</li>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider">পরিচালনা পর্ষদ ও প্রোফাইল</h4>
+            <ul className="space-y-2 text-xs sm:text-sm text-slate-300">
+              <li>
+                <a
+                  href="/SAMSUL-ARAFIN"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('SAMSUL-ARAFIN');
+                  }}
+                  className="hover:text-sky-400 transition-colors flex items-center gap-1.5"
+                >
+                  <span>MD SAMSUL ARAFIN</span>
+                  <span className="text-[10px] text-slate-400">(CEO)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/mahim-ibn-khudi"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('mahim-ibn-khudi');
+                  }}
+                  className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+                >
+                  <span>মাহিম ইবনে খুদি</span>
+                  <span className="text-[10px] text-emerald-300">(Executive Director)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/md-rifat-islam"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('md-rifat-islam');
+                  }}
+                  className="hover:text-indigo-400 transition-colors flex items-center gap-1.5"
+                >
+                  <span>Md Rifat Islam</span>
+                  <span className="text-[10px] text-indigo-300">(Operations)</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/sidra-islam"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('sidra-islam');
+                  }}
+                  className="hover:text-purple-400 transition-colors flex items-center gap-1.5"
+                >
+                  <span>Sidra Islam</span>
+                  <span className="text-[10px] text-purple-300">(Brand Manager)</span>
+                </a>
+              </li>
+            </ul>
+
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider pt-3">জনপ্রিয় বাংলাদেশ স্পট</h4>
+            <ul className="space-y-1.5 text-xs text-slate-400">
+              <li><a href="/Kuakata" onClick={(e) => { e.preventDefault(); onNavigate('Kuakata'); }} className="hover:text-white transition-colors">কুয়াকাটা সাগরকন্যা ট্যুর (৩৫৯৯৳)</a></li>
+              <li><a href="/sajek-valley" onClick={(e) => { e.preventDefault(); onNavigate('sajek-valley'); }} className="hover:text-white transition-colors">সাজেক ভ্যালি মেঘের রাজ্য</a></li>
+              <li><a href="/saint-martin" onClick={(e) => { e.preventDefault(); onNavigate('saint-martin'); }} className="hover:text-white transition-colors">সেন্টমার্টিন প্রবাল দ্বীপ</a></li>
+              <li><a href="/coxs-bazar" onClick={(e) => { e.preventDefault(); onNavigate('coxs-bazar'); }} className="hover:text-white transition-colors">কক্সবাজার সমুদ্র সৈকত</a></li>
             </ul>
           </div>
 

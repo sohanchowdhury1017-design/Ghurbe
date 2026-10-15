@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- 1. Home Page -->
+  <url>
+    <loc>https://ghurbe.com/</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791744358/ghurbe_bd_logo.png</image:loc>
+      <image:title>ঘুরবে - ট্যুরস অ্যান্ড ট্রাভেলস বাংলাদেশ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 2. About Us & Leadership Board -->
+  <url>
+    <loc>https://ghurbe.com/about</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791998110/WhatsApp_Image_2026-10-14_at_11.13.05_PM.jpg</image:loc>
+      <image:title>ঘুরবে টিম ও পরিচালনা পর্ষদ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 3. Dedicated Member Page: MD SAMSUL ARAFIN (Founder & CEO) -->
+  <url>
+    <loc>https://ghurbe.com/SAMSUL-ARAFIN</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791998110/WhatsApp_Image_2026-10-14_at_11.13.05_PM.jpg</image:loc>
+      <image:title>MD SAMSUL ARAFIN — Founder &amp; CEO, Ghurbe</image:title>
+    </image:image>
+  </url>
+
+  <!-- 4. Dedicated Member Page: মাহিম ইবনে খুদি (Executive Director) -->
+  <url>
+    <loc>https://ghurbe.com/mahim-ibn-khudi</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791996767/WhatsApp_Image_2026-10-14_at_10.52.07_PM.jpg</image:loc>
+      <image:title>মাহিম ইবনে খুদি — Executive Director, Ghurbe</image:title>
+    </image:image>
+  </url>
+
+  <!-- 5. Dedicated Member Page: Md Rifat Islam (Director of Operations) -->
+  <url>
+    <loc>https://ghurbe.com/md-rifat-islam</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1792048061/WhatsApp_Image_2026-10-15_at_12.56.16_PM.jpg</image:loc>
+      <image:title>Md Rifat Islam — Director of Operations, Ghurbe</image:title>
+    </image:image>
+  </url>
+
+  <!-- 6. Dedicated Member Page: Sidra Islam (Brand Manager) -->
+  <url>
+    <loc>https://ghurbe.com/sidra-islam</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1792049005/pexels-photo-29333677.avif</image:loc>
+      <image:title>Sidra Islam — Brand Manager, Ghurbe</image:title>
+    </image:image>
+  </url>
+
+  <!-- 7. Packages Directory -->
+  <url>
+    <loc>https://ghurbe.com/packages</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- 8. Kuakata Special Tour (Mega Offer 3599 Tk) -->
+  <url>
+    <loc>https://ghurbe.com/Kuakata</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg</image:loc>
+      <image:title>কুয়াকাটা সাগরকন্যা ৩ রাত ২ দিন মেগা অফার প্যাকেজ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 9. Kuakata Complete Travel Guide 2026 (SEO Guide) -->
+  <url>
+    <loc>https://ghurbe.com/kuakata-travel-guide</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg</image:loc>
+      <image:title>কুয়াকাটা সমুদ্রসৈকতে সূর্যাস্তের দৃশ্য — Ghurbe Tours &amp; Travel Kuakata Travel Guide</image:title>
+    </image:image>
+  </url>
+
+  <!-- 10. Travel Blog -->
+  <url>
+    <loc>https://ghurbe.com/blog</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 11. Sajek Valley Tour Package -->
+  <url>
+    <loc>https://ghurbe.com/sajek-valley</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791876748/Meghraj-Resort.jpg</image:loc>
+      <image:title>সাজেক ভ্যালি মেঘের রাজ্য ট্যুর প্যাকেজ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 12. Saint Martin Island Tour Package -->
+  <url>
+    <loc>https://ghurbe.com/saint-martin</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>সেন্টমার্টিন প্রবাল দ্বীপ ভ্রমণ প্যাকেজ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 13. Tanguar Haor Luxury Houseboat Package -->
+  <url>
+    <loc>https://ghurbe.com/tanguar-haor</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>টাঙ্গুয়ার হাওর ও নীলাদ্রি লেক হাউসবোট ভ্রমণ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 14. Cox's Bazar Tour Package -->
+  <url>
+    <loc>https://ghurbe.com/coxs-bazar</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>কক্সবাজার সমুদ্র সৈকত ও ইনানী মেরিন ড্রাইভ ট্যুর</image:title>
+    </image:image>
+  </url>
+
+  <!-- 15. Bandarban Hill Tracts Package -->
+  <url>
+    <loc>https://ghurbe.com/bandarban</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>বান্দরবান নীলগিরি ও নাফাখুম ভ্রমণ প্যাকেজ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 16. Sylhet Ratargul & Bisnakandi Package -->
+  <url>
+    <loc>https://ghurbe.com/sylhet</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&amp;fit=crop&amp;w=800&amp;q=80</image:loc>
+      <image:title>সিলেট রাতারগুল ও বিছানাকান্দি ভ্রমণ</image:title>
+    </image:image>
+  </url>
+
+  <!-- 17. Gallery -->
+  <url>
+    <loc>https://ghurbe.com/gallery</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 18. Why Us -->
+  <url>
+    <loc>https://ghurbe.com/why-us</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 19. Achievements & Reviews (Stats) -->
+  <url>
+    <loc>https://ghurbe.com/stats</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- 20. Contact -->
+  <url>
+    <loc>https://ghurbe.com/contact</loc>
+    <lastmod>2026-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

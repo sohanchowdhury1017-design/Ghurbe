@@ -133,6 +133,7 @@ export interface TeamMember {
   id: string;
   name: string;
   role: string;
+  slug: string;
   department: string;
   phone?: string;
   email?: string;
@@ -140,4 +141,8 @@ export interface TeamMember {
   experience: string;
   bio: string;
   specialty: string;
+  personalWebsite?: {
+    url: string;
+    label: string;
+  };
 }

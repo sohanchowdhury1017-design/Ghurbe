@@ -1,16 +1,18 @@
-import { ArrowLeft, Users, ShieldCheck, Award, Heart, MapPin, Sparkles, CheckCircle2, ChevronRight, Briefcase, Quote, Star, Check, Compass, Megaphone } from 'lucide-react';
+import { ArrowLeft, Users, ShieldCheck, Award, Heart, MapPin, Sparkles, CheckCircle2, ChevronRight, Briefcase, Quote, Star, Check, Compass, Megaphone, ExternalLink, UserCheck } from 'lucide-react';
 import { TEAM_MEMBERS } from '../data/blogAndTeamData';
 
 interface AboutPageProps {
   onBackToHome: () => void;
   onNavigateToPackages: () => void;
   onNavigateToContact: () => void;
+  onNavigateToMember?: (slug: string) => void;
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({
   onBackToHome,
   onNavigateToPackages,
   onNavigateToContact,
+  onNavigateToMember,
 }) => {
   const ceo = TEAM_MEMBERS.find((m) => m.id === 'ceo') || TEAM_MEMBERS[0];
   const ed = TEAM_MEMBERS.find((m) => m.id === 'executive-director');
@@ -152,21 +154,43 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   </div>
                 </div>
 
-                <div className="pt-3 space-y-1">
-                  <h3 className="text-2xl font-black text-slate-900 tracking-tight">
-                    MD SAMSUL ARAFIN
-                  </h3>
+                <div className="pt-3 space-y-1.5 w-full">
+                  <a
+                    href="/SAMSUL-ARAFIN"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onNavigateToMember?.('SAMSUL-ARAFIN');
+                    }}
+                    className="inline-flex items-center gap-1.5 group cursor-pointer hover:text-blue-600 transition-colors"
+                    title="MD SAMSUL ARAFIN-এর আলাদা পেজ দেখুন"
+                  >
+                    <h3 className="text-2xl font-black text-slate-900 group-hover:text-blue-600 tracking-tight transition-colors">
+                      MD SAMSUL ARAFIN
+                    </h3>
+                    <ChevronRight className="w-5 h-5 text-blue-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  </a>
                   <p className="text-xs sm:text-sm font-bold text-blue-700">
                     Founder & CEO (প্রতিষ্ঠাতা ও প্রধান নির্বাহী)
                   </p>
                   <p className="text-xs text-slate-500 font-medium">
                     Ghurbe Tours & Travels Bangladesh
                   </p>
-                  <div className="pt-1">
+                  <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2">
                     <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-blue-800 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
                       <Award className="w-3 h-3 text-blue-600" />
                       <span>২০২২ থেকে দক্ষতার সাথে পরিচালিত</span>
                     </span>
+                    <a
+                      href="/SAMSUL-ARAFIN"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigateToMember?.('SAMSUL-ARAFIN');
+                      }}
+                      className="inline-flex items-center gap-1 text-[11px] font-extrabold text-blue-700 hover:text-blue-900 bg-blue-100/70 hover:bg-blue-100 px-2.5 py-0.5 rounded-full border border-blue-300 transition-all cursor-pointer"
+                    >
+                      <UserCheck className="w-3 h-3" />
+                      <span>ব্যক্তিগত পেজ দেখুন →</span>
+                    </a>
                   </div>
                 </div>
 
@@ -301,21 +325,60 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-2 space-y-1">
-                    <h3 className="text-2xl font-black text-slate-900 tracking-tight">
-                      {ed.name}
-                    </h3>
+                  <div className="pt-2 space-y-1.5 w-full">
+                    <a
+                      href="/mahim-ibn-khudi"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigateToMember?.('mahim-ibn-khudi');
+                      }}
+                      className="inline-flex items-center gap-1.5 group cursor-pointer hover:text-emerald-600 transition-colors"
+                      title="মাহিম ইবনে খুদি-এর আলাদা পেজ দেখুন"
+                    >
+                      <h3 className="text-2xl font-black text-slate-900 group-hover:text-emerald-600 tracking-tight transition-colors">
+                        {ed.name}
+                      </h3>
+                      <ChevronRight className="w-5 h-5 text-emerald-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </a>
                     <p className="text-xs sm:text-sm font-bold text-emerald-700">
                       Executive Director (নির্বাহী পরিচালক)
                     </p>
+
+                    {/* Official Website Link requested by user: mahims.com/ghurbe */}
+                    <div className="pt-1 pb-1">
+                      <a
+                        href="https://mahims.com/ghurbe"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 font-extrabold text-xs shadow-xs transition-all hover:scale-102 active:scale-98 cursor-pointer group"
+                        title="ভিজিট করুন অফিসিয়াল পোর্টাল: mahims.com/ghurbe"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 text-emerald-600 group-hover:text-emerald-800 transition-colors" />
+                        <span className="underline underline-offset-4 decoration-emerald-500 font-mono tracking-tight text-xs sm:text-[13px]">
+                          mahims.com/ghurbe
+                        </span>
+                      </a>
+                    </div>
+
                     <p className="text-xs text-slate-500 font-medium">
                       Ghurbe Tours & Travels Bangladesh
                     </p>
-                    <div className="pt-1">
+                    <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2">
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                         <ShieldCheck className="w-3 h-3 text-emerald-600" />
                         <span>২০২২ থেকে অপারেশনাল এক্সিলেন্স</span>
                       </span>
+                      <a
+                        href="/mahim-ibn-khudi"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onNavigateToMember?.('mahim-ibn-khudi');
+                        }}
+                        className="inline-flex items-center gap-1 text-[11px] font-extrabold text-emerald-700 hover:text-emerald-900 bg-emerald-100/70 hover:bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300 transition-all cursor-pointer"
+                      >
+                        <UserCheck className="w-3 h-3" />
+                        <span>ব্যক্তিগত পেজ দেখুন →</span>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -406,21 +469,43 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-2 space-y-1">
-                    <h3 className="text-2xl font-black text-slate-900 tracking-tight">
-                      {doo.name}
-                    </h3>
+                  <div className="pt-2 space-y-1.5 w-full">
+                    <a
+                      href="/md-rifat-islam"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigateToMember?.('md-rifat-islam');
+                      }}
+                      className="inline-flex items-center gap-1.5 group cursor-pointer hover:text-indigo-600 transition-colors"
+                      title="Md Rifat Islam-এর আলাদা পেজ দেখুন"
+                    >
+                      <h3 className="text-2xl font-black text-slate-900 group-hover:text-indigo-600 tracking-tight transition-colors">
+                        {doo.name}
+                      </h3>
+                      <ChevronRight className="w-5 h-5 text-indigo-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </a>
                     <p className="text-xs sm:text-sm font-bold text-indigo-700">
                       Director of Operations (ডিরেক্টর অব অপারেশনস)
                     </p>
                     <p className="text-xs text-slate-500 font-medium">
                       Ghurbe Tours & Travels Bangladesh
                     </p>
-                    <div className="pt-1">
+                    <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2">
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-indigo-800 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200">
                         <ShieldCheck className="w-3 h-3 text-indigo-600" />
                         <span>২০২২ থেকে অপারেশনাল এক্সিলেন্স ও নিরাপত্তা</span>
                       </span>
+                      <a
+                        href="/md-rifat-islam"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onNavigateToMember?.('md-rifat-islam');
+                        }}
+                        className="inline-flex items-center gap-1 text-[11px] font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-100/70 hover:bg-indigo-100 px-2.5 py-0.5 rounded-full border border-indigo-300 transition-all cursor-pointer"
+                      >
+                        <UserCheck className="w-3 h-3" />
+                        <span>ব্যক্তিগত পেজ দেখুন →</span>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -514,21 +599,43 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-2 space-y-1">
-                    <h3 className="text-2xl font-black text-slate-900 tracking-tight">
-                      {bm.name}
-                    </h3>
+                  <div className="pt-2 space-y-1.5 w-full">
+                    <a
+                      href="/sidra-islam"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigateToMember?.('sidra-islam');
+                      }}
+                      className="inline-flex items-center gap-1.5 group cursor-pointer hover:text-purple-600 transition-colors"
+                      title="Sidra Islam-এর আলাদা পেজ দেখুন"
+                    >
+                      <h3 className="text-2xl font-black text-slate-900 group-hover:text-purple-600 tracking-tight transition-colors">
+                        {bm.name}
+                      </h3>
+                      <ChevronRight className="w-5 h-5 text-purple-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </a>
                     <p className="text-xs sm:text-sm font-bold text-purple-700">
                       Brand Manager (ব্র্যান্ড ম্যানেজার)
                     </p>
                     <p className="text-xs text-slate-500 font-medium">
                       Ghurbe Tours & Travels Bangladesh
                     </p>
-                    <div className="pt-1">
+                    <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2">
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-purple-800 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
                         <Sparkles className="w-3 h-3 text-purple-600" />
                         <span>২০২২ থেকে ব্র্যান্ডিং এক্সিলেন্স ও ট্রাস্ট</span>
                       </span>
+                      <a
+                        href="/sidra-islam"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onNavigateToMember?.('sidra-islam');
+                        }}
+                        className="inline-flex items-center gap-1 text-[11px] font-extrabold text-purple-700 hover:text-purple-900 bg-purple-100/70 hover:bg-purple-100 px-2.5 py-0.5 rounded-full border border-purple-300 transition-all cursor-pointer"
+                      >
+                        <UserCheck className="w-3 h-3" />
+                        <span>ব্যক্তিগত পেজ দেখুন →</span>
+                      </a>
                     </div>
                   </div>
                 </div>

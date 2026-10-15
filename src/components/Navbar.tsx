@@ -117,10 +117,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           <nav className="hidden lg:flex items-center gap-1 p-1.5 bg-slate-100/85 backdrop-blur-md rounded-full border border-slate-200/90 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
+              const hrefPath = link.id === 'hero' || link.id === 'home' ? '/' : `/${link.id}`;
               return (
-                <button
+                <a
                   key={link.id}
-                  onClick={() => handleLinkClick(link.id)}
+                  href={hrefPath}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleLinkClick(link.id);
+                  }}
                   className={`relative flex items-center gap-1.5 px-3.5 py-1.5 text-xs xl:text-[13px] font-semibold rounded-full transition-all duration-200 whitespace-nowrap cursor-pointer select-none ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600 via-blue-600 to-sky-600 text-white shadow-sm shadow-blue-500/30 font-bold scale-[1.02]'
@@ -135,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     />
                   )}
                   <span>{link.label}</span>
-                </button>
+                </a>
               );
             })}
           </nav>
@@ -195,10 +200,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.id;
+                const hrefPath = link.id === 'hero' || link.id === 'home' ? '/' : `/${link.id}`;
                 return (
-                  <button
+                  <a
                     key={link.id}
-                    onClick={() => handleLinkClick(link.id)}
+                    href={hrefPath}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleLinkClick(link.id);
+                    }}
                     className={`flex items-center justify-between text-left px-4 py-2.5 text-sm font-bold rounded-2xl transition-all cursor-pointer ${
                       isActive
                         ? 'bg-gradient-to-r from-blue-600 to-sky-600 text-white shadow-sm font-extrabold'
@@ -226,7 +236,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         Verified
                       </span>
                     )}
-                  </button>
+                  </a>
                 );
               })}
             </div>

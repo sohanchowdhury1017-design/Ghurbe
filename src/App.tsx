@@ -21,17 +21,19 @@ import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
 import { BottomNav } from './components/BottomNav';
 import { KuakataTourPopupModal } from './components/KuakataTourPopupModal';
+import { MemberProfilePage } from './components/MemberProfilePage';
 import { POPULAR_PACKAGES } from './data/packagesData';
+import { TEAM_MEMBERS } from './data/blogAndTeamData';
 import { TourPackage, BookingRecord, SearchFilterState } from './types/travel';
 
-type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about';
+type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about' | 'member-profile';
 
 export default function App() {
   const [packages] = useState<TourPackage[]>(POPULAR_PACKAGES);
   const [searchFilter, setSearchFilter] = useState<SearchFilterState | null>(null);
 
   // Helper to match a slug or route token
-  const matchRoute = (cleanToken: string): { route: RouteName; pkg: TourPackage | null; blogSlug?: string } | null => {
+  const matchRoute = (cleanToken: string): { route: RouteName; pkg: TourPackage | null; blogSlug?: string; memberSlug?: string } | null => {
     const clean = cleanToken.replace(/^\/+|\/+$/g, '').trim().toLowerCase();
     if (!clean || clean === 'home' || clean === 'index.html') return { route: 'home', pkg: null };
     if (clean === 'packages' || clean === 'tours') return { route: 'packages', pkg: null };
@@ -44,6 +46,22 @@ export default function App() {
     if (clean === 'about' || clean === 'team' || clean === 'employees') return { route: 'about', pkg: null };
     if (clean === 'why-us') return { route: 'why-us', pkg: null };
     if (clean === 'contact' || clean === 'faq') return { route: 'contact', pkg: null };
+
+    // Check individual executive profile pages:
+    // e.g. ghurbe.com/SAMSUL-ARAFIN, ghurbe.com/mahim-ibn-khudi, ghurbe.com/md-rifat-islam, ghurbe.com/sidra-islam
+    const matchedMember = TEAM_MEMBERS.find(
+      (m) =>
+        m.slug.toLowerCase() === clean ||
+        m.id.toLowerCase() === clean ||
+        (clean === 'samsul-arafin' && m.id === 'ceo') ||
+        (clean === 'mahim-ibn-khudi' && m.id === 'executive-director') ||
+        (clean === 'md-rifat-islam' && m.id === 'director-of-operations') ||
+        (clean === 'rifat-islam' && m.id === 'director-of-operations') ||
+        (clean === 'sidra-islam' && m.id === 'brand-manager')
+    );
+    if (matchedMember) {
+      return { route: 'member-profile', pkg: null, memberSlug: matchedMember.slug };
+    }
 
     // Check if it matches any package slug or id e.g. /Kuakata or /sajek-valley
     const matched = packages.find(
@@ -59,7 +77,7 @@ export default function App() {
   };
 
   // Helper to parse current path or hash to a dedicated page route
-  const resolveRouteFromLocation = (): { route: RouteName; pkg: TourPackage | null; blogSlug?: string } => {
+  const resolveRouteFromLocation = (): { route: RouteName; pkg: TourPackage | null; blogSlug?: string; memberSlug?: string } => {
     // 1. Check URL Hash (e.g., #/about or #about or #/about#about)
     if (window.location.hash) {
       const rawHash = window.location.hash;
@@ -100,6 +118,7 @@ export default function App() {
   const [currentRoute, setCurrentRoute] = useState<RouteName>(initialRouteInfo.route);
   const [currentRoutePackage, setCurrentRoutePackage] = useState<TourPackage | null>(initialRouteInfo.pkg);
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(initialRouteInfo.blogSlug || null);
+  const [selectedMemberSlug, setSelectedMemberSlug] = useState<string | null>(initialRouteInfo.memberSlug || null);
 
   // Modals for Booking, My Bookings, Auth, and Kuakata 12 Nov Tour Countdown Popup
   const [bookingModalPackage, setBookingModalPackage] = useState<TourPackage | null>(null);
@@ -179,11 +198,16 @@ export default function App() {
     const pathname = window.location.pathname;
     if (!pathname || pathname === '/' || pathname === '/index.html') return '';
     const segments = pathname.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
-    const known = ['packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home', 'blog', 'blogs', 'stats', 'reviews', 'team', 'travel-tips', 'kuakata-travel-guide'];
+    const known = [
+      'packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home',
+      'blog', 'blogs', 'stats', 'reviews', 'team', 'travel-tips', 'kuakata-travel-guide',
+      'samsul-arafin', 'mahim-ibn-khudi', 'md-rifat-islam', 'sidra-islam'
+    ];
     if (segments.length > 0) {
       const first = segments[0].toLowerCase();
       const isPkg = packages.some((p) => p.slug.toLowerCase() === first || p.id.toLowerCase() === first || first === 'kuakata');
-      if (!known.includes(first) && !isPkg && !first.endsWith('.html')) {
+      const isMem = TEAM_MEMBERS.some((m) => m.slug.toLowerCase() === first || m.id.toLowerCase() === first);
+      if (!known.includes(first) && !isPkg && !isMem && !first.endsWith('.html')) {
         return `/${segments[0]}`;
       }
     }
@@ -191,7 +215,7 @@ export default function App() {
   };
 
   // Helper to build canonical clean path without '#' hash
-  const getCleanFullPath = (route: RouteName, pkg?: TourPackage | null): string => {
+  const getCleanFullPath = (route: RouteName, pkg?: TourPackage | null, memberSlug?: string | null): string => {
     const repoBase = getRepoBasePath();
     let subPath = '';
     if (route === 'packages') {
@@ -208,6 +232,9 @@ export default function App() {
       subPath = '/about';
     } else if (route === 'stats') {
       subPath = '/stats';
+    } else if (route === 'member-profile') {
+      const memSlug = memberSlug || selectedMemberSlug || 'SAMSUL-ARAFIN';
+      subPath = `/${memSlug}`;
     } else if (route === 'package-detail' && pkg) {
       const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
       subPath = `/${slugName}`;
@@ -220,9 +247,9 @@ export default function App() {
   // Clean any '#' hash from URL immediately on initial load (e.g. if user opened #/about or #about)
   useEffect(() => {
     if (window.location.hash) {
-      const cleanPath = getCleanFullPath(currentRoute, currentRoutePackage);
+      const cleanPath = getCleanFullPath(currentRoute, currentRoutePackage, selectedMemberSlug);
       try {
-        window.history.replaceState({ route: currentRoute, packageId: currentRoutePackage?.id }, '', cleanPath);
+        window.history.replaceState({ route: currentRoute, packageId: currentRoutePackage?.id, memberSlug: selectedMemberSlug }, '', cleanPath);
       } catch (e) {
         console.warn('URL hash cleaning failed:', e);
       }
@@ -236,19 +263,29 @@ export default function App() {
       setCurrentRoute(resolved.route);
       setCurrentRoutePackage(resolved.pkg);
       setSelectedBlogSlug(resolved.blogSlug || null);
+      if (resolved.memberSlug) {
+        setSelectedMemberSlug(resolved.memberSlug);
+      }
 
       // Instantly scrub any '#' hash from browser address bar
       if (window.location.hash) {
-        const cleanPath = getCleanFullPath(resolved.route, resolved.pkg);
+        const cleanPath = getCleanFullPath(resolved.route, resolved.pkg, resolved.memberSlug);
         try {
-          window.history.replaceState({ route: resolved.route, packageId: resolved.pkg?.id }, '', cleanPath);
+          window.history.replaceState({ route: resolved.route, packageId: resolved.pkg?.id, memberSlug: resolved.memberSlug }, '', cleanPath);
         } catch {}
       }
 
-      const { route, pkg } = resolved;
+      const { route, pkg, memberSlug } = resolved;
       if (route === 'package-detail' && pkg) {
         const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
         document.title = `${pkg.title} | ghurbe.site/${slugName}`;
+      } else if (route === 'member-profile' && memberSlug) {
+        const mem = TEAM_MEMBERS.find((m) => m.slug.toLowerCase() === memberSlug.toLowerCase());
+        if (mem) {
+          document.title = `${mem.name} — ${mem.role.split('(')[0].trim()} | ঘুরবে (Ghurbe)`;
+        } else {
+          document.title = 'লিডারশিপ প্রোফাইল | ঘুরবে (Ghurbe)';
+        }
       } else if (route === 'blog' && resolved.blogSlug === 'kuakata-travel-guide') {
         document.title = 'কুয়াকাটা ভ্রমণ গাইড ২০২৬ | Kuakata Travel Guide | Ghurbe Tours & Travel';
       } else if (route === 'packages') {
@@ -310,8 +347,26 @@ export default function App() {
     let newTitle = 'ঘুরবে (Ghurbe) — সাশ্রয়ী ও নিরাপদ ট্যুর প্যাকেজ';
     let newRoute: RouteName = 'home';
     let targetPkg: TourPackage | null = null;
+    let targetMemberSlug: string | null = null;
 
-    if (target === 'packages') {
+    // Check if target is a team member slug or id e.g. 'SAMSUL-ARAFIN', 'mahim-ibn-khudi'
+    const matchedMember = TEAM_MEMBERS.find(
+      (m) =>
+        m.slug.toLowerCase() === target.toLowerCase() ||
+        m.id.toLowerCase() === target.toLowerCase() ||
+        (target.toLowerCase() === 'samsul-arafin' && m.id === 'ceo') ||
+        (target.toLowerCase() === 'mahim-ibn-khudi' && m.id === 'executive-director') ||
+        (target.toLowerCase() === 'md-rifat-islam' && m.id === 'director-of-operations') ||
+        (target.toLowerCase() === 'sidra-islam' && m.id === 'brand-manager')
+    );
+
+    if (matchedMember) {
+      subPath = `/${matchedMember.slug}`;
+      newTitle = `${matchedMember.name} — ${matchedMember.role.split('(')[0].trim()} | ঘুরবে (Ghurbe)`;
+      newRoute = 'member-profile';
+      targetMemberSlug = matchedMember.slug;
+      setSelectedMemberSlug(matchedMember.slug);
+    } else if (target === 'packages') {
       subPath = '/packages';
       newTitle = 'সকল ভ্রমণ প্যাকেজ | ঘুরবে (Ghurbe)';
       newRoute = 'packages';
@@ -360,7 +415,11 @@ export default function App() {
     const fullPath = repoBase ? `${repoBase}${subPath || '/'}` : (subPath || '/');
 
     try {
-      window.history.pushState({ route: newRoute, packageId: targetPkg?.id }, '', fullPath);
+      window.history.pushState(
+        { route: newRoute, packageId: targetPkg?.id, memberSlug: targetMemberSlug },
+        '',
+        fullPath
+      );
     } catch (e) {
       console.warn('Navigation pushState failed:', e);
     }
@@ -368,7 +427,11 @@ export default function App() {
     // Ensure '#' hash is completely removed from URL bar
     if (window.location.hash) {
       try {
-        window.history.replaceState({ route: newRoute, packageId: targetPkg?.id }, '', fullPath);
+        window.history.replaceState(
+          { route: newRoute, packageId: targetPkg?.id, memberSlug: targetMemberSlug },
+          '',
+          fullPath
+        );
       } catch {}
     }
 
@@ -503,7 +566,24 @@ export default function App() {
             onBackToHome={() => navigateTo('home')}
             onNavigateToPackages={() => navigateTo('packages')}
             onNavigateToContact={() => navigateTo('contact')}
+            onNavigateToMember={(slug) => navigateTo(slug)}
           />
+        )}
+
+        {currentRoute === 'member-profile' && (
+          (() => {
+            const mem = TEAM_MEMBERS.find((m) => m.slug.toLowerCase() === (selectedMemberSlug || '').toLowerCase()) || TEAM_MEMBERS[0];
+            return (
+              <MemberProfilePage
+                member={mem}
+                onBackToAbout={() => navigateTo('about')}
+                onBackToHome={() => navigateTo('home')}
+                onNavigateToPackages={() => navigateTo('packages')}
+                onNavigateToContact={() => navigateTo('contact')}
+                onNavigateToMember={(slug) => navigateTo(slug)}
+              />
+            );
+          })()
         )}
 
         {currentRoute === 'contact' && (
