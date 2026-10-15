@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings }) =>
               <div className="flex items-center gap-3 text-xs text-slate-400">
                 <span className="flex items-center gap-1.5">
                   <Shield className="w-4 h-4 text-emerald-400" />
-                  গভর্নমেন্ট রেজিস্টার্ড ট্রাভেল এজেন্সি
+                  গভর্নমেন্ট রেজিস্টার্ড ট্রাভেল এজেন্সি • ২০২২ থেকে দক্ষতার সাথে পরিচালিত
                 </span>
               </div>
 

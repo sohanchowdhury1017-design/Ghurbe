@@ -562,8 +562,8 @@ export const HomePage: React.FC<HomePageProps> = ({
           >
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-black text-blue-700 uppercase tracking-wider bg-blue-50 px-2.5 py-1 rounded-lg">
-                  Message from the CEO (About)
+                <span className="text-[11px] font-black text-emerald-800 uppercase tracking-wider bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg">
+                  আমরা ২০২২ থেকে খুব দক্ষতার সাথে কাজ করে আসছি
                 </span>
                 <span className="text-xs font-bold text-slate-400 group-hover:text-blue-700 transition-colors">
                   সম্পূর্ণ বার্তা পড়ুন →
@@ -572,17 +572,24 @@ export const HomePage: React.FC<HomePageProps> = ({
 
               <div className="flex items-center gap-3.5 mb-3">
                 <div className="flex -space-x-3">
-                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border-2 border-blue-500 shadow-sm bg-slate-100 z-10">
+                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border-2 border-blue-500 shadow-sm bg-slate-100 z-20">
                     <img
                       src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791998110/WhatsApp_Image_2026-10-14_at_11.13.05_PM.jpg"
                       alt="MD SAMSUL ARAFIN - Founder & CEO"
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
                     />
                   </div>
-                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border-2 border-emerald-500 shadow-sm bg-slate-100">
+                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border-2 border-emerald-500 shadow-sm bg-slate-100 z-10">
                     <img
                       src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791996767/WhatsApp_Image_2026-10-14_at_10.52.07_PM.jpg"
                       alt="মাহিম ইবনে খুদি - Executive Director"
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
+                    />
+                  </div>
+                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden shrink-0 border-2 border-indigo-500 shadow-sm bg-slate-100">
+                    <img
+                      src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1792048061/WhatsApp_Image_2026-10-15_at_12.56.16_PM.jpg"
+                      alt="Md Rifat Islam - Director of Operations"
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
                     />
                   </div>
@@ -591,13 +598,13 @@ export const HomePage: React.FC<HomePageProps> = ({
                   <h4 className="text-sm font-black text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
                     এক্সিকিউটিভ লিডারশিপ
                   </h4>
-                  <p className="text-xs font-bold text-blue-700">MD SAMSUL ARAFIN & মাহিম ইবনে খুদি</p>
-                  <p className="text-[11px] text-slate-500">Founder & CEO | Executive Director</p>
+                  <p className="text-xs font-bold text-blue-700">MD SAMSUL ARAFIN • মাহিম ইবনে খুদি • Md Rifat Islam</p>
+                  <p className="text-[11px] text-slate-500">CEO | Executive Director | Director of Operations</p>
                 </div>
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed italic bg-sky-50/60 p-3 rounded-xl border border-sky-100">
-                "Your trust sets the standard for every journey. When you choose Ghurbe, you entrust us with your time, your budget, and an experience that matters to you."
+                "আমরা ২০২২ থেকে খুব দক্ষতার সাথে কাজ করে আসছি। Your trust sets the standard for every journey. When you choose Ghurbe, you entrust us with your time, your budget, and an experience that matters to you."
               </p>
             </div>
 
