@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Home, 
   Compass, 
   BookOpen, 
   Users, 
-  Menu, 
-  X, 
   PhoneCall, 
   Image, 
   Award, 
+  ShieldCheck, 
   CalendarCheck, 
+  LayoutGrid, 
+  X, 
   User, 
   ChevronRight,
-  ExternalLink,
-  MessageCircle
+  MessageCircle,
+  Sparkles,
+  Phone,
+  Lock
 } from 'lucide-react';
 
 interface BottomNavProps {
@@ -21,6 +24,7 @@ interface BottomNavProps {
   onNavigate: (sectionId: string) => void;
   onOpenBookings: () => void;
   onOpenAuth: () => void;
+  onOpenAdmin?: () => void;
   bookingsCount: number;
   user: { name: string; phone: string } | null;
 }
@@ -30,42 +34,89 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   onNavigate,
   onOpenBookings,
   onOpenAuth,
+  onOpenAdmin,
   bookingsCount,
   user,
 }) => {
-  const [moreDrawerOpen, setMoreDrawerOpen] = useState(false);
+  const [gridDrawerOpen, setGridDrawerOpen] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const activeTabRef = useRef<HTMLButtonElement>(null);
 
-  const handleItemClick = (sectionId: string) => {
-    setMoreDrawerOpen(false);
-    onNavigate(sectionId);
+  // All buttons requested for mobile view
+  const navButtons = [
+    { id: 'hero', label: 'Home', bangla: 'হোম', icon: Home, color: 'text-blue-600', activeBg: 'bg-blue-50 text-blue-700' },
+    { id: 'packages', label: 'Packages', bangla: 'প্যাকেজ', icon: Compass, color: 'text-sky-600', activeBg: 'bg-sky-50 text-sky-700' },
+    { id: 'blog', label: 'Vlog', bangla: 'ভ্লগ', icon: BookOpen, color: 'text-amber-600', activeBg: 'bg-amber-50 text-amber-700' },
+    { id: 'about', label: 'About', bangla: 'এবাউট', icon: Users, color: 'text-emerald-600', activeBg: 'bg-emerald-50 text-emerald-700' },
+    { id: 'bookings', label: 'Bookings', bangla: 'বুকিং', icon: CalendarCheck, color: 'text-rose-600', activeBg: 'bg-rose-50 text-rose-700', badge: bookingsCount },
+    { id: 'contact', label: 'Contact', bangla: 'যোগাযোগ', icon: PhoneCall, color: 'text-teal-600', activeBg: 'bg-teal-50 text-teal-700' },
+    { id: 'gallery', label: 'Gallery', bangla: 'গ্যালারি', icon: Image, color: 'text-purple-600', activeBg: 'bg-purple-50 text-purple-700' },
+    { id: 'stats', label: 'Reviews', bangla: 'রিভিউ', icon: Award, color: 'text-orange-600', activeBg: 'bg-orange-50 text-orange-700' },
+    { id: 'why-us', label: 'Why Us', bangla: 'সুবিধাসমূহ', icon: ShieldCheck, color: 'text-indigo-600', activeBg: 'bg-indigo-50 text-indigo-700' },
+    { id: 'admin', label: 'Admin', bangla: 'এডমিন', icon: Lock, color: 'text-amber-600', activeBg: 'bg-amber-50 text-amber-700' },
+  ];
+
+  const handleItemClick = (id: string) => {
+    setGridDrawerOpen(false);
+    if (id === 'bookings') {
+      onOpenBookings();
+    } else if (id === 'admin') {
+      if (onOpenAdmin) {
+        onOpenAdmin();
+      } else {
+        onNavigate('admin');
+      }
+    } else {
+      onNavigate(id);
+    }
   };
 
-  const isMoreActive = ['gallery', 'stats', 'why-us', 'contact'].includes(activeSection);
+  // Auto-scroll active item into view within the horizontal rail
+  useEffect(() => {
+    if (activeTabRef.current && scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const element = activeTabRef.current;
+      const elementLeft = element.offsetLeft;
+      const elementWidth = element.offsetWidth;
+      const containerWidth = container.offsetWidth;
+      container.scrollTo({
+        left: elementLeft - containerWidth / 2 + elementWidth / 2,
+        behavior: 'smooth',
+      });
+    }
+  }, [activeSection]);
+
+  const isCurrentActive = (id: string) => {
+    if (id === 'hero') return activeSection === 'hero' || activeSection === 'home';
+    if (id === 'about') return activeSection === 'about' || activeSection === 'member-profile';
+    return activeSection === id;
+  };
 
   return (
     <>
-      {/* Expanded Quick Drawer for Mobile ("আরও মেনু") */}
-      {moreDrawerOpen && (
+      {/* Full Grid Drawer Modal (Shows ALL buttons in an organized app grid on mobile) */}
+      {gridDrawerOpen && (
         <div className="fixed inset-0 z-50 sm:hidden">
-          {/* Backdrop Overlay */}
+          {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity animate-fade-in"
-            onClick={() => setMoreDrawerOpen(false)}
+            className="fixed inset-0 bg-slate-950/65 backdrop-blur-xs transition-opacity animate-fade-in"
+            onClick={() => setGridDrawerOpen(false)}
           />
 
-          {/* Drawer Sheet */}
-          <div className="fixed bottom-0 left-0 right-0 max-h-[82vh] bg-white rounded-t-3xl shadow-2xl border-t border-slate-200 z-50 flex flex-col overflow-hidden animate-slide-up">
-            {/* Drawer Header Handle */}
-            <div className="pt-3 pb-2 px-5 flex items-center justify-between border-b border-slate-100 bg-slate-50/80">
+          {/* Grid Sheet */}
+          <div className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-white rounded-t-3xl shadow-2xl border-t border-slate-200 z-50 flex flex-col overflow-hidden animate-slide-up">
+            {/* Sheet Header */}
+            <div className="pt-3 pb-2.5 px-5 flex items-center justify-between border-b border-slate-100 bg-slate-50/90">
               <div className="flex items-center gap-2">
                 <span className="w-8 h-1 bg-slate-300 rounded-full inline-block mr-1"></span>
-                <span className="text-xs font-black text-slate-800 tracking-tight uppercase">
-                  ঘুরবে মেনু ও সেবা
+                <span className="text-xs font-black text-slate-900 tracking-tight uppercase flex items-center gap-1.5">
+                  <LayoutGrid className="w-3.5 h-3.5 text-blue-600" />
+                  <span>ঘুরবে — সকল পেজ ও মেনু বাটন</span>
                 </span>
               </div>
               <button
                 type="button"
-                onClick={() => setMoreDrawerOpen(false)}
+                onClick={() => setGridDrawerOpen(false)}
                 className="w-8 h-8 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="বন্ধ করুন"
               >
@@ -73,92 +124,73 @@ export const BottomNav: React.FC<BottomNavProps> = ({
               </button>
             </div>
 
-            {/* Drawer Navigation List */}
-            <div className="p-4 overflow-y-auto space-y-2.5 pb-8">
-              {/* Emergency Call & Booking Direct Buttons */}
-              <div className="grid grid-cols-2 gap-2 mb-3">
+            {/* Quick Helpline Header */}
+            <div className="p-4 pb-2">
+              <div className="grid grid-cols-2 gap-2">
                 <a
                   href="tel:09658865593"
                   className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-xs active:scale-95 transition-transform"
                 >
-                  <PhoneCall className="w-3.5 h-3.5" />
+                  <Phone className="w-3.5 h-3.5" />
                   <span>09658-865593</span>
                 </a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMoreDrawerOpen(false);
-                    onOpenBookings();
-                  }}
-                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-blue-50 text-blue-700 border border-blue-200 font-bold text-xs active:scale-95 transition-transform"
+                <a
+                  href="https://wa.me/8801700000000?text=Hello%20Ghurbe%20Team"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-[#25D366] text-white font-bold text-xs shadow-xs active:scale-95 transition-transform"
                 >
-                  <CalendarCheck className="w-3.5 h-3.5 text-blue-600" />
-                  <span>আমার বুকিং {bookingsCount > 0 ? `(${bookingsCount})` : ''}</span>
-                </button>
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>হোয়াটসঅ্যাপ চ্যাট</span>
+                </a>
+              </div>
+            </div>
+
+            {/* 3x3 All Buttons Grid */}
+            <div className="p-4 pt-2 overflow-y-auto pb-10">
+              <p className="text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-wider">
+                সকল মেনু বাটন নির্বাচন করুন ({navButtons.length}টি বাটন)
+              </p>
+
+              <div className="grid grid-cols-3 gap-2.5">
+                {navButtons.map((btn) => {
+                  const active = isCurrentActive(btn.id);
+                  const Icon = btn.icon;
+                  return (
+                    <button
+                      key={btn.id}
+                      type="button"
+                      onClick={() => handleItemClick(btn.id)}
+                      className={`relative flex flex-col items-center justify-center p-3 rounded-2xl border transition-all active:scale-95 cursor-pointer text-center ${
+                        active
+                          ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                          : 'bg-slate-50 hover:bg-blue-50/50 border-slate-200/90 text-slate-700'
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-1.5 ${
+                        active ? 'bg-white/20 text-white' : 'bg-white text-blue-600 shadow-xs'
+                      }`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-xs font-bold leading-tight block">
+                        {btn.label}
+                      </span>
+                      <span className={`text-[10px] ${active ? 'text-blue-100' : 'text-slate-400'} leading-tight block`}>
+                        {btn.bangla}
+                      </span>
+
+                      {btn.badge !== undefined && btn.badge > 0 && (
+                        <span className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center">
+                          {btn.badge}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
 
-              {/* All Secondary Navigation Links */}
-              <div className="bg-slate-50 rounded-2xl p-1.5 space-y-1 border border-slate-200/80">
-                <button
-                  type="button"
-                  onClick={() => handleItemClick('contact')}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-all cursor-pointer ${
-                    activeSection === 'contact' ? 'bg-blue-600 text-white font-bold' : 'text-slate-800 hover:bg-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeSection === 'contact' ? 'bg-white/20' : 'bg-blue-100 text-blue-700'}`}>
-                      <PhoneCall className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold leading-tight">যোগাযোগ ও হেল্পলাইন</p>
-                      <p className={`text-[10px] ${activeSection === 'contact' ? 'text-blue-100' : 'text-slate-500'}`}>অফিস ঠিকানা, ফোন ও ইনকোয়ারি</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 opacity-70" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleItemClick('gallery')}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-all cursor-pointer ${
-                    activeSection === 'gallery' ? 'bg-blue-600 text-white font-bold' : 'text-slate-800 hover:bg-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeSection === 'gallery' ? 'bg-white/20' : 'bg-purple-100 text-purple-700'}`}>
-                      <Image className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold leading-tight">ট্যুর ছবির গ্যালারি</p>
-                      <p className={`text-[10px] ${activeSection === 'gallery' ? 'text-blue-100' : 'text-slate-500'}`}>আমাদের পূর্বের ট্যুরের স্মৃতি ও ছবি</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 opacity-70" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleItemClick('stats')}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-all cursor-pointer ${
-                    activeSection === 'stats' ? 'bg-blue-600 text-white font-bold' : 'text-slate-800 hover:bg-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeSection === 'stats' ? 'bg-white/20' : 'bg-amber-100 text-amber-700'}`}>
-                      <Award className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold leading-tight">১,১৪৪+ ট্রাভেলার রিভিউ ও অর্জন</p>
-                      <p className={`text-[10px] ${activeSection === 'stats' ? 'text-blue-100' : 'text-slate-500'}`}>৪.৯ স্টার সন্তুষ্টি ও ট্রাস্ট রেটিং</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 opacity-70" />
-                </button>
-              </div>
-
-              {/* Account Sign In or Profile */}
-              <div className="pt-2">
+              {/* User Account Bar */}
+              <div className="mt-4 pt-3 border-t border-slate-100">
                 {user ? (
                   <div className="bg-blue-50 border border-blue-200 rounded-2xl p-3 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
@@ -170,7 +202,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                         <p className="text-[11px] text-slate-500 tabular-nums">{user.phone}</p>
                       </div>
                     </div>
-                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
                       লগইনকৃত
                     </span>
                   </div>
@@ -178,13 +210,13 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setMoreDrawerOpen(false);
+                      setGridDrawerOpen(false);
                       onOpenAuth();
                     }}
-                    className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs"
+                    className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                   >
                     <User className="w-4 h-4" />
-                    <span>সাইন ইন / একাউন্ট খুলুন</span>
+                    <span>সাইন ইন / অ্যাকাউন্ট খুলুন</span>
                   </button>
                 )}
               </div>
@@ -193,84 +225,71 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         </div>
       )}
 
-      {/* Main 5-Button Bottom Navigation Bar for Mobile */}
+      {/* Main Bottom Navigation Bar for Mobile with ALL Buttons */}
       <nav 
         aria-label="মোবাইল নেভিগেশন বার"
-        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-8px_25px_rgba(0,0,0,0.06)] px-1.5 pt-1.5 pb-2.5 sm:hidden"
-        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0.65rem)' }}
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] sm:hidden"
+        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0.5rem)' }}
       >
-        <div className="max-w-md mx-auto grid grid-cols-5 items-center justify-around gap-0.5 text-center">
-          {/* 1. Home (হোম) */}
+        {/* Top Hint Pill / Quick Expand Handle */}
+        <div className="flex items-center justify-between px-3 pt-1 pb-0.5 border-b border-slate-100/80 bg-slate-50/60">
+          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
+            <Sparkles className="w-2.5 h-2.5 text-blue-500" />
+            <span>সব বাটন দেখুন ({navButtons.length}টি বাটন)</span>
+          </span>
           <button
             type="button"
-            onClick={() => handleItemClick('hero')}
-            className={`flex flex-col items-center justify-center min-h-[46px] py-1 px-0.5 rounded-xl transition-all active:scale-92 cursor-pointer ${
-              activeSection === 'hero' || activeSection === 'home'
-                ? 'text-blue-700 font-extrabold bg-blue-50/90'
-                : 'text-slate-500 hover:text-slate-900 active:bg-slate-50'
-            }`}
+            onClick={() => setGridDrawerOpen(true)}
+            className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-600 hover:text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 active:scale-95 transition-all cursor-pointer"
           >
-            <Home className={`w-5 h-5 transition-transform ${activeSection === 'hero' || activeSection === 'home' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-            <span className="text-[10px] sm:text-[11px] mt-1 font-semibold leading-tight truncate w-full">Home</span>
+            <LayoutGrid className="w-3 h-3" />
+            <span>সকল মেনু গ্রিড</span>
           </button>
+        </div>
 
-          {/* 2. Tour Packages (প্যাকেজ) */}
+        {/* Smooth Horizontally Scrollable Rail Containing ALL Buttons */}
+        <div 
+          ref={scrollContainerRef}
+          className="flex items-center gap-1 px-2 py-1.5 overflow-x-auto scrollbar-none scroll-smooth touch-pan-x"
+        >
+          {navButtons.map((btn) => {
+            const active = isCurrentActive(btn.id);
+            const Icon = btn.icon;
+            return (
+              <button
+                key={btn.id}
+                ref={active ? activeTabRef : null}
+                type="button"
+                onClick={() => handleItemClick(btn.id)}
+                className={`shrink-0 flex flex-col items-center justify-center min-w-[58px] sm:min-w-[64px] min-h-[46px] py-1 px-2 rounded-2xl transition-all active:scale-92 cursor-pointer relative ${
+                  active
+                    ? 'text-blue-700 font-black bg-blue-50/90 shadow-xs border border-blue-200/60'
+                    : 'text-slate-600 hover:text-slate-900 active:bg-slate-100'
+                }`}
+              >
+                <Icon className={`w-5 h-5 transition-transform ${active ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2 text-slate-500'}`} />
+                <span className="text-[10px] mt-0.5 font-bold leading-tight tracking-tight whitespace-nowrap">
+                  {btn.label}
+                </span>
+
+                {btn.badge !== undefined && btn.badge > 0 && (
+                  <span className="absolute top-1 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                )}
+              </button>
+            );
+          })}
+
+          {/* Grid Launcher Pill at the end of the rail */}
           <button
             type="button"
-            onClick={() => handleItemClick('packages')}
-            className={`flex flex-col items-center justify-center min-h-[46px] py-1 px-0.5 rounded-xl transition-all active:scale-92 cursor-pointer ${
-              activeSection === 'packages'
-                ? 'text-blue-700 font-extrabold bg-blue-50/90'
-                : 'text-slate-500 hover:text-slate-900 active:bg-slate-50'
-            }`}
+            onClick={() => setGridDrawerOpen(true)}
+            className="shrink-0 flex flex-col items-center justify-center min-w-[54px] min-h-[46px] py-1 px-2 rounded-2xl text-slate-500 hover:text-blue-600 active:bg-slate-100 transition-all cursor-pointer border border-dashed border-slate-300"
+            title="সব মেনু একসাথে দেখুন"
           >
-            <Compass className={`w-5 h-5 transition-transform ${activeSection === 'packages' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-            <span className="text-[10px] sm:text-[11px] mt-1 font-semibold leading-tight truncate w-full">Packages</span>
-          </button>
-
-          {/* 3. Travel Vlog / Blog (ব্লগ / ভ্লগ) */}
-          <button
-            type="button"
-            onClick={() => handleItemClick('blog')}
-            className={`flex flex-col items-center justify-center min-h-[46px] py-1 px-0.5 rounded-xl transition-all active:scale-92 cursor-pointer ${
-              activeSection === 'blog'
-                ? 'text-blue-700 font-extrabold bg-blue-50/90'
-                : 'text-slate-500 hover:text-slate-900 active:bg-slate-50'
-            }`}
-          >
-            <BookOpen className={`w-5 h-5 transition-transform ${activeSection === 'blog' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-            <span className="text-[10px] sm:text-[11px] mt-1 font-semibold leading-tight truncate w-full">Vlog</span>
-          </button>
-
-          {/* 4. About Us (আমাদের সম্পর্কে / টিম) */}
-          <button
-            type="button"
-            onClick={() => handleItemClick('about')}
-            className={`flex flex-col items-center justify-center min-h-[46px] py-1 px-0.5 rounded-xl transition-all active:scale-92 cursor-pointer ${
-              activeSection === 'about' || activeSection === 'member-profile'
-                ? 'text-blue-700 font-extrabold bg-blue-50/90'
-                : 'text-slate-500 hover:text-slate-900 active:bg-slate-50'
-            }`}
-          >
-            <Users className={`w-5 h-5 transition-transform ${activeSection === 'about' || activeSection === 'member-profile' ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-            <span className="text-[10px] sm:text-[11px] mt-1 font-semibold leading-tight truncate w-full">About</span>
-          </button>
-
-          {/* 5. More Menu / আরও মেনু (যোগাযোগ, গ্যালারি, রিভিউ ইত্যাদি) */}
-          <button
-            type="button"
-            onClick={() => setMoreDrawerOpen(true)}
-            className={`flex flex-col items-center justify-center min-h-[46px] py-1 px-0.5 rounded-xl transition-all active:scale-92 cursor-pointer relative ${
-              isMoreActive || moreDrawerOpen
-                ? 'text-blue-700 font-extrabold bg-blue-50/90'
-                : 'text-slate-500 hover:text-slate-900 active:bg-slate-50'
-            }`}
-          >
-            <Menu className={`w-5 h-5 transition-transform ${isMoreActive || moreDrawerOpen ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2'}`} />
-            <span className="text-[10px] sm:text-[11px] mt-1 font-semibold leading-tight truncate w-full">More</span>
-            {bookingsCount > 0 && (
-              <span className="absolute top-1 right-2 w-2 h-2 rounded-full bg-rose-500"></span>
-            )}
+            <LayoutGrid className="w-5 h-5 text-slate-400 stroke-2" />
+            <span className="text-[10px] mt-0.5 font-semibold text-slate-500 leading-tight whitespace-nowrap">
+              More
+            </span>
           </button>
         </div>
       </nav>

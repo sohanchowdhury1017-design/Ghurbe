@@ -22,9 +22,10 @@ import { Footer } from './components/Footer';
 import { BottomNav } from './components/BottomNav';
 import { KuakataTourPopupModal } from './components/KuakataTourPopupModal';
 import { MemberProfilePage } from './components/MemberProfilePage';
+import { AdminDashboardModal } from './components/AdminDashboardModal';
 import { POPULAR_PACKAGES } from './data/packagesData';
 import { TEAM_MEMBERS } from './data/blogAndTeamData';
-import { TourPackage, BookingRecord, SearchFilterState } from './types/travel';
+import { TourPackage, BookingRecord, SearchFilterState, ContactMessage } from './types/travel';
 
 type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about' | 'member-profile';
 
@@ -42,10 +43,17 @@ export default function App() {
     if (clean === 'kuakata-travel-guide' || clean === 'kuakata-guide') {
       return { route: 'blog', pkg: null, blogSlug: 'kuakata-travel-guide' };
     }
+    if (clean === 'coxs-bazar-tour-package' || clean === 'coxs-bazar-travel-guide' || clean === 'cox-bazar-guide') {
+      return { route: 'blog', pkg: null, blogSlug: 'coxs-bazar-tour-package' };
+    }
     if (clean === 'blog' || clean === 'blogs' || clean === 'articles' || clean === 'travel-tips' || clean === 'tips' || clean === 'packing' || clean === 'packing-list') return { route: 'blog', pkg: null };
     if (clean === 'about' || clean === 'team' || clean === 'employees') return { route: 'about', pkg: null };
     if (clean === 'why-us') return { route: 'why-us', pkg: null };
     if (clean === 'contact' || clean === 'faq') return { route: 'contact', pkg: null };
+    if (clean === 'admin' || clean === 'admin-portal') {
+      setTimeout(() => setAdminModalOpen(true), 0);
+      return { route: 'home', pkg: null };
+    }
 
     // Check individual executive profile pages:
     // e.g. ghurbe.com/SAMSUL-ARAFIN, ghurbe.com/mahim-ibn-khudi, ghurbe.com/md-rifat-islam, ghurbe.com/sidra-islam
@@ -122,9 +130,10 @@ export default function App() {
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(initialRouteInfo.blogSlug || null);
   const [selectedMemberSlug, setSelectedMemberSlug] = useState<string | null>(initialRouteInfo.memberSlug || null);
 
-  // Modals for Booking, My Bookings, Auth, and Kuakata 12 Nov Tour Countdown Popup
+  // Modals for Booking, My Bookings, Admin Dashboard, Auth, and Kuakata 12 Nov Tour Countdown Popup
   const [bookingModalPackage, setBookingModalPackage] = useState<TourPackage | null>(null);
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [kuakataPopupOpen, setKuakataPopupOpen] = useState(false);
 
@@ -146,34 +155,63 @@ export default function App() {
     }
   });
 
-  // Bookings list
+  // Track personal booking IDs made from this device/browser
+  const [myBookingIds, setMyBookingIds] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('ghurbe_my_booking_ids');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // All bookings (Global database stored for this site, viewable by Admin)
   const [bookings, setBookings] = useState<BookingRecord[]>(() => {
     try {
       const saved = localStorage.getItem('ghurbe_bookings') || localStorage.getItem('bhaboghure_bookings');
       if (saved) return JSON.parse(saved);
-      return [
-        {
-          id: 'booking-init-1',
-          bookingCode: 'GH-2026-7841',
-          packageId: 'kuakata-beach',
-          packageTitle: 'কুয়াকাটা সাগরকন্যা ভ্রমণ (৩ রাত ২ দিন)',
-          travelerName: 'সোহান চৌধুরী',
-          phone: '০১৭০০১২৩৪৫৬',
-          email: 'sohan@ghurbe.com',
-          date: '২০২৬-১১-১২',
-          guestsCount: 2,
-          roomType: 'couple',
-          totalPrice: 7999,
-          advancePaid: 2000,
-          paymentMethod: 'bkash',
-          paymentStatus: 'confirmed',
-          bookedAt: '১০ অক্টোবর ২০২৬',
-          notes: 'সি-ভিউ হোটেল রুম ও রংপুর থেকে যাত্রা',
-        },
-      ];
+      return [];
     } catch {
       return [];
     }
+  });
+
+  // Contact messages sent from website (viewable by Admin and synced to Google Sheets)
+  const [messages, setMessages] = useState<ContactMessage[]>(() => {
+    try {
+      const saved = localStorage.getItem('ghurbe_messages');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  // Keep messages updated from localStorage
+  useEffect(() => {
+    const reloadMessages = () => {
+      try {
+        const saved = localStorage.getItem('ghurbe_messages');
+        if (saved) setMessages(JSON.parse(saved));
+      } catch {}
+    };
+    window.addEventListener('storage', reloadMessages);
+    const interval = setInterval(reloadMessages, 3000);
+    return () => {
+      window.removeEventListener('storage', reloadMessages);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Filter bookings so regular users ONLY see THEIR OWN bookings!
+  // Admin sees ALL bookings inside AdminDashboardModal.
+  const userBookings = bookings.filter((b) => {
+    const isIdMatch = myBookingIds.includes(b.id);
+    const isPhoneMatch = Boolean(
+      currentUser?.phone &&
+      b.phone &&
+      b.phone.replace(/[^0-9]/g, '') === currentUser.phone.replace(/[^0-9]/g, '')
+    );
+    return isIdMatch || isPhoneMatch;
   });
 
   useEffect(() => {
@@ -203,7 +241,8 @@ export default function App() {
     const known = [
       'packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home',
       'blog', 'blogs', 'stats', 'reviews', 'team', 'travel-tips', 'kuakata-travel-guide',
-      'samsul-arafin', 'mahim-ibn-khudi', 'md-rifat-islam', 'sidra-islam'
+      'coxs-bazar-tour-package', 'coxs-bazar', 'samsul-arafin', 'mahim-ibn-khudi',
+      'adhira-nokshi', 'md-rifat-islam', 'sidra-islam'
     ];
     if (segments.length > 0) {
       const first = segments[0].toLowerCase();
@@ -494,10 +533,24 @@ export default function App() {
 
   const handleBookingConfirmed = (newBooking: BookingRecord) => {
     setBookings((prev) => [newBooking, ...prev]);
+    setMyBookingIds((prev) => {
+      const updated = [newBooking.id, ...prev];
+      try {
+        localStorage.setItem('ghurbe_my_booking_ids', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
   };
 
   const handleCancelBooking = (id: string) => {
     setBookings((prev) => prev.filter((b) => b.id !== id));
+    setMyBookingIds((prev) => {
+      const updated = prev.filter((bid) => bid !== id);
+      try {
+        localStorage.setItem('ghurbe_my_booking_ids', JSON.stringify(updated));
+      } catch {}
+      return updated;
+    });
   };
 
   return (
@@ -506,7 +559,8 @@ export default function App() {
       <Navbar
         onOpenBookings={() => setMyBookingsOpen(true)}
         onOpenAuth={() => setAuthModalOpen(true)}
-        bookingsCount={bookings.length}
+        onOpenAdmin={() => setAdminModalOpen(true)}
+        bookingsCount={userBookings.length}
         user={currentUser}
         onLogout={() => setCurrentUser(null)}
         activeSection={currentRoute === 'home' ? 'hero' : currentRoute}
@@ -619,6 +673,7 @@ export default function App() {
       <Footer
         onNavigate={handleNavigate}
         onOpenBookings={() => setMyBookingsOpen(true)}
+        onOpenAdmin={() => setAdminModalOpen(true)}
       />
 
       {/* Floating WhatsApp Chat Consultant */}
@@ -631,7 +686,8 @@ export default function App() {
           onNavigate={handleNavigate}
           onOpenBookings={() => setMyBookingsOpen(true)}
           onOpenAuth={() => setAuthModalOpen(true)}
-          bookingsCount={bookings.length}
+          onOpenAdmin={() => setAdminModalOpen(true)}
+          bookingsCount={userBookings.length}
           user={currentUser}
         />
       )}
@@ -643,15 +699,39 @@ export default function App() {
         onBookingConfirmed={handleBookingConfirmed}
       />
 
-      {/* My Bookings Dialog */}
+      {/* My Bookings Dialog (Shows ONLY personal bookings for current device/user) */}
       <MyBookingsModal
         isOpen={myBookingsOpen}
         onClose={() => setMyBookingsOpen(false)}
-        bookings={bookings}
+        bookings={userBookings}
         onCancelBooking={handleCancelBooking}
+        onOpenAdmin={() => setAdminModalOpen(true)}
         onNewBookingClick={() => {
           setMyBookingsOpen(false);
           navigateTo('packages');
+        }}
+      />
+
+      {/* Admin Dashboard Dialog (Shows ALL bookings, messages, and Google Sheets Automation) */}
+      <AdminDashboardModal
+        isOpen={adminModalOpen}
+        onClose={() => setAdminModalOpen(false)}
+        bookings={bookings}
+        onUpdateBookingStatus={(id, status) => {
+          setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, paymentStatus: status } : b)));
+        }}
+        onDeleteBooking={(id) => {
+          setBookings((prev) => prev.filter((b) => b.id !== id));
+        }}
+        messages={messages}
+        onDeleteMessage={(id) => {
+          setMessages((prev) => {
+            const updated = prev.filter((m) => m.id !== id);
+            try {
+              localStorage.setItem('ghurbe_messages', JSON.stringify(updated));
+            } catch {}
+            return updated;
+          });
         }}
       />
 

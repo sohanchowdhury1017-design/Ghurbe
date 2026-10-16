@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FAQS } from '../data/packagesData';
 import { Phone, Mail, MapPin, Send, ChevronDown, CheckCircle2, MessageCircle } from 'lucide-react';
+import { syncMessageToGoogleSheet } from '../utils/googleSheetsSync';
+import { ContactMessage } from '../types/travel';
 
 export const ContactAndFaq: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -16,6 +18,30 @@ export const ContactAndFaq: React.FC = () => {
   const handleCustomSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!customForm.name || !customForm.phone) return;
+
+    const newMsg: ContactMessage = {
+      id: `msg-${Date.now()}`,
+      name: customForm.name,
+      phone: customForm.phone,
+      destination: customForm.destination || 'সাধারণ ইনকোয়ারি',
+      guests: customForm.guests,
+      message: customForm.message || 'কাস্টম প্যাকেজ অনুসন্ধান',
+      createdAt: new Date().toLocaleDateString('bn-BD', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }),
+      status: 'new',
+    };
+
+    try {
+      const saved = localStorage.getItem('ghurbe_messages');
+      const list: ContactMessage[] = saved ? JSON.parse(saved) : [];
+      localStorage.setItem('ghurbe_messages', JSON.stringify([newMsg, ...list]));
+    } catch {}
+
+    syncMessageToGoogleSheet(newMsg);
+
     setFormSubmitted(true);
     setTimeout(() => {
       setCustomForm({

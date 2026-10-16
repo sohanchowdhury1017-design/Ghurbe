@@ -4,6 +4,7 @@ import { Compass, Menu, X, CalendarCheck, User, PhoneCall, Sparkles } from 'luci
 interface NavbarProps {
   onOpenBookings: () => void;
   onOpenAuth: () => void;
+  onOpenAdmin?: () => void;
   bookingsCount: number;
   user: { name: string; phone: string } | null;
   onLogout: () => void;
@@ -14,6 +15,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   onOpenBookings,
   onOpenAuth,
+  onOpenAdmin,
   bookingsCount,
   user,
   onLogout,
@@ -29,6 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'about', label: 'About Us' },
     { id: 'stats', label: '1,144+ Travelers' },
     { id: 'gallery', label: 'Gallery' },
+    { id: 'why-us', label: 'Why Us' },
     { id: 'contact', label: 'Contact' },
   ];
 
@@ -146,7 +149,35 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Action Zone */}
-          <div className="hidden sm:flex items-center gap-3 shrink-0">
+          <div className="hidden sm:flex items-center gap-2.5 shrink-0">
+            {/* My Bookings Button */}
+            <button
+              type="button"
+              onClick={onOpenBookings}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 hover:text-blue-600 hover:bg-blue-50/80 rounded-full border border-slate-200 transition-all cursor-pointer relative"
+              title="আমার বুকিং দেখুন"
+            >
+              <CalendarCheck className="w-4 h-4 text-blue-600" />
+              <span>আমার বুকিং</span>
+              {bookingsCount > 0 && (
+                <span className="w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center">
+                  {bookingsCount}
+                </span>
+              )}
+            </button>
+
+            {/* Admin Portal Quick Access */}
+            {onOpenAdmin && (
+              <button
+                type="button"
+                onClick={onOpenAdmin}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 rounded-full border border-amber-300 transition-all cursor-pointer"
+                title="ঘুরবে এডমিন ড্যাশবোর্ড"
+              >
+                <span>এডমিন</span>
+              </button>
+            )}
+
             {user ? (
               <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-1.5">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
@@ -284,6 +315,34 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span>Sign In / Register</span>
                 </button>
               )}
+
+              {/* My Bookings and Admin Portal Quick Access */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenBookings();
+                  }}
+                  className="py-2.5 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center gap-1.5 border border-blue-200 cursor-pointer"
+                >
+                  <CalendarCheck className="w-3.5 h-3.5" />
+                  <span>আমার বুকিং ({bookingsCount})</span>
+                </button>
+
+                {onOpenAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onOpenAdmin();
+                    }}
+                    className="py-2.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-amber-200 cursor-pointer"
+                  >
+                    <span>এডমিন পোর্টাল 🔐</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </>

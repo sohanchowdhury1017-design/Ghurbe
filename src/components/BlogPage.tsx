@@ -42,9 +42,37 @@ export const BlogPage: React.FC<BlogPageProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (initialPostSlug) {
+      const found = BLOG_POSTS.find(
+        (p) => p.slug === initialPostSlug || p.id === initialPostSlug
+      );
+      if (found) setSelectedPost(found);
+    }
+  }, [initialPostSlug]);
+
+  useEffect(() => {
+    if (selectedPost) {
+      document.title = selectedPost.seo?.metaTitle || `${selectedPost.title} | ঘুরবে (Ghurbe)`;
+      const desc = document.querySelector('meta[name="description"]');
+      if (desc) {
+        desc.setAttribute('content', selectedPost.seo?.metaDescription || selectedPost.summary);
+      }
+      try {
+        window.history.replaceState(null, '', `/${selectedPost.slug}`);
+      } catch {}
+    } else {
+      document.title = "ট্রাভেল ব্লগ ও ভ্রমণ নির্দেশিকা | ঘুরবে (Ghurbe) Tours & Travel";
+      const desc = document.querySelector('meta[name="description"]');
+      if (desc) {
+        desc.setAttribute('content', "ঘুরবে ট্রাভেল ব্লগে পড়ুন কুয়াকাটা, কক্সবাজার, সাজেক, সুন্দরবন সহ বাংলাদেশের জনপ্রিয় পর্যটন গন্তব্যের ভ্রমণ গাইড, বাজেট ও সেরা ট্রাভেল টিপস।");
+      }
+    }
+  }, [selectedPost]);
+
   const categories = [
     { id: 'all', label: 'সকল ভ্রমণ গাইড' },
-    { id: 'সমুদ্র ও সৈকত', label: 'সাগরকন্যা কুয়াকাটা গাইড' },
+    { id: 'সমুদ্র ও সৈকত', label: 'সমুদ্র ও সৈকত ভ্রমণ' },
   ];
 
   const filteredPosts = selectedCategory === 'all'

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CheckCircle2, ShieldCheck, Printer, Calendar, Users, MapPin, Phone, CreditCard, Sparkles, ArrowRight } from 'lucide-react';
 import { TourPackage, BookingRecord } from '../types/travel';
+import { syncBookingToGoogleSheet } from '../utils/googleSheetsSync';
 
 interface BookingModalProps {
   pkg: TourPackage | null;
@@ -71,6 +72,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
     setConfirmedBooking(newBooking);
     onBookingConfirmed(newBooking);
+    syncBookingToGoogleSheet(newBooking);
     setStep('success');
   };
 

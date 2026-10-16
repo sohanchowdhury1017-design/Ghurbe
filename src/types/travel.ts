@@ -62,10 +62,23 @@ export interface BookingRecord {
   totalPrice: number;
   advancePaid: number;
   paymentMethod: 'bkash' | 'nagad' | 'rocket' | 'card' | 'cash';
-  paymentStatus: 'confirmed' | 'pending';
+  paymentStatus: 'confirmed' | 'pending' | 'cancelled' | 'completed';
   bookedAt: string;
   emergencyContact?: string;
   notes?: string;
+  transactionId?: string;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string;
+  destination?: string;
+  guests?: string;
+  message: string;
+  createdAt: string;
+  status?: 'new' | 'replied' | 'archived';
 }
 
 export interface SearchFilterState {
