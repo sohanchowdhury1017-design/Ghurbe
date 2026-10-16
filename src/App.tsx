@@ -459,7 +459,7 @@ export default function App() {
     } else if (sectionId === 'stats' || sectionId === 'reviews') {
       navigateTo('stats');
     } else {
-      navigateTo('home');
+      navigateTo(sectionId);
     }
   };
 
