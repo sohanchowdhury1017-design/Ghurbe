@@ -91,6 +91,18 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
         btnBg: 'bg-indigo-600 hover:bg-indigo-700',
       };
     }
+    if (member.id === 'brand-marketing-director') {
+      return {
+        badgeBg: 'bg-rose-600',
+        badgeText: 'BRAND & MARKETING DIRECTOR',
+        ring: 'ring-rose-500/30',
+        border: 'border-rose-500/30',
+        accentBg: 'bg-rose-50',
+        accentText: 'text-rose-700',
+        gradient: 'from-slate-950 via-rose-950 to-slate-900',
+        btnBg: 'bg-rose-600 hover:bg-rose-700',
+      };
+    }
     return {
       badgeBg: 'bg-purple-600',
       badgeText: 'BRAND MANAGER',

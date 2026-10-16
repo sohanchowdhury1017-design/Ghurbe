@@ -55,6 +55,8 @@ export default function App() {
         m.id.toLowerCase() === clean ||
         (clean === 'samsul-arafin' && m.id === 'ceo') ||
         (clean === 'mahim-ibn-khudi' && m.id === 'executive-director') ||
+        (clean === 'adhira-nokshi' && m.id === 'brand-marketing-director') ||
+        (clean === 'adhira' && m.id === 'brand-marketing-director') ||
         (clean === 'md-rifat-islam' && m.id === 'director-of-operations') ||
         (clean === 'rifat-islam' && m.id === 'director-of-operations') ||
         (clean === 'sidra-islam' && m.id === 'brand-manager')
@@ -356,6 +358,8 @@ export default function App() {
         m.id.toLowerCase() === target.toLowerCase() ||
         (target.toLowerCase() === 'samsul-arafin' && m.id === 'ceo') ||
         (target.toLowerCase() === 'mahim-ibn-khudi' && m.id === 'executive-director') ||
+        (target.toLowerCase() === 'adhira-nokshi' && m.id === 'brand-marketing-director') ||
+        (target.toLowerCase() === 'adhira' && m.id === 'brand-marketing-director') ||
         (target.toLowerCase() === 'md-rifat-islam' && m.id === 'director-of-operations') ||
         (target.toLowerCase() === 'sidra-islam' && m.id === 'brand-manager')
     );

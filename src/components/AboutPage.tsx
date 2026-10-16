@@ -17,6 +17,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const ceo = TEAM_MEMBERS.find((m) => m.id === 'ceo') || TEAM_MEMBERS[0];
   const ed = TEAM_MEMBERS.find((m) => m.id === 'executive-director');
   const doo = TEAM_MEMBERS.find((m) => m.id === 'director-of-operations');
+  const bmd = TEAM_MEMBERS.find((m) => m.id === 'brand-marketing-director');
   const bm = TEAM_MEMBERS.find((m) => m.id === 'brand-manager');
 
   return (
@@ -546,6 +547,136 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <div className="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs">
                       <span className="font-black text-amber-900 block mb-1">২৪/৭ সেফটি প্রটোকল</span>
                       <p className="text-slate-600 text-[11px] leading-snug">পাহাড় ও সমুদ্র রুটে প্রতিটি ভ্রমণকারীর সর্বোচ্চ নিরাপত্তা</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Brand & Marketing Director Spotlight (Adhira Nokshi) */}
+        {bmd && (
+          <section className="bg-white rounded-3xl border-2 border-rose-300/80 shadow-xl overflow-hidden relative">
+            {/* Header Accent */}
+            <div className="bg-gradient-to-r from-slate-950 via-rose-950 to-slate-900 text-white px-6 sm:px-10 py-5 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-rose-600/30 border border-rose-400/40 flex items-center justify-center shrink-0">
+                  <Megaphone className="w-5 h-5 text-rose-300" />
+                </div>
+                <div>
+                  <span className="text-[11px] uppercase font-black tracking-widest text-rose-300 block">
+                    BRAND STRATEGY, MARKETING & GROWTH LEADERSHIP
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-black text-white">
+                    Brand &amp; Marketing Leadership | ব্র্যান্ড ও মার্কেটিং ডিরেকশন
+                  </h2>
+                </div>
+              </div>
+
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-xs font-bold text-slate-200 border border-white/20">
+                <ShieldCheck className="w-4 h-4 text-rose-400" />
+                <span>Executive Leadership Board</span>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-10 lg:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                {/* Photo & Identity */}
+                <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
+                  <div className="relative group">
+                    <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-rose-500/30 bg-slate-100">
+                      <img
+                        src={bmd.avatar}
+                        alt={bmd.name}
+                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+
+                    {/* Verified Badge */}
+                    <div className="absolute bottom-3 left-3 bg-rose-700/95 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5 border border-white/50 backdrop-blur-xs whitespace-nowrap">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-rose-200" />
+                      <span>BRAND &amp; MARKETING DIRECTOR</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 space-y-1.5 w-full">
+                    <a
+                      href="/adhira-nokshi"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigateToMember?.('adhira-nokshi');
+                      }}
+                      className="inline-flex items-center gap-1.5 group cursor-pointer hover:text-rose-600 transition-colors"
+                      title="Adhira Nokshi-এর আলাদা পেজ দেখুন"
+                    >
+                      <h3 className="text-2xl font-black text-slate-900 group-hover:text-rose-600 tracking-tight transition-colors">
+                        {bmd.name}
+                      </h3>
+                      <ChevronRight className="w-5 h-5 text-rose-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </a>
+                    <p className="text-xs sm:text-sm font-bold text-rose-700">
+                      Brand &amp; Marketing Director (ব্র্যান্ড অ্যান্ড মার্কেটিং ডিরেক্টর)
+                    </p>
+                    <p className="text-xs text-slate-500 font-medium">
+                      Ghurbe Tours &amp; Travels Bangladesh
+                    </p>
+                    <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-rose-800 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
+                        <Sparkles className="w-3 h-3 text-rose-600" />
+                        <span>২০২২ থেকে মার্কেটিং ও ব্র্যান্ডিং এক্সিলেন্স</span>
+                      </span>
+                      <a
+                        href="/adhira-nokshi"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onNavigateToMember?.('adhira-nokshi');
+                        }}
+                        className="inline-flex items-center gap-1 text-[11px] font-extrabold text-rose-700 hover:text-rose-900 bg-rose-100/70 hover:bg-rose-100 px-2.5 py-0.5 rounded-full border border-rose-300 transition-all cursor-pointer"
+                      >
+                        <UserCheck className="w-3 h-3" />
+                        <span>ব্যক্তিগত পেজ দেখুন →</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description & Marketing Vision */}
+                <div className="lg:col-span-8 space-y-5 text-slate-800">
+                  <div className="border-l-4 border-rose-600 pl-4 sm:pl-5 space-y-1">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 leading-tight tracking-tight">
+                      "উদ্ভাবনী মার্কেটিং কৌশল, ইতিবাচক ব্র্যান্ড ইমেজ ও ট্রাভেলারদের নিখুঁত আস্থাই ঘুরবে-এর সাফল্যের ভিত্তি।"
+                    </h3>
+                    <p className="text-xs sm:text-sm font-bold text-rose-700 uppercase tracking-widest">
+                      Marketing Direction, Creative Branding &amp; Traveler Trust
+                    </p>
+                  </div>
+
+                  <div className="space-y-3.5 text-xs sm:text-sm lg:text-[15px] leading-relaxed text-slate-700">
+                    <p>
+                      আমরা ২০২২ থেকে খুব দক্ষতার সাথে কাজ করে আসছি। ঘুরবে-এর ব্র্যান্ড পরিচিতি দেশজুড়ে ছড়িয়ে দিতে এবং ভ্রমণপ্রেমীদের মাঝে একটি বিশ্বস্ত, আধুনিক ও পরিবার-বান্ধব পর্যটন এজেন্সি হিসেবে প্রতিষ্ঠা করতে নেতৃত্ব দিচ্ছেন <strong>{bmd.name}</strong> (Brand &amp; Marketing Director)।
+                    </p>
+                    <p>
+                      ডিজিটাল ক্যাম্পেইন, সিজনাল মেগা অফার তৈরি এবং সোশ্যাল মিডিয়া সহ সকল প্ল্যাটফর্মে পর্যটকদের কাছে সত্য, স্বচ্ছ ও আকর্ষণীয় ট্যুর পরিকল্পনা পৌঁছে দেওয়ার পেছনে রয়েছে তাঁর দিকনির্দেশনা। কুয়াকাটা, সাজেক, কক্সবাজার সহ প্রতিটি ট্যুর ডেস্টিনেশনের সঠিক উপস্থাপনা নিশ্চিত করেন তিনি।
+                    </p>
+                    <p>
+                      ভ্রমণকারীদের সাথে আন্তরিক সংযোগ তৈরি ও তাঁদের প্রতিটি মূল্যবান ফিডব্যাককে অগ্রাধিকার দিয়ে সেবার মান দিন দিন আরও উন্নত করাই তাঁর প্রধান লক্ষ্য।
+                    </p>
+                  </div>
+
+                  {/* Highlights Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <div className="p-3.5 rounded-2xl bg-rose-50/80 border border-rose-200 text-xs">
+                      <span className="font-black text-rose-900 block mb-1">মার্কেটিং ডিরেকশন</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">আধুনিক ডিজিটাল স্ট্র্যাটেজি ও সারাদেশে ঘুরবে-এর সক্রিয় প্রচারণা</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-purple-50/80 border border-purple-200 text-xs">
+                      <span className="font-black text-purple-900 block mb-1">ব্র্যান্ড পজিশনিং</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">বাংলাদেশের সবচেয়ে নির্ভরযোগ্য ও সাশ্রয়ী ট্রাভেল ব্র্যান্ড হিসেবে প্রতিষ্ঠিত রাখা</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200 text-xs">
+                      <span className="font-black text-emerald-900 block mb-1">কাস্টমার স্যাটিসফ্যাকশন</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">ভ্রমণকারীদের ১০০% সন্তুষ্টি নিশ্চিতকরণ ও রিলেশনশিপ ম্যানেজমেন্ট</p>
                     </div>
                   </div>
                 </div>

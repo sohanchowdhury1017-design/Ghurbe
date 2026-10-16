@@ -51,7 +51,19 @@
     </image:image>
   </url>
 
-  <!-- 5. Dedicated Member Page: Md Rifat Islam (Director of Operations) -->
+  <!-- 5. Dedicated Member Page: Adhira Nokshi (Brand & Marketing Director) -->
+  <url>
+    <loc>https://ghurbe.com/adhira-nokshi</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1792140786/4af20288-d4a6-44b4-ae55-86a340714f8f.png</image:loc>
+      <image:title>Adhira Nokshi — Brand &amp; Marketing Director, Ghurbe</image:title>
+    </image:image>
+  </url>
+
+  <!-- 6. Dedicated Member Page: Md Rifat Islam (Director of Operations) -->
   <url>
     <loc>https://ghurbe.com/md-rifat-islam</loc>
     <lastmod>2026-10-15</lastmod>

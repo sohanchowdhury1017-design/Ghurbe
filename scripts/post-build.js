@@ -5,6 +5,7 @@ const routes = [
   'about',
   'SAMSUL-ARAFIN',
   'mahim-ibn-khudi',
+  'adhira-nokshi',
   'md-rifat-islam',
   'sidra-islam',
   'packages',

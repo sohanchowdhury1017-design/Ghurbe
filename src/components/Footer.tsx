@@ -206,6 +206,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings }) =>
               </li>
               <li>
                 <a
+                  href="/adhira-nokshi"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('adhira-nokshi');
+                  }}
+                  className="hover:text-rose-400 transition-colors flex items-center gap-1.5"
+                >
+                  <span>Adhira Nokshi</span>
+                  <span className="text-[10px] text-rose-300">(Brand &amp; Marketing Director)</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="/md-rifat-islam"
                   onClick={(e) => {
                     e.preventDefault();
