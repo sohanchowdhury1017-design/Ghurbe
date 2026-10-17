@@ -14,10 +14,12 @@ import {
   User, 
   ChevronRight,
   MessageCircle,
-  Sparkles,
   Phone,
-  Lock
+  Lock,
+  Download,
+  Sparkles
 } from 'lucide-react';
+import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
 interface BottomNavProps {
   activeSection: string;
@@ -117,7 +119,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
             </div>
 
             {/* Quick Helpline Header */}
-            <div className="p-4 pb-2">
+            <div className="p-4 pb-2 space-y-2">
               <div className="grid grid-cols-2 gap-2">
                 <a
                   href="tel:09658865593"
@@ -127,15 +129,24 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                   <span>09658-865593</span>
                 </a>
                 <a
-                  href="https://wa.me/8801700000000?text=Hello%20Ghurbe%20Team"
+                  href={getWhatsAppLink('Hello Ghurbe Tours Team')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-[#25D366] text-white font-bold text-xs shadow-xs active:scale-95 transition-transform"
                 >
                   <MessageCircle className="w-3.5 h-3.5" />
-                  <span>হোয়াটসঅ্যাপ চ্যাট</span>
+                  <span>WhatsApp: 01911-050270</span>
                 </a>
               </div>
+
+              <button
+                type="button"
+                onClick={downloadGhurbeContactCard}
+                className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-800 hover:text-emerald-800 text-xs font-bold border border-slate-200 transition-colors flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+              >
+                <Download className="w-3.5 h-3.5 text-emerald-600" />
+                <span>ফোনে Ghurbe Tours & Travel নাম সেভ করুন (.vcf)</span>
+              </button>
             </div>
 
             {/* 3x3 All Buttons Grid */}

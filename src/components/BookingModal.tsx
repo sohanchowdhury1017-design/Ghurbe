@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, CheckCircle2, ShieldCheck, Printer, Calendar, Users, MapPin, Phone, CreditCard, Sparkles, ArrowRight } from 'lucide-react';
+import { X, CheckCircle2, ShieldCheck, Printer, Calendar, Users, MapPin, Phone, CreditCard, Sparkles, ArrowRight, Copy, Check, QrCode, MessageCircle, Download } from 'lucide-react';
 import { TourPackage, BookingRecord } from '../types/travel';
 import { syncBookingToGoogleSheet } from '../utils/googleSheetsSync';
+import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
 interface BookingModalProps {
   pkg: TourPackage | null;
@@ -25,6 +26,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [paymentMethod, setPaymentMethod] = useState<'bkash' | 'nagad' | 'rocket' | 'card' | 'cash'>('bkash');
   const [paymentType, setPaymentType] = useState<'full' | 'advance'>('advance');
   const [notes, setNotes] = useState('');
+  const [bkashSenderPhone, setBkashSenderPhone] = useState('');
+  const [bkashTrxId, setBkashTrxId] = useState('');
+  const [copiedNumber, setCopiedNumber] = useState(false);
   const [confirmedBooking, setConfirmedBooking] = useState<BookingRecord | null>(null);
 
   if (!pkg) return null;
@@ -35,6 +39,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   // Booking money is exactly 1,000 taka per traveler (or 2,000 for couple)
   const advanceAmount = packageType === 'couple' ? 2000 : 1000 * guestsCount;
   const payableAmount = paymentType === 'full' ? totalPrice : advanceAmount;
+
+  const handleCopyNumber = () => {
+    navigator.clipboard.writeText('01711085960');
+    setCopiedNumber(true);
+    setTimeout(() => setCopiedNumber(false), 2500);
+  };
 
   const handleSubmitDetails = (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,6 +57,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   const handleProcessPayment = () => {
     const bookingCode = `GH-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const paymentNote = paymentMethod === 'bkash'
+      ? `বিকাশ নম্বর: 01711085960 (বাংলা QR) ${bkashSenderPhone ? `| প্রেরক: ${bkashSenderPhone}` : ''} ${bkashTrxId ? `| TrxID: ${bkashTrxId}` : ''}`
+      : '';
+    const consolidatedNotes = [notes, paymentNote].filter(Boolean).join(' · ');
+
     const newBooking: BookingRecord = {
       id: `booking-${Date.now()}`,
       bookingCode,
@@ -67,7 +82,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         month: 'long',
         day: 'numeric',
       }),
-      notes,
+      notes: consolidatedNotes,
     };
 
     setConfirmedBooking(newBooking);
@@ -419,13 +434,142 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               </div>
 
-              {/* Payment Details Note */}
-              <div className="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs text-blue-900 flex items-start gap-2">
-                <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                <p>
-                  নিরাপদ মার্চেন্ট গেটওয়ে। পেমেন্ট সম্পন্ন হওয়া মাত্র আপনার মোবাইল নম্বরে ও স্ক্রিনে অফিসিয়াল ডিজিটাল বুকিং ভাউচার প্রদর্শিত হবে।
-                </p>
-              </div>
+              {/* bKash Payment Box with Bangla QR Code */}
+              {paymentMethod === 'bkash' && (
+                <div className="p-4 sm:p-5 rounded-2xl border-2 border-pink-400 bg-gradient-to-b from-pink-50/80 via-white to-pink-50/30 space-y-4 shadow-sm animate-fade-in text-left">
+                  <div className="flex items-center justify-between border-b border-pink-200/80 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#E2136E] text-white flex items-center justify-center font-black text-xs shadow-xs">
+                        বিকাশ
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-black text-slate-900 leading-tight">
+                          বিকাশ পেমেন্ট ও বাংলা কিউআর (bKash Bangla QR)
+                        </h4>
+                        <p className="text-[11px] text-pink-700 font-medium">
+                          সরাসরি বিকাশ অ্যাপ দিয়ে কিউআর স্ক্যান করুন বা নম্বরে পাঠান
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-black bg-pink-100 text-[#E2136E] px-2 py-0.5 rounded-full border border-pink-200">
+                      অফিসিয়াল
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 items-center">
+                    {/* Left: Number, Amount & Steps */}
+                    <div className="sm:col-span-7 space-y-3">
+                      <div className="bg-white p-3 rounded-xl border border-pink-200 shadow-xs flex items-center justify-between gap-2">
+                        <div>
+                          <span className="text-[10px] font-bold text-slate-500 uppercase block">
+                            বিকাশ পেমেন্ট নম্বর
+                          </span>
+                          <span className="text-xl font-black font-mono text-pink-700 tracking-wider">
+                            01711085960
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleCopyNumber}
+                          className="px-3 py-1.5 text-xs font-bold text-white bg-[#E2136E] hover:bg-[#c40e5e] rounded-lg shadow-xs active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                        >
+                          {copiedNumber ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedNumber ? 'কপি হয়েছে!' : 'কপি করুন'}</span>
+                        </button>
+                      </div>
+
+                      <div className="bg-white/90 p-2.5 rounded-xl border border-slate-200 text-xs space-y-1">
+                        <div className="flex justify-between items-center text-slate-700 font-semibold">
+                          <span>পরিশোধের পরিমাণ:</span>
+                          <span className="text-sm font-black text-blue-900 tabular-nums">৳ {payableAmount.toLocaleString('en-IN')}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-500">
+                          রেফারেন্সে আপনার নাম লিখুন। পেমেন্ট সম্পন্ন হলে নিচের বক্সে TrxID লিখুন।
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Right: Bangla QR Image */}
+                    <div className="sm:col-span-5 flex flex-col items-center justify-center">
+                      <div className="bg-white p-2 rounded-2xl border-2 border-pink-300 shadow-md max-w-[150px] sm:max-w-[170px] w-full text-center">
+                        <div className="rounded-xl overflow-hidden border border-slate-200">
+                          <img
+                            src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1792223909/WhatsApp_Image_2026-10-17_at_1.54.57_PM.jpg"
+                            alt="বিকাশ বাংলা কিউআর কোড - 01711085960"
+                            className="w-full h-auto object-contain"
+                          />
+                        </div>
+                        <span className="text-[9px] font-black text-pink-700 mt-1 block">
+                          বাংলা কিউআর স্ক্যান করুন
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Verification inputs */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 border-t border-pink-200/70">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        আপনার বিকাশ নম্বর (যে নম্বর থেকে পাঠিয়েছেন)
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="যেমন: 017XXXXXXXX"
+                        value={bkashSenderPhone}
+                        onChange={(e) => setBkashSenderPhone(e.target.value)}
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:border-pink-600 outline-hidden bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        ট্রানজেকশন আইডি (TrxID)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="যেমন: 9J82K3L4"
+                        value={bkashTrxId}
+                        onChange={(e) => setBkashTrxId(e.target.value)}
+                        className="w-full px-3 py-2 text-xs font-mono uppercase rounded-xl border border-slate-300 focus:border-pink-600 outline-hidden bg-white"
+                      />
+                    </div>
+                  </div>
+
+                  {/* WhatsApp Support note & Save contact */}
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-600 bg-pink-100/70 p-2.5 rounded-xl">
+                    <span>পেমেন্টে সহায়তায় WhatsApp (01911-050270):</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={downloadGhurbeContactCard}
+                        className="font-bold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 px-2 py-1 rounded-lg flex items-center gap-1 cursor-pointer transition-colors"
+                        title="ফোনে Ghurbe Tours & Travel নাম সেভ করুন"
+                      >
+                        <Download className="w-3 h-3 text-emerald-600" />
+                        <span>কন্টাক্ট সেভ</span>
+                      </button>
+                      <a
+                        href={getWhatsAppLink('আসসালামু আলাইকুম! আমি বিকাশ পেমেন্ট করেছি')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>চ্যাট করুন</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Payment Details Note for other methods */}
+              {paymentMethod !== 'bkash' && (
+                <div className="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs text-blue-900 flex items-start gap-2">
+                  <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                  <p>
+                    নিরাপদ মার্চেন্ট গেটওয়ে। পেমেন্ট সম্পন্ন হওয়া মাত্র আপনার মোবাইল নম্বরে ও স্ক্রিনে অফিসিয়াল ডিজিটাল বুকিং ভাউচার প্রদর্শিত হবে।
+                  </p>
+                </div>
+              )}
 
               <div className="flex gap-3">
                 <button
@@ -514,27 +658,52 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </div>
                 </div>
 
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200">
+                  <div>
+                    <span className="text-[11px] text-slate-500 block">পেমেন্ট মাধ্যম</span>
+                    <strong className="text-slate-900">
+                      {confirmedBooking.paymentMethod === 'bkash' ? 'বিকাশ (01711085960 - বাংলা QR)' : confirmedBooking.paymentMethod.toUpperCase()}
+                    </strong>
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-slate-500 block">ট্রানজেকশন তথ্য</span>
+                    <strong className="text-pink-700 font-mono text-xs truncate block">
+                      {bkashTrxId ? `TrxID: ${bkashTrxId}` : 'বাংলা কিউআর পেমেন্ট ভেরিফাইড'}
+                    </strong>
+                  </div>
+                </div>
+
                 <div className="pt-2 border-t border-slate-200 text-[11px] text-slate-500 flex flex-wrap justify-between items-center gap-2">
-                  <span>জরুরি সহায়তা: <strong>09658-865593</strong> · ghurbebd@gmail.com</span>
+                  <span>জরুরি সহায়তা: <strong>09658-865593</strong> · WhatsApp: <strong>01911-050270</strong></span>
                   <span className="text-blue-700 font-semibold">স্ট্যাটাস: নিশ্চিতকৃত</span>
                 </div>
               </div>
 
               {/* Actions */}
-              <div className="flex flex-col sm:flex-row items-center gap-3 justify-center pt-2">
+              <div className="flex flex-col sm:flex-row items-center gap-2.5 justify-center pt-2">
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full sm:w-auto px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Printer className="w-4 h-4 text-slate-600" />
-                  <span>ভাউচার প্রিন্ট / ডাউনলোড করুন</span>
+                  <span>ভাউচার প্রিন্ট / ডাউনলোড</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={downloadGhurbeContactCard}
+                  className="w-full sm:w-auto px-4 py-2.5 text-xs sm:text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-300 rounded-xl hover:bg-emerald-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  title="ফোনে Ghurbe Tours & Travel নাম সেভ করুন"
+                >
+                  <Download className="w-4 h-4 text-emerald-600" />
+                  <span>ফোনে নাম সেভ করুন (.vcf)</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={onClose}
-                  className="w-full sm:w-auto px-6 py-2.5 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors cursor-pointer"
+                  className="w-full sm:w-auto px-5 py-2.5 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors cursor-pointer"
                 >
                   সম্পন্ন করুন
                 </button>

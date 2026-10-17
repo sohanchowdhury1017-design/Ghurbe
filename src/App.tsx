@@ -324,7 +324,7 @@ export default function App() {
       const { route, pkg, memberSlug } = resolved;
       if (route === 'package-detail' && pkg) {
         const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
-        document.title = `${pkg.title} | ghurbe.site/${slugName}`;
+        document.title = `${pkg.title} | ghurbe.com/${slugName}`;
       } else if (route === 'member-profile' && memberSlug) {
         const mem = TEAM_MEMBERS.find((m) => m.slug.toLowerCase() === memberSlug.toLowerCase());
         if (mem) {
@@ -451,7 +451,7 @@ export default function App() {
     } else if ((target === 'package-detail' || target === 'detail') && pkg) {
       const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
       subPath = `/${slugName}`;
-      newTitle = `${pkg.title} | ghurbe.site/${slugName}`;
+      newTitle = `${pkg.title} | ghurbe.com/${slugName}`;
       newRoute = 'package-detail';
       targetPkg = pkg;
     } else {

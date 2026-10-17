@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Compass, Menu, X, CalendarCheck, User, PhoneCall, Sparkles } from 'lucide-react';
+import { Compass, Menu, X, CalendarCheck, User, PhoneCall, Sparkles, MessageCircle, Download } from 'lucide-react';
+import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
 interface NavbarProps {
   onOpenBookings: () => void;
@@ -80,6 +81,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               </svg>
               <span>YouTube</span>
             </a>
+
+            <a
+              href={getWhatsAppLink('Hello Ghurbe Tours Team')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
+              title="ঘুরবে হোয়াটসঅ্যাপ 01911-050270"
+            >
+              <MessageCircle className="w-3 h-3 fill-white" />
+              <span>WhatsApp: 01911-050270</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={downloadGhurbeContactCard}
+              className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-[10px] border border-slate-700 transition-all cursor-pointer"
+              title="ফোনে Ghurbe Tours & Travel নাম সেভ করুন"
+            >
+              <Download className="w-2.5 h-2.5 text-emerald-400" />
+              <span>নাম সেভ করুন (.vcf)</span>
+            </button>
 
             <a href="tel:09658865593" className="hidden sm:inline-flex items-center gap-1 text-slate-300 hover:text-white font-bold text-[10px] ml-2">
               <PhoneCall className="w-3 h-3 text-sky-400" />
@@ -317,6 +339,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   <CalendarCheck className="w-3.5 h-3.5" />
                   <span>আমার বুকিং ({bookingsCount})</span>
+                </button>
+
+                <a
+                  href={getWhatsAppLink('Hello Ghurbe Tours Team')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-emerald-300"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>WhatsApp চ্যাট</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    downloadGhurbeContactCard();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="col-span-2 py-2 px-3 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-800 text-xs font-bold flex items-center justify-center gap-1.5 border border-slate-200 cursor-pointer active:scale-95 transition-all"
+                >
+                  <Download className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>ফোনে 'Ghurbe Tours & Travel' নাম সেভ করুন (.vcf)</span>
                 </button>
 
               </div>

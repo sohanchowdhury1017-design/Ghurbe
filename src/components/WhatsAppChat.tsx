@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, Send, CheckCheck, MessageCircle, Phone, ArrowUpRight } from 'lucide-react';
+import { X, Send, CheckCheck, MessageCircle, Phone, ArrowUpRight, Download, UserCheck } from 'lucide-react';
+import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
 export const WhatsAppChat: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,7 +8,7 @@ export const WhatsAppChat: React.FC = () => {
   const [messages, setMessages] = useState<Array<{ sender: 'agent' | 'user'; text: string; time: string }>>([
     {
       sender: 'agent',
-      text: 'আসসালামু আলাইকুম! ঘুরবে ট্যুরস অ্যান্ড ট্রাভেলসে স্বাগতম। ১২ নভেম্বর ২০২৬ তারিখের কুয়াকাটা স্পেশাল ট্যুর (৩ রাত ২ দিন) কিংবা সাজেক ও সেন্টমার্টিনের বুকিং করতে যেকোনো প্রশ্ন করুন। আর মাত্র ২৪টি সিট বাকি আছে!',
+      text: 'আসসালামু আলাইকুম! ঘুরবে ট্যুরস অ্যান্ড ট্রাভেলসে স্বাগতম। আমাদের অফিসিয়াল হোয়াটসঅ্যাপ নম্বর: 01911-050270। সরাসরি হোয়াটসঅ্যাপে মেসেজ পাঠাতে কিংবা ফোনে "Ghurbe Tours & Travel" নামটি সেভ করে নিতে যেকোনা প্রশ্ন করুন।',
       time: 'এখনই',
     },
   ]);
@@ -22,10 +23,10 @@ export const WhatsAppChat: React.FC = () => {
   }, []);
 
   const quickPrompts = [
-    '🌊 ১২ নভেম্বরের কুয়াকাটা ট্যুরের সিট খালি আছে?',
-    '৩ রাত ২ দিন কুয়াকাটার প্যাকেজ খরচ কত?',
-    'সাজেক ভ্যালি ট্যুরের পরবর্তী ব্যাচ কবে?',
-    'বিকাশে বুকিং মানি পাঠানোর নিয়ম',
+    '📥 ফোনে Ghurbe কন্টাক্ট সেভ করবো কীভাবে?',
+    '🌊 কুয়াকাটা ও কক্সবাজার ট্যুরের সিট খালি আছে?',
+    '৩ রাত ২ দিন প্যাকেজের বিস্তারিত খরচ কত?',
+    'বিকাশে পেমেন্ট ও বাংলা QR স্ক্যান করার নিয়ম',
   ];
 
   const handleSendMessage = (textToSend?: string) => {
@@ -43,16 +44,18 @@ export const WhatsAppChat: React.FC = () => {
 
     // Simulated intelligent consultant reply
     setTimeout(() => {
-      let reply = 'ধন্যবাদ আপনার বার্তার জন্য! আমাদের একজন সিনিয়র ট্যুর কনসালটেন্ট আপনার প্রশ্নের উত্তর প্রস্তুত করছেন। জরুরি বুকিংয়ের জন্য কল করুন: 09658-865593 এ।';
+      let reply = 'ধন্যবাদ আপনার বার্তার জন্য! আমাদের একজন সিনিয়র ট্যুর কনসালটেন্ট আপনার প্রশ্নের উত্তর প্রস্তুত করছেন। সরাসরি হোয়াটসঅ্যাপে চ্যাট করুন: 01911-050270 এ।';
 
-      if (text.includes('কুয়াকাটা') || text.includes('১২ নভেম্বর') || text.includes('সিট')) {
-        reply = '১২ নভেম্বর ২০২৬ রাতে রংপুর থেকে কুয়াকাটার উদ্দেশ্যে বাস ছাড়বে (বগুড়া ও গাইবান্ধা পিকআপ)। প্যাকেজ মূল্য মাত্র ৩,৫৯৯৳ (৩ রাত ২ দিন, ১ রাত হোটেল ও ৫ বেলা খাবার)। বর্তমানে আর মাত্র ২৪টি সিট বাকি আছে! দ্রুত বুকিং কনফার্ম করতে পারেন।';
+      if (text.includes('সেভ') || text.includes('নাম') || text.includes('কন্টাক্ট')) {
+        reply = 'নিচের "কন্টাক্ট সেভ (.vcf)" বাটনে ক্লিক করলেই আপনার ফোনে "Ghurbe Tours & Travel" নাম ও 01911-050270 নম্বরটি স্বয়ংক্রিয়ভাবে সেভ হয়ে যাবে। এরপর হোয়াটসঅ্যাপে সরাসরি নাম প্রদর্শিত হবে!';
+      } else if (text.includes('কুয়াকাটা') || text.includes('১২ নভেম্বর') || text.includes('সিট')) {
+        reply = '১২ নভেম্বর ২০২৬ রাতে রংপুর ও বগুড়া থেকে কুয়াকাটার উদ্দেশ্যে বাস ছাড়বে। প্যাকেজ মূল্য মাত্র ৩,৫৯৯৳ (৩ রাত ২ দিন)। দ্রুত সিট নিশ্চিত করতে হোয়াটসঅ্যাপে মেসেজ দিন: 01911-050270 এ!';
+      } else if (text.includes('কক্সবাজার') || text.includes('৪,৭৮৫') || text.includes('4785')) {
+        reply = 'রংপুর ও বগুড়া থেকে কক্সবাজার ট্যুর মাত্র ৪,৭৮৫ টাকায় এবং কাপল প্যাকেজ ৯,৯৯৯ টাকায়! যাতায়াত, হোটেল, ৫ বেলা খাবার ও মেরিন ড্রাইভ অন্তর্ভুক্ত। বুকিং হটলাইন: 09658-865593 | WhatsApp: 01911-050270।';
       } else if (text.includes('খরচ') || text.includes('দাম')) {
-        reply = 'কুয়াকাটা ৩ রাত ২ দিন জনপ্রতি মাত্র ৩,৫৯৯৳ এবং কাপল প্যাকেজ মাত্র ৭,৯৯৯৳। অগ্রিম মাত্র ১,০২০৳ দিয়ে সিট কনফার্ম করা যায়।';
-      } else if (text.includes('সাজেক')) {
-        reply = 'সাজেক ভ্যালির পরবর্তী ব্যাচ আগামী বৃহস্পতিবার রাত ১০:৩০ টায় ঢাকা থেকে রওনা হবে। লাক্সারি কাঠের কটেজে কাপল ও শেয়ারিং সিট এখনো খালি রয়েছে।';
-      } else if (text.includes('বিকাশ') || text.includes('পেমেন্ট')) {
-        reply = 'আমাদের বিকাশ মার্চেন্ট বা পার্সোনাল একাউন্টে ১,০২০৳ অগ্রিম পাঠিয়ে বাকি টাকা বাসে ওঠার সময় দেওয়া যাবে। হটলাইন: 09658-865593';
+        reply = 'কুয়াকাটা জনপ্রতি ৩,৫৯৯৳ এবং কক্সবাজার মাত্র ৪,৭৮৫৳। অগ্রিম মাত্র ১,০২০৳ বুকিং মানি দিয়ে সিট কনফার্ম করা যায়।';
+      } else if (text.includes('বিকাশ') || text.includes('পেমেন্ট') || text.includes('কিউআর')) {
+        reply = 'আমাদের অফিসিয়াল বিকাশ নম্বর: 01711085960 (বাংলা QR কোড দিয়ে যেকোনো ব্যাংক বা বিকাশ অ্যাপ থেকে সরাসরি পেমেন্ট সুবিধা)। পেমেন্ট করে WhatsApp: 01911-050270 এ TrxID জানান।';
       }
 
       setMessages((prev) => [
@@ -67,11 +70,7 @@ export const WhatsAppChat: React.FC = () => {
   };
 
   const openOfficialWhatsApp = (customText?: string) => {
-    const msg = encodeURIComponent(
-      customText ||
-        'আসসালামু আলাইকুম! ঘুরবে ট্রাভেলস, আমি ১২ নভেম্বর ২০২৬ তারিখের কুয়াকাটা ট্যুরের (৩ রাত ২ দিন) তথ্য ও বুকিং জানতে চাই।'
-    );
-    window.open(`https://wa.me/8801700000000?text=${msg}`, '_blank');
+    window.open(getWhatsAppLink(customText), '_blank');
   };
 
   return (
@@ -91,10 +90,10 @@ export const WhatsAppChat: React.FC = () => {
             </div>
             <div>
               <p className="text-[11px] font-black text-emerald-800 leading-tight">
-                ঘুরবে হোয়াটসঅ্যাপ সাপোর্ট
+                ঘুরবে হোয়াটসঅ্যাপ সাপোর্ট (01911050270)
               </p>
               <p className="text-xs text-slate-700 mt-0.5 leading-snug">
-                ১২ নভেম্বরের কুয়াকাটা ট্যুর ও সিট খালি সম্পর্কে জানতে চ্যাট করুন 👋
+                কুয়াকাটা ও কক্সবাজার ট্যুর বুকিং ও সিট খালি সম্পর্কে জানতে চ্যাট করুন 👋
               </p>
               <button
                 onClick={() => {
@@ -131,12 +130,12 @@ export const WhatsAppChat: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-sm font-black leading-tight flex items-center gap-1.5">
-                  <span>ঘুরবে ট্রাভেল হেল্পডেস্ক</span>
-                  <span className="text-[10px] bg-emerald-700 text-white px-1.5 py-0.2 rounded font-normal">অফিসিয়াল</span>
+                  <span>ঘুরবে হেল্পডেস্ক</span>
+                  <span className="text-[10px] bg-emerald-700 text-white px-1.5 py-0.2 rounded font-normal font-mono">01911050270</span>
                 </h4>
                 <p className="text-[11px] text-emerald-100 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 inline-block" />
-                  <span>অনলাইন</span> · <span>১ মিনিটে রিপ্লাই</span>
+                  <span>অনলাইন (WhatsApp)</span> · <span>১ মিনিটে রিপ্লাই</span>
                 </p>
               </div>
             </div>
@@ -150,12 +149,12 @@ export const WhatsAppChat: React.FC = () => {
 
           {/* Quick Announcement Ribbon */}
           <div className="px-3 py-1.5 bg-[#128C7E] text-white text-[11px] flex items-center justify-between">
-            <span>🔥 ১২ নভেম্বর কুয়াকাটা ট্যুর (২৪ সিট বাকি)</span>
+            <span>💬 WhatsApp: 01911-050270</span>
             <button
               onClick={() => openOfficialWhatsApp()}
               className="underline text-[10px] font-bold text-amber-200 hover:text-white flex items-center gap-0.5 cursor-pointer"
             >
-              <span>WhatsApp এ খুলুন</span>
+              <span>সরাসরি খুলুন</span>
               <ArrowUpRight className="w-3 h-3" />
             </button>
           </div>
@@ -204,15 +203,36 @@ export const WhatsAppChat: React.FC = () => {
             ))}
           </div>
 
+          {/* 1-Click Save Contact Card */}
+          <div className="px-3 py-2 bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border-t border-emerald-200/90 flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <span className="text-[11px] font-black text-emerald-950 block truncate">
+                Ghurbe Tours & Travel
+              </span>
+              <span className="text-[9px] text-emerald-700 block">
+                ফোনে কন্টাক্ট সেভ করুন (WhatsApp এ নাম দেখাবে)
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={downloadGhurbeContactCard}
+              className="py-1.5 px-2.5 rounded-xl bg-gradient-to-r from-emerald-700 to-teal-800 hover:from-emerald-800 hover:to-teal-900 text-white text-[10px] font-bold flex items-center gap-1 shadow-xs shrink-0 cursor-pointer active:scale-95 transition-all"
+              title="ফোনে Ghurbe Tours & Travel নাম সেভ করুন"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>কন্টাক্ট সেভ (.vcf)</span>
+            </button>
+          </div>
+
           {/* Official WhatsApp Redirect Button */}
-          <div className="px-3 py-1.5 bg-emerald-50 border-t border-emerald-100 flex items-center justify-between">
-            <span className="text-[11px] text-emerald-950 font-medium">সরাসরি কথা বলতে চান?</span>
+          <div className="px-3 py-1.5 bg-emerald-100/70 border-t border-emerald-200 flex items-center justify-between">
+            <span className="text-[11px] text-emerald-950 font-bold">WhatsApp এ কথা বলতে চান?</span>
             <button
               onClick={() => openOfficialWhatsApp()}
-              className="py-1 px-2.5 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-[11px] font-bold flex items-center gap-1 shadow-xs cursor-pointer"
+              className="py-1 px-2.5 rounded-lg bg-[#25D366] hover:bg-[#20ba5a] text-white text-[11px] font-bold flex items-center gap-1 shadow-xs cursor-pointer active:scale-95 transition-transform"
             >
               <MessageCircle className="w-3.5 h-3.5 fill-white" />
-              <span>WhatsApp চ্যাট চালু করুন</span>
+              <span>01911050270 এ চ্যাট</span>
             </button>
           </div>
 

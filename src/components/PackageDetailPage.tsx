@@ -50,14 +50,14 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
     ? [pkg.coverImage, ...pkg.gallery.filter(img => img !== pkg.coverImage)]
     : [pkg.coverImage];
 
-  // Slug URL display (e.g. ghurbe.site/Kuakata)
+  // Slug URL display (e.g. ghurbe.com/Kuakata)
   const displaySlug = pkg.slug === 'kuakata' ? 'Kuakata' : (pkg.slug.charAt(0).toUpperCase() + pkg.slug.slice(1));
-  const fullUrl = `https://ghurbe.site/${displaySlug}`;
+  const fullUrl = `https://ghurbe.com/${displaySlug}`;
 
   useEffect(() => {
     // Scroll to top on page mount
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.title = `${pkg.title} | ghurbe.site/${displaySlug}`;
+    document.title = `${pkg.title} | ghurbe.com/${displaySlug}`;
 
     // Close page on Escape key press
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -150,7 +150,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
           {/* URL & Share action */}
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-slate-100 text-xs font-mono font-medium border border-slate-700 shadow-xs">
-              <span className="text-sky-400 font-bold">ghurbe.site/</span>
+              <span className="text-sky-400 font-bold">ghurbe.com/</span>
               <span className="text-white font-extrabold">{displaySlug}</span>
             </div>
 
@@ -317,7 +317,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
                     <ChevronRight className="w-5 h-5" />
                   </button>
                   <a
-                    href="https://wa.me/8801700123456?text=আমি%20কুয়াকাটা%20প্যাকেজ%20সম্পর্কে%20জানতে%20চাই"
+                    href={`https://wa.me/8801911050270?text=${encodeURIComponent(`আসসালামু আলাইকুম! ঘুরবে ট্রাভেলস, আমি ${pkg.title} সম্পর্কে বিস্তারিত জানতে চাই`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="py-3 px-4 rounded-xl font-bold text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-700/60 flex items-center justify-center gap-1.5 transition-colors"
@@ -817,20 +817,20 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
               {/* Instant Call & WhatsApp Buttons */}
               <div className="grid grid-cols-2 gap-2.5 pt-1">
                 <a
-                  href="tel:01700123456"
+                  href="tel:09658865593"
                   className="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors border border-slate-300"
                 >
                   <PhoneCall className="w-4 h-4 text-blue-600" />
-                  <span>কল করুন</span>
+                  <span>09658-865593</span>
                 </a>
                 <a
-                  href="https://wa.me/8801700123456?text=আমি%20কুয়াকাটা%20প্যাকেজ%20বুকিং%20করতে%20চাই"
+                  href={`https://wa.me/8801911050270?text=${encodeURIComponent(`আসসালামু আলাইকুম! আমি ${pkg.title} বুকিং করতে চাই`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors border border-emerald-300"
                 >
                   <MessageCircle className="w-4 h-4 text-emerald-600" />
-                  <span>হোয়াটসঅ্যাপ</span>
+                  <span>WhatsApp চ্যাট</span>
                 </a>
               </div>
 
@@ -855,7 +855,7 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
             <div className="bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 text-center space-y-2">
               <p className="text-xs text-slate-400">এই প্যাকেজটি বন্ধুদের সাথে শেয়ার করুন:</p>
               <div className="flex items-center justify-between bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 font-mono text-xs">
-                <span className="text-sky-300 truncate">ghurbe.site/{displaySlug}</span>
+                <span className="text-sky-300 truncate">ghurbe.com/{displaySlug}</span>
                 <button
                   onClick={handleCopyLink}
                   className="text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded ml-2 shrink-0 cursor-pointer"
@@ -907,11 +907,11 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
             <X className="w-4 h-4 text-rose-500 stroke-[2.5]" />
           </button>
           <a
-            href="https://wa.me/8801700123456?text=আমি%20কুয়াকাটা%20প্যাকেজ%20সম্পর্কে%20জানতে%20চাই"
+            href={`https://wa.me/8801911050270?text=${encodeURIComponent(`আসসালামু আলাইকুম! ঘুরবে ট্রাভেলস, আমি ${pkg.title} সম্পর্কে জানতে চাই`)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-300 flex items-center justify-center active:bg-emerald-100 transition-colors"
-            title="হোয়াটসঅ্যাপ"
+            title="হোয়াটসঅ্যাপ 01911050270"
           >
             <MessageCircle className="w-5 h-5" />
           </a>

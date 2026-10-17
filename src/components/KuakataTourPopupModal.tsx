@@ -83,7 +83,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
     const message = encodeURIComponent(
       'আসসালামু আলাইকুম! ঘুরবে ট্রাভেলস, আমি ১২ নভেম্বর ২০২৬ তারিখের কুয়াকাটা স্পেশাল ট্যুরের (৩ রাত ২ দিন) অবশিষ্ট ২৪টি সিটের একটি বুক করতে চাই।'
     );
-    window.open(`https://wa.me/8801700000000?text=${message}`, '_blank');
+    window.open(`https://wa.me/8801911050270?text=${message}`, '_blank');
   };
 
   const handleOpenPage = () => {

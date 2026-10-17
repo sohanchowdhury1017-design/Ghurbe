@@ -471,9 +471,8 @@ export const PackageDetailModal: React.FC<PackageDetailModalProps> = ({
               বন্ধ করুন
             </button>
 
-            {/* Direct WhatsApp / Helpline query button */}
             <a
-              href="https://wa.me/8801700000000?text=%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%95%E0%A7%81%E0%A6%AF%E0%A6%BC%E0%A6%BE%E0%A6%95%E0%A6%BE%E0%A6%9F%E0%A6%BE%20%E0%A7%A9%E0%A7%AB%E0%A7%AF%E0%A7%AF%E0%A7%B3%20%E0%A6%AA%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%95%E0%A7%87%E0%A6%9C%20%E0%A6%AC%E0%A7%81%E0%A6%95%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87"
+              href={`https://wa.me/8801911050270?text=${encodeURIComponent(`আসসালামু আলাইকুম! ঘুরবে ট্রাভেলস, আমি ${pkg.title} প্যাকেজ বুক করতে চাই`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3.5 py-2.5 text-xs sm:text-sm font-bold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 border border-emerald-300 rounded-xl transition-colors flex items-center justify-center gap-1.5 cursor-pointer"

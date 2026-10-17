@@ -249,7 +249,7 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
                 {/* Direct Action Hub */}
                 <div className="w-full space-y-2 pt-3">
                   <a
-                    href="https://wa.me/8801700000000?text=Hello%20Ghurbe%20Team"
+                    href="https://wa.me/8801911050270?text=Hello%20Ghurbe%20Team"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all"

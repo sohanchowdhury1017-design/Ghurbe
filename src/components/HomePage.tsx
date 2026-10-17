@@ -50,6 +50,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onNavigateToAbout,
 }) => {
   const kuakataPkg = packages.find((p) => p.id === 'kuakata-beach') || packages[0];
+  const coxPkg = packages.find((p) => p.id === 'coxs-bazar') || packages.find((p) => p.slug === 'coxs-bazar');
   
   // Top 3 handpicked packages for the home page (clean, not cluttered on phone)
   const topPackages = packages.slice(0, 3);
@@ -58,10 +59,10 @@ export const HomePage: React.FC<HomePageProps> = ({
     {
       id: 'sea',
       label: 'সমুদ্র ও সৈকত',
-      desc: 'কুয়াকাটা, সেন্টমার্টিন ও কক্সবাজার',
-      image: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/images.jpg',
-      tag: 'সৈকত ও ঢেউ',
-      badge: 'কুয়াকাটা ৩৫৯৯৳',
+      desc: 'কক্সবাজার, কুয়াকাটা ও ইনানী বিচ',
+      image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+      tag: 'সৈকত ও মেরিন ড্রাইভ',
+      badge: 'কক্সবাজার ৪৭৮৫৳ | কুয়াকাটা ৩৫৯৯৳',
     },
     {
       id: 'hills',
@@ -138,6 +139,81 @@ export const HomePage: React.FC<HomePageProps> = ({
                 className="min-h-[46px] py-2.5 px-4 text-xs sm:text-sm font-black text-white bg-gradient-to-r from-blue-600 via-sky-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl shadow-md shadow-blue-500/25 transition-all active:scale-97 cursor-pointer flex items-center justify-center text-center"
               >
                 বুকিং করুন (৩৫৯৯৳)
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 2.2 Cox's Bazar 2026 Special Campaign Banner (রংপুর ও বগুড়া থেকে মাত্র ৪,৭৮৫ টাকায়!) */}
+        {coxPkg && (
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-900 via-blue-900 to-indigo-950 p-5 sm:p-7 text-white shadow-xl border border-sky-500/30 flex flex-col lg:flex-row items-center justify-between gap-5">
+            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full lg:w-auto">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border-2 border-sky-400/50 shadow-md">
+                <img
+                  src={coxPkg.coverImage}
+                  alt={coxPkg.title}
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute inset-0 bg-blue-950/20" />
+                <span className="absolute bottom-1 left-1 right-1 text-[9px] font-black text-center bg-sky-500/90 text-white rounded py-0.5">
+                  ৪৭৮৫৳
+                </span>
+              </div>
+
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                  <span className="bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 text-[10px] sm:text-xs font-black px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" />
+                    <span>ধামাকা অফার ২০২৬</span>
+                  </span>
+                  <span className="text-[11px] font-bold text-sky-300">
+                    রংপুর ও বগুড়া স্পেশাল
+                  </span>
+                </div>
+
+                <h3 className="text-lg sm:text-2xl font-black text-white leading-tight">
+                  🌊 রংপুর ও বগুড়া থেকে কক্সবাজার ট্যুর মাত্র ৪,৭৮৫ টাকায়! 🏖️
+                </h3>
+                <p className="text-xs sm:text-sm text-sky-100/90 font-medium mt-1">
+                  স্বপ্নের সমুদ্রভ্রমণ এবার সাধ্যের মধ্যেই! <strong>👤 জনপ্রতি ৪,৭৮৫৳</strong> | <strong>💑 কাপল ৯,৯৯৯৳</strong>
+                </p>
+
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2.5 text-xs text-sky-200">
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>রংপুর ও বগুড়া থেকে যাতায়াত</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>মনোমুগ্ধকর মেরিন ড্রাইভ ভ্রমণ</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>হোটেলে রাত্রিযাপন</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>৫ বেলা সুস্বাদু খাবার</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 lg:flex items-center gap-2.5 shrink-0 w-full lg:w-auto relative z-10">
+              <button
+                onClick={() => onViewDetails(coxPkg)}
+                className="min-h-[46px] py-2.5 px-4 text-xs sm:text-sm font-bold text-white bg-white/10 hover:bg-white/20 active:bg-white/30 border border-white/20 rounded-xl transition-all cursor-pointer shadow-xs flex items-center justify-center text-center active:scale-97"
+              >
+                বিস্তারিত দেখুন
+              </button>
+              <button
+                onClick={() => onBookNow(coxPkg)}
+                className="min-h-[46px] py-2.5 px-4 text-xs sm:text-sm font-black text-white bg-gradient-to-r from-sky-500 via-blue-600 to-sky-600 hover:from-sky-600 hover:to-blue-700 rounded-xl shadow-md shadow-sky-500/25 transition-all active:scale-97 cursor-pointer flex items-center justify-center text-center"
+              >
+                বুকিং করুন (৪৭৮৫৳)
               </button>
             </div>
           </div>
@@ -628,17 +704,26 @@ export const HomePage: React.FC<HomePageProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
             <a
-              href="tel:01700123456"
-              className="flex-1 md:flex-initial py-3 px-5 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
+              href="tel:09658865593"
+              className="flex-1 md:flex-initial py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
             >
               <PhoneCall className="w-4 h-4 text-blue-600" />
-              <span>কল: ০১৭০০-১২৩৪৫৬</span>
+              <span>কল: ০৯৬৫৮-৮৬৫৫৯৩</span>
+            </a>
+            <a
+              href="https://wa.me/8801911050270?text=আসসালামু%20আলাইকুম!%20আমি%20ঘুরবে%20ট্যুর%20প্যাকেজ%20সম্পর্কে%20জানতে%20চাই"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 md:flex-initial py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md active:scale-95"
+            >
+              <MessageCircle className="w-4 h-4 fill-white" />
+              <span>WhatsApp: 01911-050270</span>
             </a>
             <button
               onClick={onNavigateToContact}
-              className="flex-1 md:flex-initial py-3 px-5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer"
+              className="w-full md:w-auto py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer"
             >
               <span>যোগাযোগ পেজ</span>
               <ArrowRight className="w-4 h-4" />

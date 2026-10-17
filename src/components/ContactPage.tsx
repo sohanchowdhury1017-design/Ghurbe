@@ -1,6 +1,7 @@
 import React from 'react';
 import { ContactAndFaq } from './ContactAndFaq';
-import { ArrowLeft, PhoneCall, MessageCircle, MapPin, Mail, Clock, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, PhoneCall, MessageCircle, MapPin, Mail, Clock, ShieldCheck, Download } from 'lucide-react';
+import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
 interface ContactPageProps {
   onBackToHome: () => void;
@@ -15,19 +16,19 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     {
       city: 'রংপুর প্রধান কার্যালয়',
       address: 'রংপুর কেন্দ্রীয় বাস টার্মিনাল মোড়, রংপুর সদর',
-      phone: '০১৭০০-১২৩৪৫৬',
+      phone: '০৯৬৫৮-৮৬৫৫৯৩ / ০১৯১১-০৫০২৭০',
       hours: 'সকাল ৯:০০ - রাত ১০:০০',
     },
     {
       city: 'বগুড়া ব্রাঞ্চ অফিস',
       address: 'চারমাথা বাস টার্মিনাল রোড, বগুড়া',
-      phone: '০১৮০০-১২৩৪৫৬',
+      phone: '০৯৬৫৮-৮৬৫৫৯৩ / ০১৯১১-০৫০২৭০',
       hours: 'সকাল ৯:০০ - রাত ৯:০০',
     },
     {
       city: 'গাইবান্ধা তথ্য কেন্দ্র',
       address: 'পলাশবাড়ী বাস পয়েন্ট, গাইবান্ধা',
-      phone: '০১৯০০-১২৩৪৫৬',
+      phone: '০৯৬৫৮-৮৬৫৫৯৩',
       hours: 'সকাল ১০:০০ - রাত ৮:০০',
     },
     {
@@ -97,27 +98,48 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             </span>
           </a>
 
-          <a
-            href="https://wa.me/8801700123456?text=আমি%20ঘুরবে%20ট্যুর%20প্যাকেজ%20সম্পর্কে%20জানতে%20চাই"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-500 shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform shrink-0">
-                <MessageCircle className="w-5 h-5" />
-              </div>
-              <div className="min-w-0">
-                <span className="text-[11px] text-slate-500 font-semibold block truncate">হোয়াটসঅ্যাপ চ্যাট</span>
-                <strong className="text-sm sm:text-base font-black text-slate-900 block group-hover:text-emerald-600 transition-colors truncate">
-                  WhatsApp Support
-                </strong>
-              </div>
+          <div className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-500 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+            <div className="flex items-center justify-between gap-3">
+              <a
+                href={getWhatsAppLink('আসসালামু আলাইকুম! আমি ঘুরবে ট্যুর প্যাকেজ সম্পর্কে জানতে চাই')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 flex-1 min-w-0"
+              >
+                <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform shrink-0">
+                  <MessageCircle className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[11px] text-slate-500 font-semibold block truncate">হোয়াটসঅ্যাপ চ্যাট (২৪/৭)</span>
+                  <strong className="text-sm sm:text-base font-black text-slate-900 block group-hover:text-emerald-600 transition-colors truncate">
+                    01911-050270
+                  </strong>
+                </div>
+              </a>
+              <a
+                href={getWhatsAppLink('আসসালামু আলাইকুম! আমি ঘুরবে ট্যুর প্যাকেজ সম্পর্কে জানতে চাই')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl shrink-0 transition-colors"
+              >
+                চ্যাট দিন
+              </a>
             </div>
-            <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl shrink-0">
-              চ্যাট
-            </span>
-          </a>
+
+            <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+              <span className="text-[10px] text-slate-500">
+                ফোনে <strong>Ghurbe Tours & Travel</strong> নাম সেভ করতে:
+              </span>
+              <button
+                type="button"
+                onClick={downloadGhurbeContactCard}
+                className="text-[10px] font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-2.5 py-1 rounded-lg flex items-center gap-1 cursor-pointer transition-all active:scale-95"
+              >
+                <Download className="w-3 h-3" />
+                <span>কন্টাক্ট সেভ (.vcf)</span>
+              </button>
+            </div>
+          </div>
 
           <a
             href="https://facebook.com/ghurbe.bd"
@@ -166,6 +188,77 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               সাবস্ক্রাইব
             </span>
           </a>
+        </div>
+
+        {/* Official bKash Payment & Bangla QR Code Showcase */}
+        <div className="bg-gradient-to-br from-pink-50 via-white to-pink-50/50 rounded-3xl p-6 sm:p-8 border-2 border-pink-200 shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
+            <div className="md:col-span-7 space-y-4 text-left">
+              <div className="inline-flex items-center gap-2 bg-[#E2136E] text-white px-3 py-1 rounded-full text-xs font-bold shadow-xs">
+                <span>bKash Official Payment</span>
+                <span className="text-[10px] bg-white text-[#E2136E] px-1.5 py-0.2 rounded font-black">বাংলা কিউআর</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+                বিকাশ পেমেন্ট ও বাংলা QR কোডের মাধ্যমে সহজে বুকিং করুন
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                ঘুরবে ট্যুরস অ্যান্ড ট্রাভেলসের যেকোনো ট্রিপ বা ট্যুর প্যাকেজের বুকিং মানি পাঠাতে আমাদের অফিসিয়াল বিকাশ নম্বর ব্যবহার করুন অথবা সরাসরি বাংলা কিউআর স্ক্যান করুন।
+              </p>
+
+              {/* Number Card */}
+              <div className="bg-white rounded-2xl p-4 border border-pink-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <span className="text-[11px] font-bold text-pink-700 block uppercase tracking-wider">
+                    অফিসিয়াল বিকাশ মার্চেন্ট/পার্সোনাল নম্বর
+                  </span>
+                  <span className="text-2xl font-black font-mono text-slate-900 tracking-wider">
+                    01711085960
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText('01711085960');
+                    alert('বিকাশ নম্বর 01711085960 কপি করা হয়েছে!');
+                  }}
+                  className="px-4 py-2 bg-[#E2136E] hover:bg-[#c90f61] text-white font-bold text-xs rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer"
+                >
+                  নম্বর কপি করুন
+                </button>
+              </div>
+
+              <div className="space-y-1.5 text-xs text-slate-600">
+                <p className="font-semibold text-slate-800">পেমেন্ট ধাপসমূহ:</p>
+                <p>১. বিকাশ অ্যাপে ঢুকে "পেমেন্ট" বা "সেন্ড মানি" অপশন সিলেক্ট করুন</p>
+                <p>২. প্রাপক নম্বর লিখুন: <strong className="text-pink-700 font-mono">01711085960</strong></p>
+                <p>৩. বুকিং মানি বা নির্ধারিত প্যাকেজ মূল্য পাঠিয়ে রেফারেন্সে আপনার নাম লিখুন</p>
+                <p>৪. ট্রানজেকশন সম্পন্ন করে WhatsApp: <strong className="text-emerald-700 font-mono">01911050270</strong> এ TrxID জানান</p>
+              </div>
+            </div>
+
+            {/* QR Code Presentation */}
+            <div className="md:col-span-5 flex flex-col items-center justify-center text-center">
+              <div className="bg-white p-4 rounded-3xl border-2 border-pink-300 shadow-lg max-w-[280px] w-full">
+                <div className="mb-2 flex items-center justify-between border-b border-pink-100 pb-2">
+                  <span className="text-xs font-black text-pink-700">bKash Bangla QR</span>
+                  <span className="text-[10px] font-bold bg-pink-100 text-pink-800 px-2 py-0.5 rounded-full">বাংলা কিউআর</span>
+                </div>
+                <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-white p-1">
+                  <img
+                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1792223909/WhatsApp_Image_2026-10-17_at_1.54.57_PM.jpg"
+                    alt="বিকাশ বাংলা কিউআর কোড - 01711085960"
+                    className="w-full h-auto object-contain rounded-xl"
+                  />
+                </div>
+                <p className="text-[11px] font-bold text-slate-700 mt-2.5">
+                  বিকাশ অ্যাপ থেকে সরাসরি স্ক্যান করুন
+                </p>
+                <p className="text-[10px] text-slate-500 font-mono mt-0.5">
+                  হিসাব নম্বর: 01711085960
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Branch Offices Grid */}

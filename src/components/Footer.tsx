@@ -1,5 +1,6 @@
 import React from 'react';
-import { Phone, Mail, MapPin, Heart, Shield, Luggage } from 'lucide-react';
+import { Phone, Mail, MapPin, Heart, Shield, Luggage, MessageCircle, Download } from 'lucide-react';
+import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -265,6 +266,28 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings, onOp
                   09658-865593
                 </a>
               </li>
+              <li className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <a
+                    href={getWhatsAppLink('Hello Ghurbe Tours Team')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-emerald-300 tabular-nums tracking-wide font-medium"
+                  >
+                    WhatsApp: 01911-050270
+                  </a>
+                </div>
+                <button
+                  type="button"
+                  onClick={downloadGhurbeContactCard}
+                  className="text-[10px] text-emerald-400 hover:text-emerald-300 flex items-center gap-1 pl-6 hover:underline cursor-pointer"
+                  title="ফোনে Ghurbe Tours & Travel নাম সেভ করুন"
+                >
+                  <Download className="w-2.5 h-2.5" />
+                  <span>ফোনে কন্টাক্ট সেভ করুন (.vcf)</span>
+                </button>
+              </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-sky-400 shrink-0" />
                 <a href="mailto:ghurbebd@gmail.com" className="hover:text-white">
@@ -287,10 +310,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings, onOp
 
         {/* Payment Partners & Copyright */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-2">
-            <span>পেমেন্ট পার্টনার:</span>
-            <div className="flex items-center gap-1.5 font-bold text-slate-300">
-              <span className="bg-pink-900/60 text-pink-300 px-2 py-0.5 rounded text-[11px]">bKash</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <span>পেমেন্ট মাধ্যম:</span>
+            <div className="flex flex-wrap items-center gap-1.5 font-bold text-slate-300">
+              <span className="bg-pink-900/80 text-pink-200 px-2.5 py-0.5 rounded text-[11px] border border-pink-700/50 flex items-center gap-1">
+                <span>bKash: 01711085960</span>
+                <span className="text-[9px] bg-pink-600 text-white px-1 py-0.1 rounded font-normal">বাংলা QR</span>
+              </span>
               <span className="bg-orange-900/60 text-orange-300 px-2 py-0.5 rounded text-[11px]">Nagad</span>
               <span className="bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded text-[11px]">Rocket</span>
               <span className="bg-blue-900/60 text-blue-300 px-2 py-0.5 rounded text-[11px]">Visa / MasterCard</span>
