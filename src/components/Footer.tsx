@@ -25,8 +25,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings, onOp
                 />
               </div>
               <div>
-                <span className="text-xl font-bold text-white tracking-tight">ঘুরবে</span>
-                <span className="block text-[11px] text-sky-400 font-medium">ট্যুরস অ্যান্ড ট্রাভেলস</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xl font-black text-white tracking-tight">ঘুরবে</span>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-600 text-white uppercase tracking-tight">Tours & Travel</span>
+                </div>
+                <span className="block text-xs text-sky-400 font-bold mt-0.5">Ghurbe Tours & Travel</span>
               </div>
             </div>
 

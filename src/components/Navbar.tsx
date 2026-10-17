@@ -129,11 +129,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             
             <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 font-sans group-hover:text-blue-600 transition-colors flex items-center gap-1.5 leading-tight">
-                ঘুরবে
-              </span>
-              <span className="text-[10px] sm:text-[11px] font-medium text-slate-500 tracking-wider">
-                ট্যুর অ্যান্ড ট্রাভেলস
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 font-sans group-hover:text-blue-600 transition-colors leading-tight">
+                  ঘুরবে
+                </span>
+                <span className="text-[11px] sm:text-xs font-black px-2 py-0.5 rounded-md bg-blue-600 text-white shadow-xs uppercase tracking-tight">
+                  Tours & Travel
+                </span>
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-bold text-slate-600 tracking-wider">
+                Ghurbe Tours & Travel
               </span>
             </div>
           </div>
@@ -238,6 +243,35 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setMobileMenuOpen(false)}
           />
           <div className="relative z-40 lg:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-4 shadow-2xl animate-fade-in">
+            {/* Mobile Header Brand & Save Contact */}
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-white p-1 border border-slate-200 shadow-xs flex items-center justify-center">
+                  <img
+                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791744358/ghurbe_bd_logo.png"
+                    alt="ঘুরবে লোগো"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-base font-black text-slate-900 leading-tight">ঘুরবে</span>
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-600 text-white uppercase tracking-tight">Tours & Travel</span>
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-bold block">Ghurbe Tours & Travel</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={downloadGhurbeContactCard}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10px] font-bold active:scale-95 transition-all cursor-pointer"
+                title="ফোনে Ghurbe Tours & Travel নাম সেভ করুন"
+              >
+                <Download className="w-3 h-3 text-emerald-600" />
+                <span>নাম সেভ (.vcf)</span>
+              </button>
+            </div>
+
             {/* Nav links */}
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => {
