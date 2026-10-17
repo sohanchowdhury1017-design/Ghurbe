@@ -166,17 +166,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </button>
 
-            {/* Admin Portal Quick Access */}
-            {onOpenAdmin && (
-              <button
-                type="button"
-                onClick={onOpenAdmin}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 rounded-full border border-amber-300 transition-all cursor-pointer"
-                title="ঘুরবে এডমিন ড্যাশবোর্ড"
-              >
-                <span>এডমিন</span>
-              </button>
-            )}
 
             {user ? (
               <div className="flex items-center gap-3 bg-slate-50 border border-slate-200/80 rounded-xl px-3.5 py-1.5">
@@ -330,18 +319,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span>আমার বুকিং ({bookingsCount})</span>
                 </button>
 
-                {onOpenAdmin && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      onOpenAdmin();
-                    }}
-                    className="py-2.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs flex items-center justify-center gap-1.5 border border-amber-200 cursor-pointer"
-                  >
-                    <span>এডমিন পোর্টাল 🔐</span>
-                  </button>
-                )}
               </div>
             </div>
           </div>

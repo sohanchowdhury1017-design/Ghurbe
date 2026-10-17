@@ -23,11 +23,12 @@ import { BottomNav } from './components/BottomNav';
 import { KuakataTourPopupModal } from './components/KuakataTourPopupModal';
 import { MemberProfilePage } from './components/MemberProfilePage';
 import { AdminDashboardModal } from './components/AdminDashboardModal';
+import { AdminPage } from './components/AdminPage';
 import { POPULAR_PACKAGES } from './data/packagesData';
 import { TEAM_MEMBERS } from './data/blogAndTeamData';
 import { TourPackage, BookingRecord, SearchFilterState, ContactMessage } from './types/travel';
 
-type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about' | 'member-profile';
+type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about' | 'member-profile' | 'adminn';
 
 export default function App() {
   const [packages] = useState<TourPackage[]>(POPULAR_PACKAGES);
@@ -50,9 +51,8 @@ export default function App() {
     if (clean === 'about' || clean === 'team' || clean === 'employees') return { route: 'about', pkg: null };
     if (clean === 'why-us') return { route: 'why-us', pkg: null };
     if (clean === 'contact' || clean === 'faq') return { route: 'contact', pkg: null };
-    if (clean === 'admin' || clean === 'admin-portal') {
-      setTimeout(() => setAdminModalOpen(true), 0);
-      return { route: 'home', pkg: null };
+    if (clean === 'adminn' || clean === 'admin' || clean === 'admin-portal' || clean === 'g') {
+      return { route: 'adminn', pkg: null };
     }
 
     // Check individual executive profile pages:
@@ -98,8 +98,11 @@ export default function App() {
       }
     }
 
-    // 2. Check query parameter (e.g., ?p=/packages from 404 redirect)
+    // 2. Check query parameter (e.g., ?p=/packages from 404 redirect, or ?g=true / ?admin=true)
     const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('g') || urlParams.get('admin') === 'true' || urlParams.get('g') === 'true') {
+      setTimeout(() => setAdminModalOpen(true), 0);
+    }
     const queryRoute = urlParams.get('p') || urlParams.get('page');
     if (queryRoute) {
       const matchedByQuery = matchRoute(queryRoute);
@@ -242,7 +245,7 @@ export default function App() {
       'packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home',
       'blog', 'blogs', 'stats', 'reviews', 'team', 'travel-tips', 'kuakata-travel-guide',
       'coxs-bazar-tour-package', 'coxs-bazar', 'samsul-arafin', 'mahim-ibn-khudi',
-      'adhira-nokshi', 'md-rifat-islam', 'sidra-islam'
+      'adhira-nokshi', 'md-rifat-islam', 'sidra-islam', 'adminn', 'admin'
     ];
     if (segments.length > 0) {
       const first = segments[0].toLowerCase();
@@ -273,6 +276,8 @@ export default function App() {
       subPath = '/about';
     } else if (route === 'stats') {
       subPath = '/stats';
+    } else if (route === 'adminn') {
+      subPath = '/adminn';
     } else if (route === 'member-profile') {
       const memSlug = memberSlug || selectedMemberSlug || 'SAMSUL-ARAFIN';
       subPath = `/${memSlug}`;
@@ -553,13 +558,39 @@ export default function App() {
     });
   };
 
+  // Dedicated Full Page for Admin (ghurbe.com/adminn)
+  if (currentRoute === 'adminn') {
+    return (
+      <AdminPage
+        onBackToHome={() => navigateTo('home')}
+        bookings={bookings}
+        onUpdateBookingStatus={(id, status) => {
+          setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, paymentStatus: status } : b)));
+        }}
+        onDeleteBooking={(id) => {
+          setBookings((prev) => prev.filter((b) => b.id !== id));
+        }}
+        messages={messages}
+        onDeleteMessage={(id) => {
+          setMessages((prev) => {
+            const updated = prev.filter((m) => m.id !== id);
+            try {
+              localStorage.setItem('ghurbe_messages', JSON.stringify(updated));
+            } catch {}
+            return updated;
+          });
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-sky-dots flex flex-col font-sans text-slate-800">
       {/* Top Navbar */}
       <Navbar
         onOpenBookings={() => setMyBookingsOpen(true)}
         onOpenAuth={() => setAuthModalOpen(true)}
-        onOpenAdmin={() => setAdminModalOpen(true)}
+        onOpenAdmin={() => navigateTo('adminn')}
         bookingsCount={userBookings.length}
         user={currentUser}
         onLogout={() => setCurrentUser(null)}
@@ -673,7 +704,7 @@ export default function App() {
       <Footer
         onNavigate={handleNavigate}
         onOpenBookings={() => setMyBookingsOpen(true)}
-        onOpenAdmin={() => setAdminModalOpen(true)}
+        onOpenAdmin={() => navigateTo('adminn')}
       />
 
       {/* Floating WhatsApp Chat Consultant */}
@@ -686,7 +717,7 @@ export default function App() {
           onNavigate={handleNavigate}
           onOpenBookings={() => setMyBookingsOpen(true)}
           onOpenAuth={() => setAuthModalOpen(true)}
-          onOpenAdmin={() => setAdminModalOpen(true)}
+          onOpenAdmin={() => navigateTo('adminn')}
           bookingsCount={userBookings.length}
           user={currentUser}
         />
@@ -705,7 +736,7 @@ export default function App() {
         onClose={() => setMyBookingsOpen(false)}
         bookings={userBookings}
         onCancelBooking={handleCancelBooking}
-        onOpenAdmin={() => setAdminModalOpen(true)}
+        onOpenAdmin={() => navigateTo('adminn')}
         onNewBookingClick={() => {
           setMyBookingsOpen(false);
           navigateTo('packages');

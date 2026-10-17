@@ -14,6 +14,8 @@ const routes = [
   'Kuakata',
   'contact',
   'gallery',
+  'adminn',
+  'admin',
   'why-us',
   'stats',
 ];

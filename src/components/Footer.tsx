@@ -299,15 +299,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings, onOp
 
           <div className="flex items-center gap-3">
             <span>© 2026 ঘুরবে - ট্যুরস অ্যান্ড ট্রাভেলস। সর্বস্বত্ব সংরক্ষিত।</span>
-            {onOpenAdmin && (
-              <button
-                type="button"
-                onClick={onOpenAdmin}
-                className="text-slate-500 hover:text-amber-400 text-[11px] font-bold underline transition-colors cursor-pointer"
-              >
-                এডমিন পোর্টাল 🔐
-              </button>
-            )}
           </div>
         </div>
       </div>

@@ -52,20 +52,12 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     { id: 'contact', label: 'Contact', bangla: 'যোগাযোগ', icon: PhoneCall, color: 'text-teal-600', activeBg: 'bg-teal-50 text-teal-700' },
     { id: 'gallery', label: 'Gallery', bangla: 'গ্যালারি', icon: Image, color: 'text-purple-600', activeBg: 'bg-purple-50 text-purple-700' },
     { id: 'stats', label: 'Reviews', bangla: 'রিভিউ', icon: Award, color: 'text-orange-600', activeBg: 'bg-orange-50 text-orange-700' },
-    { id: 'why-us', label: 'Why Us', bangla: 'সুবিধাসমূহ', icon: ShieldCheck, color: 'text-indigo-600', activeBg: 'bg-indigo-50 text-indigo-700' },
-    { id: 'admin', label: 'Admin', bangla: 'এডমিন', icon: Lock, color: 'text-amber-600', activeBg: 'bg-amber-50 text-amber-700' },
   ];
 
   const handleItemClick = (id: string) => {
     setGridDrawerOpen(false);
     if (id === 'bookings') {
       onOpenBookings();
-    } else if (id === 'admin') {
-      if (onOpenAdmin) {
-        onOpenAdmin();
-      } else {
-        onNavigate('admin');
-      }
     } else {
       onNavigate(id);
     }

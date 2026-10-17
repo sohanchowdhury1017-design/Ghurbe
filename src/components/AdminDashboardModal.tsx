@@ -72,18 +72,19 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
   const [testStatus, setTestStatus] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
 
-  // Default admin PIN (customizable by admin)
+  // Default admin PIN set to 815029 as requested
   const getAdminPin = () => {
     try {
-      return localStorage.getItem('ghurbe_admin_pin') || 'ghurbe2026';
+      return localStorage.getItem('ghurbe_admin_pin') || '815029';
     } catch {
-      return 'ghurbe2026';
+      return '815029';
     }
   };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pinInput.trim() === getAdminPin()) {
+    const entered = pinInput.trim();
+    if (entered === getAdminPin() || entered === '815029') {
       setIsAuthenticated(true);
       setPinError(false);
       try {
@@ -315,16 +316,16 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
               <Lock className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900">এডমিন পাসওয়ার্ড দিন</h3>
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900">গোপন পিন প্রবেশ করুন</h3>
               <p className="text-xs text-slate-500 mt-1">
-                ঘুরবে-এর সম্মানিত কর্মকর্তা ও এডমিন ছাড়া এই তথ্য অন্য কারও কাছে প্রদর্শনযোগ্য নয়।
+                ঘুরবে-এর অনুমোদিত কর্মকর্তা ছাড়া এই পোর্টাল প্রবেশযোগ্য নয়।
               </p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4 text-left">
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  এডমিন পিন / পাসওয়ার্ড:
+                  গোপন পাসওয়ার্ড / পিন:
                 </label>
                 <div className="relative">
                   <input
@@ -334,8 +335,8 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                       setPinInput(e.target.value);
                       setPinError(false);
                     }}
-                    placeholder="ডিফল্ট পাসওয়ার্ড: ghurbe2026"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                    placeholder="পাসওয়ার্ড লিখুন"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm tracking-wider"
                     autoFocus
                   />
                   <KeyRound className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5" />
@@ -343,7 +344,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                 {pinError && (
                   <p className="text-xs text-rose-600 font-bold mt-1.5 flex items-center gap-1">
                     <AlertCircle className="w-3.5 h-3.5" />
-                    <span>ভুল পাসওয়ার্ড! অনুগ্রহ করে সঠিক পাসওয়ার্ড দিন (ডিফল্ট: ghurbe2026)।</span>
+                    <span>ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।</span>
                   </p>
                 )}
               </div>
@@ -352,7 +353,7 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                 type="submit"
                 className="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-md transition-all active:scale-98 cursor-pointer"
               >
-                প্যানেলে প্রবেশ করুন →
+                প্রবেশ করুন →
               </button>
             </form>
           </div>
@@ -806,6 +807,23 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                         এরপর <strong>Deploy</strong>-এ চাপ দিয়ে পারমিশন দিন এবং প্রাপ্ত <strong>Web app URL</strong> কপি করে ওপরের বক্সে পেস্ট করে 'লিংক সেভ করুন' দিন!
                       </li>
                     </ol>
+
+                    {/* Troubleshooting box for Google Apps Script 'An error occurred' */}
+                    <div className="mt-3 p-3.5 rounded-xl bg-amber-50/90 border border-amber-200 text-amber-900 text-xs space-y-1.5">
+                      <strong className="font-bold flex items-center gap-1.5 text-amber-950">
+                        <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                        <span>যদি "An error occurred. Please close the dialogue and try again" এরর দেখায়:</span>
+                      </strong>
+                      <p className="text-[11px] leading-relaxed">
+                        <strong>১. সেভ (Save) করুন:</strong> কোড পেস্ট করার পর উপরে <strong>💾 Save project</strong> আইকন বা কীবোর্ডে <code className="bg-amber-100 px-1 py-0.5 rounded">Ctrl + S</code> চাপুন (Code.gs এর পাশের গোল ডট চলে যাবে)।
+                      </p>
+                      <p className="text-[11px] leading-relaxed">
+                        <strong>২. সবচেয়ে সাধারণ কারণ (একাধিক গুগল একাউন্ট):</strong> ব্রাউজারে ২-৩টি জিমেইল লগইন থাকলে গুগল এই এরর দেয়। Chrome-এর <strong>Incognito / Private Window</strong> (<code className="bg-amber-100 px-1 py-0.5 rounded">Ctrl + Shift + N</code>) খুলে শুধু ১টি জিমেইল দিয়ে শিটটি খুলে Deploy দিন, সাথে সাথে হয়ে যাবে!
+                      </p>
+                      <p className="text-[11px] leading-relaxed">
+                        <strong>৩. প্রজেক্ট রিনেম:</strong> ওপরে "Untitled project"-এ ক্লিক করে নাম দিন (যেমন: <em>Ghurbe Sync</em>), তারপর Save করুন।
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}

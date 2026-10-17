@@ -143,7 +143,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
         )}
 
-        {/* 2.5 High-Impact Live Stats Strip (১,১৪৪+ হ্যাপি পর্যটক, ৩৬৭+ সফল ট্যুর, ৪.৯ রেটিং) */}
+        {/* 2.5 High-Impact Live Stats Strip (১,১৮৮+ হ্যাপি পর্যটক, ৩৬৭+ সফল ট্যুর, ৪.৯ রেটিং) */}
         <div 
           onClick={onNavigateToStats}
           className="bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-sky-300 transition-all cursor-pointer group"
@@ -168,7 +168,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 <Users className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="text-lg sm:text-3xl font-black text-slate-900 font-mono tracking-tight">
-                ১,১৪৪+
+                ১,১৮৮+
               </div>
               <p className="text-[10px] sm:text-xs text-slate-600 font-bold mt-0.5">
                 টোটাল হ্যাপি পর্যটক

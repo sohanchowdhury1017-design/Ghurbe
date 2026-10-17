@@ -59,7 +59,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({
     },
     {
       year: 'সততা ও বিশ্বাস',
-      title: '১,১৪৪+ পরিবারের আস্থা ও মুখে হাসি',
+      title: '১,১৮৮+ পরিবারের আস্থা ও মুখে হাসি',
       desc: 'নারী, শিশু ও প্রবীণ সদস্যদের জন্য সর্বোচ্চ সম্মানজনক ও নিরাপদ পরিবেশ নিশ্চিতকরণ।',
     },
     {
@@ -97,7 +97,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({
             </div>
 
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
-              আমাদের গর্ব: <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-200 to-amber-200">১,১৪৪+ সন্তুষ্ট পর্যটক</span> ও ৩৬৭টি সফল ট্যুর!
+              আমাদের গর্ব: <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-200 to-amber-200">১,১৮৮+ সন্তুষ্ট পর্যটক</span> ও ৩৬৭টি সফল ট্যুর!
             </h1>
 
             <p className="text-xs sm:text-base text-slate-200 leading-relaxed max-w-2xl">
@@ -121,16 +121,16 @@ export const StatsPage: React.FC<StatsPageProps> = ({
           </div>
         </div>
 
-        {/* The 3 Core Stats Cards (User requested: 1144 happy porjotok, 367 tur, 4.9 rating) */}
+        {/* The 3 Core Stats Cards (User requested: 1188 happy porjotok, 367 tur, 4.9 rating) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: 1144 Happy Porjotok */}
+          {/* Card 1: 1188 Happy Porjotok */}
           <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border-2 border-sky-200 shadow-sm hover:shadow-xl hover:border-blue-500 transition-all group">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-sky-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/30 mb-5 group-hover:scale-110 transition-transform">
               <Users className="w-7 h-7" />
             </div>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight tabular-nums font-mono">
-                ১,১৪৪+
+                ১,১৮৮+
               </span>
               <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                 সন্তুষ্ট পর্যটক
@@ -140,7 +140,7 @@ export const StatsPage: React.FC<StatsPageProps> = ({
               টোটাল হ্যাপি পর্যটক (Happy Travelers)
             </h3>
             <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-              বাংলাদেশজুড়ে পরিবার, বন্ধু, দম্পতি ও কর্পোরেট টিম নিয়ে আমাদের সাথে নিরাপদে ঘুরেছেন ১,১৪৪ জনেরও বেশি ভ্রমণপ্রেমী।
+              বাংলাদেশজুড়ে পরিবার, বন্ধু, দম্পতি ও কর্পোরেট টিম নিয়ে আমাদের সাথে নিরাপদে ঘুরেছেন ১,১৮৮ জনেরও বেশি ভ্রমণপ্রেমী।
             </p>
           </div>
 

@@ -50,20 +50,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
           </div>
           
           <div className="flex items-center gap-2">
-            {onOpenAdmin && (
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  onOpenAdmin();
-                }}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition-all border border-slate-700 cursor-pointer"
-                title="ঘুরবে এডমিন প্যানেল"
-              >
-                <Lock className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden sm:inline">এডমিন পোর্টাল</span>
-              </button>
-            )}
+
             <button
               onClick={onClose}
               className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
@@ -177,19 +164,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
         {/* Footer info strip */}
         <div className="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 px-5">
           <span className="text-[11px]">হেল্পলাইন: <strong>09658-865593</strong></span>
-          {onOpenAdmin && (
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                onOpenAdmin();
-              }}
-              className="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-1 cursor-pointer"
-            >
-              <Lock className="w-3 h-3" />
-              <span>এডমিন লগইন (কর্মকর্তাদের জন্য)</span>
-            </button>
-          )}
+
         </div>
       </div>
     </div>

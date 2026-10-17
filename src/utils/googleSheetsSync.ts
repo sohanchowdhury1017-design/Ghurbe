@@ -189,4 +189,29 @@ function doPost(e) {
 function doGet(e) {
   return ContentService.createTextOutput("Ghurbe Google Sheets Webhook is Active and Ready!");
 }
+
+// এই ফাংশনটি একবার Run করলে শিটে স্বয়ংক্রিয়ভাবে Bookings ও Messages ট্যাব ও কলাম হেডার তৈরি হয়ে যাবে এবং পারমিশন গ্রান্ট হবে
+function initialSetup() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var bookingSheet = sheet.getSheetByName('Bookings');
+  if (!bookingSheet) {
+    bookingSheet = sheet.insertSheet('Bookings');
+    bookingSheet.appendRow([
+      'বুকিং কোড', 'যাত্রীর নাম', 'ফোন নম্বর', 'ইমেইল', 'প্যাকেজের নাম',
+      'ভ্রমণের তারিখ', 'যাত্রী সংখ্যা', 'রুমের ধরন', 'মোট ভাড়া (৳)',
+      'অগ্রিম পরিশোধ (৳)', 'পেমেন্ট মেথড', 'পেমেন্ট স্ট্যাটাস', 'ট্রানজেকশন আইডি',
+      'বুকিংয়ের সময়', 'বিশেষ নোট'
+    ]);
+    bookingSheet.getRange(1, 1, 1, 15).setBackground('#0284c7').setFontColor('#ffffff').setFontWeight('bold');
+    bookingSheet.setFrozenRows(1);
+  }
+  var msgSheet = sheet.getSheetByName('Messages');
+  if (!msgSheet) {
+    msgSheet = sheet.insertSheet('Messages');
+    msgSheet.appendRow(['তারিখ ও সময়', 'গ্রাহকের নাম', 'ফোন নম্বর', 'ইমেইল', 'আকাঙ্ক্ষিত গন্তব্য', 'যাত্রী সংখ্যা', 'বার্তা/মেসেজ']);
+    msgSheet.getRange(1, 1, 1, 7).setBackground('#10b981').setFontColor('#ffffff').setFontWeight('bold');
+    msgSheet.setFrozenRows(1);
+  }
+  Logger.log('Ghurbe Setup completed successfully!');
+}
 `;
