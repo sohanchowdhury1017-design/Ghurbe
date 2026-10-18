@@ -18,6 +18,7 @@ import {
   FileText
 } from 'lucide-react';
 import { BookingRecord } from '../types/travel';
+import { generateInvoiceImage, downloadInvoiceImageFile } from '../utils/invoiceImageGenerator';
 
 interface MyBookingsModalProps {
   isOpen: boolean;
@@ -249,6 +250,29 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
               <div className="flex items-center gap-2">
                 <button
                   type="button"
+                  onClick={async () => {
+                    const dataUrl = await generateInvoiceImage({
+                      bookingCode: selectedInvoiceBooking.bookingCode,
+                      packageTitle: selectedInvoiceBooking.packageTitle,
+                      travelerName: selectedInvoiceBooking.travelerName,
+                      phone: selectedInvoiceBooking.phone,
+                      email: selectedInvoiceBooking.email,
+                      date: selectedInvoiceBooking.date,
+                      guestsCount: selectedInvoiceBooking.guestsCount,
+                      planType: selectedInvoiceBooking.roomType === 'couple' ? 'couple' : 'single',
+                      totalPrice: selectedInvoiceBooking.totalPrice,
+                      advancePaid: selectedInvoiceBooking.advancePaid,
+                      bookedAt: selectedInvoiceBooking.bookedAt,
+                    });
+                    downloadInvoiceImageFile(dataUrl, selectedInvoiceBooking.bookingCode);
+                  }}
+                  className="px-3.5 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>ছবি ডাউনলোড (.png)</span>
+                </button>
+                <button
+                  type="button"
                   onClick={() => window.print()}
                   className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
                 >
@@ -357,7 +381,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
                     </tr>
                     <tr className="bg-slate-50 font-bold">
                       <td colSpan={2} className="p-2.5 text-slate-800">
-                        অবশিষ্ট বকেয়া (যাত্রার দিন পরিশোধযোগ্য):
+                        অবশিষ্ট বকেয়া (বকেয়া ব্যালেন্স):
                       </td>
                       <td className="p-2.5 text-right font-mono font-black text-blue-900">
                         ৳ {Math.max(0, selectedInvoiceBooking.totalPrice - selectedInvoiceBooking.advancePaid).toLocaleString('en-IN')}

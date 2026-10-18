@@ -244,12 +244,40 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 </div>
 
                 <div className="space-y-3 text-xs text-slate-700">
+                  {/* bKash Payment Number */}
+                  <div className="bg-white p-3 rounded-xl border-2 border-pink-300 shadow-xs space-y-1">
+                    <span className="text-[11px] font-bold text-pink-700 block">
+                      বিকাশ মার্চেন্ট / পেমেন্ট নম্বর:
+                    </span>
+                    <div className="flex items-center justify-between gap-2 bg-pink-50 px-3 py-1.5 rounded-lg border border-pink-200">
+                      <span className="text-sm sm:text-base font-black font-mono text-slate-900 tracking-wider">
+                        01711-085960
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard('01711085960', 'bkash_num')}
+                        className="px-2.5 py-1 bg-[#E2136E] hover:bg-[#c20f5e] text-white text-[11px] font-bold rounded-md flex items-center gap-1 transition-all cursor-pointer active:scale-95 shrink-0"
+                      >
+                        {copiedKey === 'bkash_num' ? (
+                          <>
+                            <Check className="w-3 h-3" />
+                            <span>কপি হয়েছে</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3 h-3" />
+                            <span>নম্বর কপি</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
                   <div className="bg-white p-3.5 rounded-xl border border-pink-200 shadow-xs space-y-1.5">
                     <span className="font-bold text-slate-900 block">📱 যেভাবে পরিশোধ করবেন:</span>
                     <ol className="list-decimal pl-4 space-y-1 text-slate-600">
                       <li>বিকাশ অ্যাপ ওপেন করুন</li>
-                      <li><strong>কিউআর স্ক্যান</strong> বাটনে চাপ দিন</li>
-                      <li>উপরে থাকা বাংলা কিউআর কোডটি স্ক্যান করুন</li>
+                      <li><strong>পেমেন্ট</strong> অপশনে গিয়ে <strong>01711085960</strong> লিখুন অথবা <strong>কিউআর স্ক্যান</strong> করুন</li>
                       <li>বুকিং মানির পরিমাণ লিখে পিন দিয়ে কনফার্ম করুন</li>
                     </ol>
                   </div>

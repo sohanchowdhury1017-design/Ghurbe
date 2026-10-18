@@ -26,6 +26,12 @@ import { TourPackage, BookingRecord } from '../types/travel';
 import { POPULAR_PACKAGES } from '../data/packagesData';
 import { syncBookingToGoogleSheet } from '../utils/googleSheetsSync';
 import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
+import { 
+  generateInvoiceImage, 
+  downloadInvoiceImageFile, 
+  formatWhatsAppInvoiceText, 
+  InvoiceCardData 
+} from '../utils/invoiceImageGenerator';
 
 interface BookingModalProps {
   pkg: TourPackage | null;
@@ -91,6 +97,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [trxId, setTrxId] = useState('');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [confirmedBooking, setConfirmedBooking] = useState<BookingRecord | null>(null);
+  const [invoiceImageDataUrl, setInvoiceImageDataUrl] = useState<string | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
   // Update date when package changes
   const handlePackageChange = (newPkgId: string) => {
@@ -134,29 +142,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     setStep('payment');
   };
 
-  // Helper to generate full WhatsApp Invoice link
+  // Helper to generate full WhatsApp Invoice link (formatted as an official invoice receipt)
   const getWhatsAppInvoiceLink = (booking: BookingRecord, senderNum?: string, transactionId?: string) => {
-    const text = `*🌿 ঘুরবে ট্যুর অ্যান্ড ট্রাভেল — নতুন বুকিং ও পেমেন্ট রিকোয়েস্ট*
-──────────────────────
-📋 *বুকিং কোড:* ${booking.bookingCode}
-🏖️ *ট্যুর প্যাকেজ:* ${booking.packageTitle}
-📅 *যাত্রার তারিখ:* ${booking.date}
-👤 *ভ্রমণকারীর নাম:* ${booking.travelerName}
-📱 *মোবাইল নম্বর:* ${booking.phone}
-👥 *প্ল্যান ও সদস্য:* ${planType === 'couple' ? 'কাপল প্যাকেজ (২ জন)' : `সিঙ্গেল (${singleGuestsCount} জন)`}
-💰 *মোট প্যাকেজ বিল:* ৳ ${booking.totalPrice.toLocaleString('en-IN')}
-💳 *পরিশোধিত অগ্রিম বুকিং মানি:* ৳ ${booking.advancePaid.toLocaleString('en-IN')}
-📱 *প্রেরক বিকাশ নম্বর:* ${senderNum || senderPhone || 'বিকাশ অ্যাপ থেকে'}
-🔢 *TrxID / লাস্ট ৪ ডিজিট:* ${transactionId || trxId || 'পেমেন্ট সম্পন্ন'}
-──────────────────────
-(আমি বিকাশ বাংলা কিউআরে পেমেন্ট করেছি। পেমেন্টের স্ক্রিনশট বা লাস্ট ৪ ডিজিট পাঠাচ্ছি, অনুগ্রহ করে যাচাই করে বুকিং কনফার্ম করুন।)`;
-
+    const text = formatWhatsAppInvoiceText(booking, senderNum || senderPhone, transactionId || trxId);
     return `https://wa.me/8801911050270?text=${encodeURIComponent(text)}`;
   };
 
   const handleProcessPayment = () => {
     const bookingCode = `GH-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const paymentNote = `বিকাশ বাংলা কিউআর পেমেন্ট ${senderPhone ? `| প্রেরক: ${senderPhone}` : ''} ${trxId ? `| TrxID/লাস্ট ৪ ডিজিট: ${trxId}` : ''}`;
+    const paymentNote = `বিকাশ পেমেন্ট (01711085960 / কিউআর) ${senderPhone ? `| প্রেরক: ${senderPhone}` : ''} ${trxId ? `| TrxID/লাস্ট ৪ ডিজিট: ${trxId}` : ''}`;
     const consolidatedNotes = [notes, paymentNote].filter(Boolean).join(' · ');
 
     const newBooking: BookingRecord = {
@@ -182,13 +176,44 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       notes: consolidatedNotes,
     };
 
+    // 1. Generate crisp Invoice Card Image (PNG) and automatically download it
+    // User requested: "and whats app e jaor somoy pic akare jabe invoice akare jabe"
+    setIsGeneratingImage(true);
+    const invoiceCardData: InvoiceCardData = {
+      bookingCode,
+      packageTitle: activePkg.title,
+      travelerName,
+      phone,
+      email: email || undefined,
+      date,
+      guestsCount: effectiveGuests,
+      planType,
+      totalPrice,
+      advancePaid: payableAmount,
+      senderPhone: senderPhone || undefined,
+      trxId: trxId || undefined,
+      bookedAt: new Date().toLocaleDateString('bn-BD', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+    };
+
+    generateInvoiceImage(invoiceCardData)
+      .then((imgDataUrl) => {
+        setInvoiceImageDataUrl(imgDataUrl);
+        // Automatically download the invoice picture file to user's device/gallery
+        downloadInvoiceImageFile(imgDataUrl, bookingCode);
+      })
+      .catch((err) => console.error('Invoice image creation failed:', err))
+      .finally(() => setIsGeneratingImage(false));
+
     setConfirmedBooking(newBooking);
     onBookingConfirmed(newBooking);
     syncBookingToGoogleSheet(newBooking);
     setStep('success');
 
-    // Automatically trigger WhatsApp with invoice link as requested:
-    // "and ekhane payment requst dile seita jano derect whats app eo invoice akare chole ase amader number e"
+    // 2. Automatically trigger WhatsApp with invoice text link to official number 01911-050270
     const waUrl = getWhatsAppInvoiceLink(newBooking, senderPhone, trxId);
     try {
       const waAnchor = document.createElement('a');
@@ -512,7 +537,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   <span className="text-base font-black text-emerald-800 tabular-nums">
                     ৳ {advanceAmount.toLocaleString('en-IN')}
                   </span>
-                  <span className="text-[10px] text-emerald-700 block mt-0.5">বাকি টাকা যাত্রার দিন</span>
                 </button>
 
                 <button
@@ -528,11 +552,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   <span className="text-base font-black text-blue-900 tabular-nums">
                     ৳ {totalPrice.toLocaleString('en-IN')}
                   </span>
-                  <span className="text-[10px] text-blue-700 block mt-0.5">আর কোনো ঝামেলা নেই</span>
                 </button>
               </div>
 
-              {/* bKash Official Bangla QR Box */}
+              {/* bKash Official Payment Box (01711085960 & Bangla QR Scanner) */}
               <div className="p-4 sm:p-5 rounded-3xl border-2 border-pink-400 bg-gradient-to-b from-pink-50/90 via-white to-pink-50/40 space-y-4 shadow-sm animate-fade-in text-left">
                 <div className="flex items-center justify-between border-b border-pink-200/80 pb-2.5">
                   <div className="flex items-center gap-2">
@@ -541,36 +564,63 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     </div>
                     <div>
                       <h4 className="text-sm sm:text-base font-black text-slate-900 leading-tight">
-                        বিকাশ পেমেন্ট (Bangla QR Scanner)
+                        বিকাশ পেমেন্ট (মার্চেন্ট নম্বর ও কিউআর)
                       </h4>
                       <p className="text-[11px] text-pink-700 font-medium">
-                        বিকাশ অ্যাপে বাংলা কিউআর স্ক্যান করে দ্রুত পেমেন্ট সম্পন্ন করুন
+                        01711-085960 নম্বরে পেমেন্ট করুন অথবা বাংলা কিউআর স্ক্যান করুন
                       </p>
                     </div>
                   </div>
                   <span className="text-[10px] font-black bg-pink-100 text-[#E2136E] px-2.5 py-0.5 rounded-full border border-pink-200">
-                    অফিসিয়াল QR
+                    অফিসিয়াল পেমেন্ট
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
-                  {/* Left: Instructions & Payable Amount */}
-                  <div className="sm:col-span-7 space-y-3">
-                    <div className="bg-white p-3.5 rounded-2xl border border-pink-200 shadow-xs space-y-1">
-                      <div className="flex justify-between items-center text-slate-700 font-semibold text-xs">
-                        <span>পরিশোধের পরিমাণ:</span>
-                        <span className="text-base font-black text-blue-900 tabular-nums">
-                          ৳ {payableAmount.toLocaleString('en-IN')}
+                  {/* Left: Instructions, Number & Payable Amount */}
+                  <div className="sm:col-span-7 space-y-2.5">
+                    {/* Amount Payable */}
+                    <div className="bg-white p-3 rounded-2xl border border-pink-200 shadow-xs flex items-center justify-between">
+                      <span className="text-xs font-semibold text-slate-700">পরিশোধের পরিমাণ:</span>
+                      <span className="text-base sm:text-lg font-black text-blue-950 font-mono tabular-nums">
+                        ৳ {payableAmount.toLocaleString('en-IN')}
+                      </span>
+                    </div>
+
+                    {/* Official bKash Number with 1-click Copy */}
+                    <div className="bg-white p-3 rounded-2xl border-2 border-pink-300 shadow-xs space-y-1">
+                      <span className="text-[11px] font-bold text-pink-700 block">
+                        বিকাশ মার্চেন্ট / পেমেন্ট নম্বর:
+                      </span>
+                      <div className="flex items-center justify-between gap-2 bg-pink-50 px-3 py-1.5 rounded-xl border border-pink-200">
+                        <span className="text-sm sm:text-base font-black font-mono text-slate-950 tracking-wider">
+                          01711-085960
                         </span>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard('01711085960', 'bkash_num')}
+                          className="px-2.5 py-1 bg-[#E2136E] hover:bg-[#c20f5e] text-white text-[11px] font-bold rounded-lg flex items-center gap-1 transition-all cursor-pointer active:scale-95 shrink-0"
+                        >
+                          {copiedKey === 'bkash_num' ? (
+                            <>
+                              <Check className="w-3 h-3" />
+                              <span>কপি হয়েছে</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3 h-3" />
+                              <span>নম্বর কপি</span>
+                            </>
+                          )}
+                        </button>
                       </div>
-                      <p className="text-[11px] text-slate-500">
-                        আপনার বিকাশ অ্যাপে ঢুকে <strong>'কিউআর স্ক্যান'</strong> করুন এবং নির্ধারিত ৳{payableAmount.toLocaleString('en-IN')} পরিশোধ করুন।
+                      <p className="text-[10px] text-slate-500">
+                        বিকাশ অ্যাপে ‘পেমেন্ট’ অপশনে <strong>01711085960</strong> নম্বরে টাকা পাঠান অথবা ডানে দেওয়া বাংলা কিউআর স্ক্যান করুন।
                       </p>
                     </div>
 
-                    <div className="bg-pink-100/60 p-3 rounded-2xl border border-pink-200/70 text-xs text-slate-700 space-y-1">
-                      <p className="font-bold text-pink-900">পেমেন্ট শেষে নিচের বক্সে TrxID লিখুন:</p>
-                      <p className="text-[11px] text-slate-600">ফিরতি SMS বা বিকাশ অ্যাপের স্টেটমেন্টে আপনি TrxID পাবেন।</p>
+                    <div className="bg-pink-100/60 p-2.5 rounded-2xl border border-pink-200/70 text-xs text-slate-700">
+                      <p className="font-bold text-pink-900 text-[11px]">পেমেন্ট শেষে নিচের বক্সে TrxID বা লাস্ট ৪ ডিজিট লিখুন:</p>
                     </div>
                   </div>
 
@@ -674,31 +724,75 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </p>
               </div>
 
+              {/* Visual Invoice Picture Card Showcase */}
+              {invoiceImageDataUrl && (
+                <div className="bg-white p-3.5 sm:p-4 rounded-3xl border-2 border-blue-400 shadow-md space-y-2 text-left animate-fade-in">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-blue-900 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-blue-600" />
+                      <span>📸 ডিজিটাল ইনভয়েস ছবি (Invoice Picture Card)</span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => downloadInvoiceImageFile(invoiceImageDataUrl, confirmedBooking.bookingCode)}
+                      className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer underline"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>ছবি ডাউনলোড</span>
+                    </button>
+                  </div>
+
+                  <div className="max-h-60 sm:max-h-80 overflow-y-auto rounded-2xl border border-slate-200 shadow-inner bg-slate-50 flex justify-center p-2">
+                    <img
+                      src={invoiceImageDataUrl}
+                      alt="বুকিং ইনভয়েস ছবি"
+                      className="w-full max-w-sm h-auto object-contain rounded-xl shadow-xs"
+                    />
+                  </div>
+
+                  <p className="text-[11px] text-slate-600">
+                    ✅ আপনার ইনভয়েসের ছবি (PNG Image) স্বয়ংক্রিয়ভাবে ডাউনলোড হয়েছে। নিচের WhatsApp বাটনে ক্লিক করে ছবিটি ও স্ক্রিনশট পাঠিয়ে দিন।
+                  </p>
+                </div>
+              )}
+
               {/* Direct WhatsApp Action Banner */}
-              <div className="bg-[#25D366]/10 border-2 border-[#25D366] rounded-2xl p-4 text-left space-y-2.5">
+              <div className="bg-[#25D366]/10 border-2 border-[#25D366] rounded-2xl p-4 text-left space-y-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0">
-                    <MessageCircle className="w-4 h-4 fill-white" />
+                  <div className="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0">
+                    <MessageCircle className="w-5 h-5 fill-white" />
                   </div>
                   <div>
                     <h5 className="text-xs sm:text-sm font-black text-slate-900">
-                      দ্রুত যাচাইয়ের জন্য WhatsApp-এ মেসেজ পাঠান
+                      দ্রুত যাচাইয়ের জন্য WhatsApp-এ ইনভয়েস ও ছবি পাঠান
                     </h5>
                     <p className="text-[11px] text-slate-600">
-                      নিচের বাটনে চাপ দিলে আপনার বুকিং ইনভয়েস সরাসরি আমাদের নম্বরে (01911-050270) চলে যাবে। সেখানে পেমেন্টের স্ক্রিনশট বা লাস্ট ৪ ডিজিট পাঠিয়ে দিন।
+                      নিচের বাটনে চাপ দিলে আপনার বুকিং ইনভয়েস সরাসরি আমাদের নম্বরে (01911-050270) চলে যাবে। সেখানে পেমেন্টের স্ক্রিনশট বা লাস্ট ৪ ডিজিট ও ইনভয়েস ছবি পাঠিয়ে দিন।
                     </p>
                   </div>
                 </div>
 
-                <a
-                  href={getWhatsAppInvoiceLink(confirmedBooking, senderPhone, trxId)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer text-center"
-                >
-                  <MessageCircle className="w-4 h-4 fill-white" />
-                  <span>সরাসরি WhatsApp এ ইনভয়েস ও স্ক্রিনশট পাঠান (01911-050270)</span>
-                </a>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  {invoiceImageDataUrl && (
+                    <button
+                      type="button"
+                      onClick={() => downloadInvoiceImageFile(invoiceImageDataUrl, confirmedBooking.bookingCode)}
+                      className="py-3 px-4 bg-sky-700 hover:bg-sky-800 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all active:scale-95 cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>ইনভয়েস ছবি ডাউনলোড (.png)</span>
+                    </button>
+                  )}
+                  <a
+                    href={getWhatsAppInvoiceLink(confirmedBooking, senderPhone, trxId)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-3 px-4 bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-xs sm:text-sm rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer text-center"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-white" />
+                    <span>WhatsApp এ ইনভয়েস পাঠান (01911-050270)</span>
+                  </a>
+                </div>
               </div>
 
               {/* Pending Request Summary Card */}
