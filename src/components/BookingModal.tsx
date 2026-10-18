@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, CheckCircle2, ShieldCheck, Printer, Calendar, Users, MapPin, Phone, CreditCard, Sparkles, ArrowRight, Copy, Check, QrCode, MessageCircle, Download } from 'lucide-react';
+import { X, CheckCircle2, ShieldCheck, Printer, Calendar, Users, MapPin, Phone, CreditCard, Sparkles, ArrowRight, Copy, Check, QrCode, MessageCircle, Download, Landmark } from 'lucide-react';
 import { TourPackage, BookingRecord } from '../types/travel';
 import { syncBookingToGoogleSheet } from '../utils/googleSheetsSync';
 import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
@@ -23,12 +23,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [date, setDate] = useState(pkg?.departureDateText ? '2026-11-12' : '');
   const [guestsCount, setGuestsCount] = useState(2);
   const [roomType, setRoomType] = useState<'standard' | 'deluxe' | 'couple' | 'tent'>('couple');
-  const [paymentMethod, setPaymentMethod] = useState<'bkash' | 'nagad' | 'rocket' | 'card' | 'cash'>('bkash');
+  const [paymentMethod, setPaymentMethod] = useState<'bkash' | 'nagad' | 'bank' | 'rocket' | 'card' | 'cash'>('bkash');
   const [paymentType, setPaymentType] = useState<'full' | 'advance'>('advance');
   const [notes, setNotes] = useState('');
-  const [bkashSenderPhone, setBkashSenderPhone] = useState('');
-  const [bkashTrxId, setBkashTrxId] = useState('');
-  const [copiedNumber, setCopiedNumber] = useState(false);
+  const [senderPhone, setSenderPhone] = useState('');
+  const [trxId, setTrxId] = useState('');
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [confirmedBooking, setConfirmedBooking] = useState<BookingRecord | null>(null);
 
   if (!pkg) return null;
@@ -40,10 +40,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const advanceAmount = packageType === 'couple' ? 2000 : 1000 * guestsCount;
   const payableAmount = paymentType === 'full' ? totalPrice : advanceAmount;
 
-  const handleCopyNumber = () => {
-    navigator.clipboard.writeText('01711085960');
-    setCopiedNumber(true);
-    setTimeout(() => setCopiedNumber(false), 2500);
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2500);
   };
 
   const handleSubmitDetails = (e: React.FormEvent) => {
@@ -57,9 +57,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   const handleProcessPayment = () => {
     const bookingCode = `GH-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const paymentNote = paymentMethod === 'bkash'
-      ? `বিকাশ নম্বর: 01711085960 (বাংলা QR) ${bkashSenderPhone ? `| প্রেরক: ${bkashSenderPhone}` : ''} ${bkashTrxId ? `| TrxID: ${bkashTrxId}` : ''}`
-      : '';
+    let paymentNote = '';
+    if (paymentMethod === 'bkash') {
+      paymentNote = `বিকাশ (বাংলা QR: 01711085960 / সেন্ড মানি: 01831841017) ${senderPhone ? `| প্রেরক: ${senderPhone}` : ''} ${trxId ? `| TrxID: ${trxId}` : ''}`;
+    } else if (paymentMethod === 'nagad') {
+      paymentNote = `নগদ পার্সোনাল (01831841017) ${senderPhone ? `| প্রেরক: ${senderPhone}` : ''} ${trxId ? `| TrxID: ${trxId}` : ''}`;
+    } else if (paymentMethod === 'bank') {
+      paymentNote = `পূবালী ব্যাংক (হিসাব: 3116901000653) ${senderPhone ? `| প্রেরক/হিসাব: ${senderPhone}` : ''} ${trxId ? `| রেফারেন্স/রশিদ: ${trxId}` : ''}`;
+    } else if (paymentMethod === 'rocket') {
+      paymentNote = `রকেট ${senderPhone ? `| প্রেরক: ${senderPhone}` : ''} ${trxId ? `| TrxID: ${trxId}` : ''}`;
+    } else {
+      paymentNote = `কার্ড/অনলাইন পেমেন্ট ${trxId ? `| TrxID: ${trxId}` : ''}`;
+    }
     const consolidatedNotes = [notes, paymentNote].filter(Boolean).join(' · ');
 
     const newBooking: BookingRecord = {
@@ -378,7 +387,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         : 'border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    <div className="w-8 h-8 mx-auto rounded-lg bg-pink-600 text-white font-black text-xs flex items-center justify-center">
+                    <div className="w-8 h-8 mx-auto rounded-lg bg-[#E2136E] text-white font-black text-xs flex items-center justify-center">
                       বিকাশ
                     </div>
                     <span className="text-xs font-bold text-slate-800 mt-1 block">bKash</span>
@@ -394,29 +403,29 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         : 'border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    <div className="w-8 h-8 mx-auto rounded-lg bg-orange-600 text-white font-black text-xs flex items-center justify-center">
+                    <div className="w-8 h-8 mx-auto rounded-lg bg-[#E31C24] text-white font-black text-xs flex items-center justify-center">
                       নগদ
                     </div>
                     <span className="text-xs font-bold text-slate-800 mt-1 block">Nagad</span>
                   </button>
 
-                  {/* Rocket */}
+                  {/* Bank - Pubali Bank */}
                   <button
                     type="button"
-                    onClick={() => setPaymentMethod('rocket')}
+                    onClick={() => setPaymentMethod('bank')}
                     className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
-                      paymentMethod === 'rocket'
-                        ? 'border-purple-600 bg-purple-50 ring-2 ring-purple-500'
+                      paymentMethod === 'bank'
+                        ? 'border-emerald-600 bg-emerald-50 ring-2 ring-emerald-500'
                         : 'border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    <div className="w-8 h-8 mx-auto rounded-lg bg-purple-700 text-white font-black text-xs flex items-center justify-center">
-                      রকেট
+                    <div className="w-8 h-8 mx-auto rounded-lg bg-emerald-700 text-white font-black text-xs flex items-center justify-center">
+                      <Landmark className="w-4 h-4" />
                     </div>
-                    <span className="text-xs font-bold text-slate-800 mt-1 block">Rocket</span>
+                    <span className="text-xs font-bold text-slate-800 mt-1 block">পূবালী ব্যাংক</span>
                   </button>
 
-                  {/* Card / Bank */}
+                  {/* Card / Rocket */}
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('card')}
@@ -434,7 +443,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               </div>
 
-              {/* bKash Payment Box with Bangla QR Code */}
+              {/* 1. bKash Payment Box with QR and Send Money */}
               {paymentMethod === 'bkash' && (
                 <div className="p-4 sm:p-5 rounded-2xl border-2 border-pink-400 bg-gradient-to-b from-pink-50/80 via-white to-pink-50/30 space-y-4 shadow-sm animate-fade-in text-left">
                   <div className="flex items-center justify-between border-b border-pink-200/80 pb-2.5">
@@ -444,10 +453,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       </div>
                       <div>
                         <h4 className="text-sm font-black text-slate-900 leading-tight">
-                          বিকাশ পেমেন্ট ও বাংলা কিউআর (bKash Bangla QR)
+                          বিকাশ পেমেন্ট (bKash Send Money & Bangla QR)
                         </h4>
                         <p className="text-[11px] text-pink-700 font-medium">
-                          সরাসরি বিকাশ অ্যাপ দিয়ে কিউআর স্ক্যান করুন বা নম্বরে পাঠান
+                          সেন্ড মানি করুন অথবা বাংলা কিউআর স্ক্যান করে পেমেন্ট সম্পন্ন করুন
                         </p>
                       </div>
                     </div>
@@ -457,24 +466,45 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-12 gap-3.5 items-center">
-                    {/* Left: Number, Amount & Steps */}
-                    <div className="sm:col-span-7 space-y-3">
+                    {/* Left: Number Cards & Instructions */}
+                    <div className="sm:col-span-7 space-y-2.5">
+                      {/* bKash Send Money (Personal) */}
                       <div className="bg-white p-3 rounded-xl border border-pink-200 shadow-xs flex items-center justify-between gap-2">
                         <div>
                           <span className="text-[10px] font-bold text-slate-500 uppercase block">
-                            বিকাশ পেমেন্ট নম্বর
+                            বিকাশ সেন্ড মানি (পার্সোনাল নম্বর)
                           </span>
-                          <span className="text-xl font-black font-mono text-pink-700 tracking-wider">
+                          <span className="text-lg sm:text-xl font-black font-mono text-pink-700 tracking-wider">
+                            01831841017
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard('01831841017', 'bkash_personal')}
+                          className="px-3 py-1.5 text-xs font-bold text-white bg-[#E2136E] hover:bg-[#c40e5e] rounded-lg shadow-xs active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                        >
+                          {copiedKey === 'bkash_personal' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedKey === 'bkash_personal' ? 'কপি হয়েছে!' : 'কপি করুন'}</span>
+                        </button>
+                      </div>
+
+                      {/* bKash Merchant / Bangla QR number */}
+                      <div className="bg-white p-3 rounded-xl border border-pink-200 shadow-xs flex items-center justify-between gap-2">
+                        <div>
+                          <span className="text-[10px] font-bold text-slate-500 uppercase block">
+                            বিকাশ মার্চেন্ট / বাংলা কিউআর নম্বর
+                          </span>
+                          <span className="text-lg sm:text-xl font-black font-mono text-pink-700 tracking-wider">
                             01711085960
                           </span>
                         </div>
                         <button
                           type="button"
-                          onClick={handleCopyNumber}
-                          className="px-3 py-1.5 text-xs font-bold text-white bg-[#E2136E] hover:bg-[#c40e5e] rounded-lg shadow-xs active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                          onClick={() => copyToClipboard('01711085960', 'bkash_qr')}
+                          className="px-3 py-1.5 text-xs font-bold text-pink-700 bg-pink-100 hover:bg-pink-200 rounded-lg shadow-xs active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
                         >
-                          {copiedNumber ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                          <span>{copiedNumber ? 'কপি হয়েছে!' : 'কপি করুন'}</span>
+                          {copiedKey === 'bkash_qr' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedKey === 'bkash_qr' ? 'কপি হয়েছে!' : 'কপি করুন'}</span>
                         </button>
                       </div>
 
@@ -514,21 +544,21 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                       </label>
                       <input
                         type="tel"
-                        placeholder="যেমন: 017XXXXXXXX"
-                        value={bkashSenderPhone}
-                        onChange={(e) => setBkashSenderPhone(e.target.value)}
+                        placeholder="যেমন: 018XXXXXXXX"
+                        value={senderPhone}
+                        onChange={(e) => setSenderPhone(e.target.value)}
                         className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:border-pink-600 outline-hidden bg-white"
                       />
                     </div>
                     <div>
                       <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                        ট্রানজেকশন আইডি (TrxID)
+                        বিকাশ ট্রানজেকশন আইডি (TrxID)
                       </label>
                       <input
                         type="text"
                         placeholder="যেমন: 9J82K3L4"
-                        value={bkashTrxId}
-                        onChange={(e) => setBkashTrxId(e.target.value)}
+                        value={trxId}
+                        onChange={(e) => setTrxId(e.target.value)}
                         className="w-full px-3 py-2 text-xs font-mono uppercase rounded-xl border border-slate-300 focus:border-pink-600 outline-hidden bg-white"
                       />
                     </div>
@@ -561,13 +591,256 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
               )}
 
-              {/* Payment Details Note for other methods */}
-              {paymentMethod !== 'bkash' && (
-                <div className="p-3.5 bg-blue-50/70 border border-blue-200/80 rounded-xl text-xs text-blue-900 flex items-start gap-2">
-                  <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                  <p>
-                    নিরাপদ মার্চেন্ট গেটওয়ে। পেমেন্ট সম্পন্ন হওয়া মাত্র আপনার মোবাইল নম্বরে ও স্ক্রিনে অফিসিয়াল ডিজিটাল বুকিং ভাউচার প্রদর্শিত হবে।
+              {/* 2. Nagad Payment Box (Personal Send Money) */}
+              {paymentMethod === 'nagad' && (
+                <div className="p-4 sm:p-5 rounded-2xl border-2 border-orange-400 bg-gradient-to-b from-orange-50/80 via-white to-orange-50/30 space-y-4 shadow-sm animate-fade-in text-left">
+                  <div className="flex items-center justify-between border-b border-orange-200/80 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#E31C24] text-white flex items-center justify-center font-black text-xs shadow-xs">
+                        নগদ
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-black text-slate-900 leading-tight">
+                          নগদ পার্সোনাল পেমেন্ট (Nagad Personal Send Money)
+                        </h4>
+                        <p className="text-[11px] text-orange-700 font-medium">
+                          নগদ অ্যাপ বা *167# ডায়াল করে 'Send Money' করুন
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-black bg-orange-100 text-[#E31C24] px-2 py-0.5 rounded-full border border-orange-200">
+                      পার্সোনাল একাউন্ট
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {/* Number Card */}
+                    <div className="bg-white p-3.5 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-500 uppercase block">
+                          নগদ পার্সোনাল নম্বর (Send Money)
+                        </span>
+                        <span className="text-xl sm:text-2xl font-black font-mono text-[#E31C24] tracking-wider">
+                          01831841017
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard('01831841017', 'nagad')}
+                        className="px-3.5 py-2 text-xs font-bold text-white bg-[#E31C24] hover:bg-[#c4141c] rounded-lg shadow-xs active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                      >
+                        {copiedKey === 'nagad' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{copiedKey === 'nagad' ? 'কপি হয়েছে!' : 'নম্বর কপি করুন'}</span>
+                      </button>
+                    </div>
+
+                    <div className="bg-white/90 p-3 rounded-xl border border-slate-200 text-xs space-y-1.5">
+                      <div className="flex justify-between items-center text-slate-700 font-semibold">
+                        <span>পরিশোধের পরিমাণ:</span>
+                        <span className="text-sm font-black text-orange-700 tabular-nums">৳ {payableAmount.toLocaleString('en-IN')}</span>
+                      </div>
+                      <p className="text-[11px] text-slate-600">
+                        <strong>পেমেন্টের নিয়ম:</strong> নগদ অ্যাপে ঢুকে <strong>Send Money</strong> সিলেক্ট করে প্রাপক নম্বর <strong>01831841017</strong> লিখুন। রেফারেন্সে আপনার নাম লিখুন। পেমেন্ট সম্পন্ন হলে ফিরতি মেসেজের <strong>TrxID</strong> নিচের ঘরে বসিয়ে বুকিং নিশ্চিত করুন।
+                      </p>
+                    </div>
+
+                    {/* Verification inputs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 border-t border-orange-200/70">
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                          আপনার নগদ নম্বর (যে নম্বর থেকে পাঠিয়েছেন)
+                        </label>
+                        <input
+                          type="tel"
+                          placeholder="যেমন: 018XXXXXXXX"
+                          value={senderPhone}
+                          onChange={(e) => setSenderPhone(e.target.value)}
+                          className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:border-orange-600 outline-hidden bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                          নগদ ট্রানজেকশন আইডি (TrxID)
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="যেমন: 7K92P8L1"
+                          value={trxId}
+                          onChange={(e) => setTrxId(e.target.value)}
+                          className="w-full px-3 py-2 text-xs font-mono uppercase rounded-xl border border-slate-300 focus:border-orange-600 outline-hidden bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    {/* WhatsApp Support note */}
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-600 bg-orange-100/70 p-2.5 rounded-xl">
+                      <span>নগদ পেমেন্টে সহায়তায় WhatsApp (01911-050270):</span>
+                      <a
+                        href={getWhatsAppLink('আসসালামু আলাইকুম! আমি নগদ 01831841017 নম্বরে পেমেন্ট করেছি')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>চ্যাট করুন</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 3. Pubali Bank PLC Account Box */}
+              {paymentMethod === 'bank' && (
+                <div className="p-4 sm:p-5 rounded-2xl border-2 border-emerald-500 bg-gradient-to-b from-emerald-50/80 via-white to-teal-50/30 space-y-4 shadow-sm animate-fade-in text-left">
+                  <div className="flex items-center justify-between border-b border-emerald-200 pb-2.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs">
+                        <Landmark className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-black text-slate-900 leading-tight">
+                          পূবালী ব্যাংক পিএলসি (Pubali Bank PLC)
+                        </h4>
+                        <p className="text-[11px] text-emerald-700 font-medium">
+                          অনলাইন ব্যাংকিং, অ্যাপ (PI Banking) বা যেকোনো শাখা থেকে জমা
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-300">
+                      অফিসিয়াল ব্যাংক হিসাব
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {/* Bank Account Details Card */}
+                    <div className="bg-white p-3.5 rounded-xl border border-emerald-300 shadow-xs space-y-2.5">
+                      <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                        <div>
+                          <span className="text-[10px] font-bold text-slate-500 uppercase block">
+                            পূবালী ব্যাংক হিসাব নম্বর (A/C No)
+                          </span>
+                          <span className="text-xl sm:text-2xl font-black font-mono text-emerald-900 tracking-wider">
+                            3116901000653
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard('3116901000653', 'pubali')}
+                          className="px-3.5 py-2 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-xs active:scale-95 transition-all flex items-center gap-1 cursor-pointer shrink-0"
+                        >
+                          {copiedKey === 'pubali' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                          <span>{copiedKey === 'pubali' ? 'কপি হয়েছে!' : 'হিসাব নম্বর কপি'}</span>
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+                        <div>
+                          <span className="text-slate-500 block text-[10px]">ব্যাংকের নাম:</span>
+                          <strong className="font-bold text-slate-900">পূবালী ব্যাংক পিএলসি (Pubali Bank PLC)</strong>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block text-[10px]">হিসাবের নাম (Account Name):</span>
+                          <strong className="font-bold text-slate-900">ঘুরবে ট্যুরস অ্যান্ড ট্রাভেলস (Ghurbe Tours & Travel)</strong>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block text-[10px]">শাখা / অ্যাকাউন্ট টাইপ:</span>
+                          <strong className="font-bold text-slate-900">অনলাইন শাখা / কারেন্ট একাউন্ট (Current A/C)</strong>
+                        </div>
+                        <div>
+                          <span className="text-slate-500 block text-[10px]">ট্রান্সফার মাধ্যম:</span>
+                          <strong className="font-bold text-emerald-800">PI Banking App, BEFTN, NPSB, কাউন্টার জমা</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="bg-white/90 p-2.5 rounded-xl border border-slate-200 text-xs flex justify-between items-center text-slate-700 font-semibold">
+                      <span>পরিশোধের পরিমাণ:</span>
+                      <span className="text-sm font-black text-emerald-800 tabular-nums">৳ {payableAmount.toLocaleString('en-IN')}</span>
+                    </div>
+
+                    {/* Verification inputs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 border-t border-emerald-200">
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                          আপনার ব্যাংক বা প্রেরকের নাম / হিসাব
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="যেমন: আপনার ব্যাংক ও অ্যাকাউন্ট নাম"
+                          value={senderPhone}
+                          onChange={(e) => setSenderPhone(e.target.value)}
+                          className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:border-emerald-600 outline-hidden bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                          ডিপোজিট স্লিপ নম্বর বা রেফারেন্স আইডি
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="যেমন: স্লিপ নম্বর বা ট্রানজেকশন রেফারেন্স"
+                          value={trxId}
+                          onChange={(e) => setTrxId(e.target.value)}
+                          className="w-full px-3 py-2 text-xs font-mono uppercase rounded-xl border border-slate-300 focus:border-emerald-600 outline-hidden bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    {/* WhatsApp Support note */}
+                    <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-600 bg-emerald-100/70 p-2.5 rounded-xl">
+                      <span>স্লিপ পাঠাতে WhatsApp (01911-050270):</span>
+                      <a
+                        href={getWhatsAppLink('আসসালামু আলাইকুম! আমি পূবালী ব্যাংক (হিসাব: 3116901000653) নম্বরে পেমেন্ট করেছি, স্লিপ পাঠাতে চাই')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold text-emerald-800 bg-emerald-100 hover:bg-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1 transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>স্লিপ পাঠান</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 4. Card or other methods note */}
+              {paymentMethod === 'card' && (
+                <div className="p-4 sm:p-5 rounded-2xl border-2 border-blue-400 bg-gradient-to-b from-blue-50/80 via-white to-blue-50/30 space-y-3 shadow-sm animate-fade-in text-left">
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="w-5 h-5 text-blue-600" />
+                    <h4 className="text-sm font-black text-slate-900">
+                      ভিসা, মাস্টারকার্ড ও রকেট পেমেন্ট
+                    </h4>
+                  </div>
+                  <p className="text-xs text-slate-600">
+                    কার্ড বা রকেটের মাধ্যমে পেমেন্ট করতে আমাদের সহায়তা প্রতিনিধির সাথে সরাসরি কথা বলুন বা অনলাইনে পেমেন্ট নিশ্চিত করুন।
                   </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        আপনার কার্ড বা মোবাইল নম্বর
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="01XXXXXXXXX"
+                        value={senderPhone}
+                        onChange={(e) => setSenderPhone(e.target.value)}
+                        className="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:border-blue-600 outline-hidden bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                        ট্রানজেকশন / রেফারেন্স আইডি
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="যেমন: কার্ড স্লিপ নম্বর"
+                        value={trxId}
+                        onChange={(e) => setTrxId(e.target.value)}
+                        className="w-full px-3 py-2 text-xs font-mono uppercase rounded-xl border border-slate-300 focus:border-blue-600 outline-hidden bg-white"
+                      />
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -662,13 +935,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   <div>
                     <span className="text-[11px] text-slate-500 block">পেমেন্ট মাধ্যম</span>
                     <strong className="text-slate-900">
-                      {confirmedBooking.paymentMethod === 'bkash' ? 'বিকাশ (01711085960 - বাংলা QR)' : confirmedBooking.paymentMethod.toUpperCase()}
+                      {confirmedBooking.paymentMethod === 'bkash'
+                        ? 'বিকাশ (QR: 01711085960 / সেন্ড মানি: 01831841017)'
+                        : confirmedBooking.paymentMethod === 'nagad'
+                        ? 'নগদ পার্সোনাল (01831841017)'
+                        : confirmedBooking.paymentMethod === 'bank'
+                        ? 'পূবালী ব্যাংক (হিসাব: 3116901000653)'
+                        : confirmedBooking.paymentMethod.toUpperCase()}
                     </strong>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-500 block">ট্রানজেকশন তথ্য</span>
-                    <strong className="text-pink-700 font-mono text-xs truncate block">
-                      {bkashTrxId ? `TrxID: ${bkashTrxId}` : 'বাংলা কিউআর পেমেন্ট ভেরিফাইড'}
+                    <strong className="text-slate-900 font-mono text-xs truncate block">
+                      {trxId ? `TrxID / রেফারেন্স: ${trxId}` : 'ডিজিটাল পেমেন্ট ভেরিফাইড'}
                     </strong>
                   </div>
                 </div>

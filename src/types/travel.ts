@@ -61,7 +61,7 @@ export interface BookingRecord {
   roomType: 'standard' | 'deluxe' | 'couple' | 'tent';
   totalPrice: number;
   advancePaid: number;
-  paymentMethod: 'bkash' | 'nagad' | 'rocket' | 'card' | 'cash';
+  paymentMethod: 'bkash' | 'nagad' | 'bank' | 'rocket' | 'card' | 'cash';
   paymentStatus: 'confirmed' | 'pending' | 'cancelled' | 'completed';
   bookedAt: string;
   emergencyContact?: string;

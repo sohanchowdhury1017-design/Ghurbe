@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ContactAndFaq } from './ContactAndFaq';
-import { ArrowLeft, PhoneCall, MessageCircle, MapPin, Mail, Clock, ShieldCheck, Download } from 'lucide-react';
+import { ArrowLeft, PhoneCall, MessageCircle, MapPin, Mail, Clock, ShieldCheck, Download, Copy, Check, Landmark } from 'lucide-react';
 import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
 interface ContactPageProps {
@@ -12,6 +12,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   onBackToHome,
   onNavigateToPackages,
 }) => {
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedKey(key);
+    setTimeout(() => setCopiedKey(null), 2500);
+  };
+
   const branches = [
     {
       city: 'রংপুর প্রধান কার্যালয়',
@@ -190,72 +198,200 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           </a>
         </div>
 
-        {/* Official bKash Payment & Bangla QR Code Showcase */}
-        <div className="bg-gradient-to-br from-pink-50 via-white to-pink-50/50 rounded-3xl p-6 sm:p-8 border-2 border-pink-200 shadow-sm">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
-            <div className="md:col-span-7 space-y-4 text-left">
-              <div className="inline-flex items-center gap-2 bg-[#E2136E] text-white px-3 py-1 rounded-full text-xs font-bold shadow-xs">
-                <span>bKash Official Payment</span>
-                <span className="text-[10px] bg-white text-[#E2136E] px-1.5 py-0.2 rounded font-black">বাংলা কিউআর</span>
-              </div>
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900">
-                বিকাশ পেমেন্ট ও বাংলা QR কোডের মাধ্যমে সহজে বুকিং করুন
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                ঘুরবে ট্যুরস অ্যান্ড ট্রাভেলসের যেকোনো ট্রিপ বা ট্যুর প্যাকেজের বুকিং মানি পাঠাতে আমাদের অফিসিয়াল বিকাশ নম্বর ব্যবহার করুন অথবা সরাসরি বাংলা কিউআর স্ক্যান করুন।
-              </p>
+        {/* Official Payment Gateways: bKash, Nagad & Pubali Bank Showcase */}
+        <div className="space-y-6">
+          <div className="text-center max-w-2xl mx-auto space-y-1.5">
+            <span className="text-xs font-black uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              অফিসিয়াল পেমেন্ট মাধ্যম
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+              বিকাশ, নগদ ও পূবালী ব্যাংকের মাধ্যমে নিরাপদ পেমেন্ট
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600">
+              ঘুরবে ট্যুরস অ্যান্ড ট্রাভেলসের যেকোনো ট্রিপ বা প্যাকেজ বুকিংয়ের জন্য নিচের নম্বর ও অ্যাকাউন্টে টাকা পাঠিয়ে ট্রানজেকশন আইডি WhatsApp-এ জানান।
+            </p>
+          </div>
 
-              {/* Number Card */}
-              <div className="bg-white rounded-2xl p-4 border border-pink-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <span className="text-[11px] font-bold text-pink-700 block uppercase tracking-wider">
-                    অফিসিয়াল বিকাশ মার্চেন্ট/পার্সোনাল নম্বর
-                  </span>
-                  <span className="text-2xl font-black font-mono text-slate-900 tracking-wider">
-                    01711085960
-                  </span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 text-left">
+            {/* 1. bKash Card */}
+            <div className="bg-gradient-to-b from-pink-50 via-white to-pink-50/40 rounded-3xl p-5 border-2 border-pink-300 shadow-sm flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-pink-200 pb-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-xl bg-[#E2136E] text-white flex items-center justify-center font-black text-xs shadow-xs">
+                      বিকাশ
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-black text-slate-900">bKash Payment</h4>
+                      <span className="text-[10px] text-pink-700 font-bold">সেন্ড মানি ও বাংলা QR</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-black bg-pink-100 text-[#E2136E] px-2 py-0.5 rounded-full">অফিসিয়াল</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText('01711085960');
-                    alert('বিকাশ নম্বর 01711085960 কপি করা হয়েছে!');
-                  }}
-                  className="px-4 py-2 bg-[#E2136E] hover:bg-[#c90f61] text-white font-bold text-xs rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer"
-                >
-                  নম্বর কপি করুন
-                </button>
+
+                {/* Send Money Number */}
+                <div className="bg-white p-3 rounded-xl border border-pink-200 shadow-xs flex items-center justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block">সেন্ড মানি (পার্সোনাল)</span>
+                    <span className="text-lg font-black font-mono text-pink-700">01831841017</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard('01831841017', 'cp_bkash_p')}
+                    className="px-2.5 py-1 text-xs font-bold text-white bg-[#E2136E] hover:bg-[#c40e5e] rounded-lg shadow-xs cursor-pointer flex items-center gap-1 active:scale-95"
+                  >
+                    {copiedKey === 'cp_bkash_p' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    <span>{copiedKey === 'cp_bkash_p' ? 'কপি!' : 'কপি'}</span>
+                  </button>
+                </div>
+
+                {/* Merchant / Bangla QR Number */}
+                <div className="bg-white p-3 rounded-xl border border-pink-200 shadow-xs flex items-center justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block">মার্চেন্ট / বাংলা কিউআর</span>
+                    <span className="text-lg font-black font-mono text-pink-700">01711085960</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard('01711085960', 'cp_bkash_qr')}
+                    className="px-2.5 py-1 text-xs font-bold text-pink-700 bg-pink-100 hover:bg-pink-200 rounded-lg shadow-xs cursor-pointer flex items-center gap-1 active:scale-95"
+                  >
+                    {copiedKey === 'cp_bkash_qr' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                    <span>{copiedKey === 'cp_bkash_qr' ? 'কপি!' : 'কপি'}</span>
+                  </button>
+                </div>
+
+                {/* QR Code Preview */}
+                <div className="bg-white p-2.5 rounded-2xl border border-pink-200 text-center">
+                  <img
+                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1792223909/WhatsApp_Image_2026-10-17_at_1.54.57_PM.jpg"
+                    alt="বিকাশ বাংলা কিউআর কোড"
+                    className="w-28 h-auto mx-auto object-contain rounded-lg"
+                  />
+                  <span className="text-[10px] font-bold text-pink-700 block mt-1">বিকাশ অ্যাপে বাংলা কিউআর স্ক্যান করুন</span>
+                </div>
               </div>
 
-              <div className="space-y-1.5 text-xs text-slate-600">
-                <p className="font-semibold text-slate-800">পেমেন্ট ধাপসমূহ:</p>
-                <p>১. বিকাশ অ্যাপে ঢুকে "পেমেন্ট" বা "সেন্ড মানি" অপশন সিলেক্ট করুন</p>
-                <p>২. প্রাপক নম্বর লিখুন: <strong className="text-pink-700 font-mono">01711085960</strong></p>
-                <p>৩. বুকিং মানি বা নির্ধারিত প্যাকেজ মূল্য পাঠিয়ে রেফারেন্সে আপনার নাম লিখুন</p>
-                <p>৪. ট্রানজেকশন সম্পন্ন করে WhatsApp: <strong className="text-emerald-700 font-mono">01911050270</strong> এ TrxID জানান</p>
+              <p className="text-[11px] text-slate-500">বিকাশ অ্যাপে Send Money অথবা বাংলা কিউআর স্ক্যান করে বুকিং কনফার্ম করুন।</p>
+            </div>
+
+            {/* 2. Nagad Card */}
+            <div className="bg-gradient-to-b from-orange-50 via-white to-orange-50/40 rounded-3xl p-5 border-2 border-orange-300 shadow-sm flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-orange-200 pb-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-xl bg-[#E31C24] text-white flex items-center justify-center font-black text-xs shadow-xs">
+                      নগদ
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-black text-slate-900">Nagad Personal</h4>
+                      <span className="text-[10px] text-orange-700 font-bold">পার্সোনাল সেন্ড মানি</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-black bg-orange-100 text-[#E31C24] px-2 py-0.5 rounded-full">পার্সোনাল</span>
+                </div>
+
+                {/* Nagad Personal Number */}
+                <div className="bg-white p-3.5 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block">নগদ নম্বর (Send Money)</span>
+                    <span className="text-xl font-black font-mono text-[#E31C24]">01831841017</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard('01831841017', 'cp_nagad')}
+                    className="px-3 py-1.5 text-xs font-bold text-white bg-[#E31C24] hover:bg-[#c4141c] rounded-lg shadow-xs cursor-pointer flex items-center gap-1 active:scale-95"
+                  >
+                    {copiedKey === 'cp_nagad' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedKey === 'cp_nagad' ? 'কপি!' : 'কপি করুন'}</span>
+                  </button>
+                </div>
+
+                <div className="bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-2 text-slate-700">
+                  <div className="flex items-center gap-1.5 text-orange-800 font-bold">
+                    <span>📱 কিভাবে নগদ পেমেন্ট করবেন:</span>
+                  </div>
+                  <ol className="list-decimal pl-4 space-y-1 text-[11px] text-slate-600">
+                    <li>নগদ অ্যাপ বা *167# ডায়াল করুন</li>
+                    <li><strong>Send Money</strong> অপশন নির্বাচন করুন</li>
+                    <li>প্রাপক নম্বর দিন: <strong className="font-mono text-orange-700">01831841017</strong></li>
+                    <li>টাকার পরিমাণ লিখে রেফারেন্সে আপনার নাম লিখুন</li>
+                    <li>প্রাপ্ত TrxID আমাদের WhatsApp-এ পাঠান</li>
+                  </ol>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <a
+                  href={getWhatsAppLink('আসসালামু আলাইকুম! আমি নগদ 01831841017 নম্বরে টাকা পাঠিয়েছি')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2 px-3 rounded-xl bg-orange-100 hover:bg-orange-200 text-orange-900 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-orange-700" />
+                  <span>নগদ TrxID পাঠান (WhatsApp)</span>
+                </a>
               </div>
             </div>
 
-            {/* QR Code Presentation */}
-            <div className="md:col-span-5 flex flex-col items-center justify-center text-center">
-              <div className="bg-white p-4 rounded-3xl border-2 border-pink-300 shadow-lg max-w-[280px] w-full">
-                <div className="mb-2 flex items-center justify-between border-b border-pink-100 pb-2">
-                  <span className="text-xs font-black text-pink-700">bKash Bangla QR</span>
-                  <span className="text-[10px] font-bold bg-pink-100 text-pink-800 px-2 py-0.5 rounded-full">বাংলা কিউআর</span>
+            {/* 3. Pubali Bank PLC Card */}
+            <div className="bg-gradient-to-b from-emerald-50 via-white to-teal-50/40 rounded-3xl p-5 border-2 border-emerald-400 shadow-sm flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-b border-emerald-200 pb-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-black text-xs shadow-xs">
+                      <Landmark className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-black text-slate-900">Pubali Bank PLC</h4>
+                      <span className="text-[10px] text-emerald-700 font-bold">অফিসিয়াল ব্যাংক অ্যাকাউন্ট</span>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-black bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">ব্যাংক হিসাব</span>
                 </div>
-                <div className="relative rounded-2xl overflow-hidden border border-slate-200 bg-white p-1">
-                  <img
-                    src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1792223909/WhatsApp_Image_2026-10-17_at_1.54.57_PM.jpg"
-                    alt="বিকাশ বাংলা কিউআর কোড - 01711085960"
-                    className="w-full h-auto object-contain rounded-xl"
-                  />
+
+                {/* Account Number Card */}
+                <div className="bg-white p-3.5 rounded-xl border border-emerald-300 shadow-xs flex items-center justify-between gap-2">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase block">পূবালী ব্যাংক হিসাব নম্বর</span>
+                    <span className="text-xl font-black font-mono text-emerald-900">3116901000653</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard('3116901000653', 'cp_pubali')}
+                    className="px-3 py-1.5 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg shadow-xs cursor-pointer flex items-center gap-1 active:scale-95"
+                  >
+                    {copiedKey === 'cp_pubali' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedKey === 'cp_pubali' ? 'কপি!' : 'কপি করুন'}</span>
+                  </button>
                 </div>
-                <p className="text-[11px] font-bold text-slate-700 mt-2.5">
-                  বিকাশ অ্যাপ থেকে সরাসরি স্ক্যান করুন
-                </p>
-                <p className="text-[10px] text-slate-500 font-mono mt-0.5">
-                  হিসাব নম্বর: 01711085960
-                </p>
+
+                <div className="bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-2 text-slate-700">
+                  <div>
+                    <span className="text-[10px] text-slate-500 block">হিসাবের নাম:</span>
+                    <strong className="text-slate-900 font-bold block">Ghurbe Tours & Travel</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 block">ব্যাংকের নাম ও শাখা:</span>
+                    <strong className="text-slate-900 font-bold block">পূবালী ব্যাংক পিএলসি (অনলাইন শাখা)</strong>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 block">ট্রান্সফার পদ্ধতি:</span>
+                    <span className="text-slate-700 text-[11px] block">PI Banking App, BEFTN, NPSB অথবা যেকোনো ব্যাংক কাউন্টার</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-2">
+                <a
+                  href={getWhatsAppLink('আসসালামু আলাইকুম! আমি পূবালী ব্যাংক (হিসাব: 3116901000653) নম্বরে টাকা পাঠিয়েছি, ডিপোজিট স্লিপ পাঠাতে চাই')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2 px-3 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>ব্যাংক ডিপোজিট স্লিপ পাঠান</span>
+                </a>
               </div>
             </div>
           </div>

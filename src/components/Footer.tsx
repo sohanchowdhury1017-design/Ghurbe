@@ -317,11 +317,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings, onOp
             <span>পেমেন্ট মাধ্যম:</span>
             <div className="flex flex-wrap items-center gap-1.5 font-bold text-slate-300">
               <span className="bg-pink-900/80 text-pink-200 px-2.5 py-0.5 rounded text-[11px] border border-pink-700/50 flex items-center gap-1">
-                <span>bKash: 01711085960</span>
+                <span>bKash: 01831841017 / 01711085960</span>
                 <span className="text-[9px] bg-pink-600 text-white px-1 py-0.1 rounded font-normal">বাংলা QR</span>
               </span>
-              <span className="bg-orange-900/60 text-orange-300 px-2 py-0.5 rounded text-[11px]">Nagad</span>
-              <span className="bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded text-[11px]">Rocket</span>
+              <span className="bg-orange-900/80 text-orange-200 px-2.5 py-0.5 rounded text-[11px] border border-orange-700/50">
+                নগদ (পার্সোনাল): 01831841017
+              </span>
+              <span className="bg-emerald-900/80 text-emerald-200 px-2.5 py-0.5 rounded text-[11px] border border-emerald-700/50">
+                পূবালী ব্যাংক: 3116901000653
+              </span>
               <span className="bg-blue-900/60 text-blue-300 px-2 py-0.5 rounded text-[11px]">Visa / MasterCard</span>
             </div>
           </div>
