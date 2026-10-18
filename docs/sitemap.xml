@@ -95,10 +95,20 @@
     <priority>0.95</priority>
   </url>
 
-  <!-- 8. Kuakata Special Tour (Mega Offer 3599 Tk) -->
+  <!-- 8. Kuakata Special Tour (Mega Offer 3599 Tk & Payment Guide) -->
+  <url>
+    <loc>https://ghurbe.com/kuakata</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg</image:loc>
+      <image:title>কুয়াকাটা সাগরকন্যা ৩ রাত ২ দিন মেগা অফার প্যাকেজ ও পেমেন্ট বিবরণী</image:title>
+    </image:image>
+  </url>
   <url>
     <loc>https://ghurbe.com/Kuakata</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-10-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
     <image:image>

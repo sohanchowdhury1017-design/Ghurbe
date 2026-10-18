@@ -12,6 +12,7 @@ const routes = [
   'blog',
   'kuakata-travel-guide',
   'Kuakata',
+  'kuakata',
   'contact',
   'gallery',
   'adminn',

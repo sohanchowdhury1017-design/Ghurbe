@@ -25,7 +25,7 @@ export const WhatsAppChat: React.FC = () => {
   const quickPrompts = [
     '🌊 কুয়াকাটা ও কক্সবাজার ট্যুরের সিট খালি আছে?',
     '৩ রাত ২ দিন প্যাকেজের বিস্তারিত খরচ কত?',
-    'পেমেন্ট মাধ্যম (বিকাশ, নগদ 01831841017, পূবালী ব্যাংক)',
+    'বিকাশ বাংলা কিউআর পেমেন্ট নিয়মাবলী',
     '📥 ফোনে Ghurbe কন্টাক্ট সেভ করতে চাই',
   ];
 
@@ -79,15 +79,20 @@ export const WhatsAppChat: React.FC = () => {
             ✕
           </button>
           <div className="flex items-start gap-2.5">
-            <div className="w-9 h-9 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-xs">
-              <MessageCircle className="w-4 h-4 fill-white" />
+            <div className="w-10 h-10 rounded-full bg-white border-2 border-emerald-400 p-0.5 overflow-hidden shrink-0 shadow-xs">
+              <img
+                src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791744358/ghurbe_bd_logo.png"
+                alt="ঘুরবে ট্যুর অ্যান্ড ট্রাভেল"
+                className="w-full h-full object-contain"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-black text-emerald-800 leading-tight">
-                Ghurbe Tours & Travel
+              <p className="text-xs font-black text-emerald-900 leading-tight">
+                ঘুরবে ট্যুর অ্যান্ড ট্রাভেল
               </p>
               <p className="text-[11px] text-slate-700 mt-1 leading-snug">
-                মেসেজ লিখলেই সরাসরি <strong className="text-emerald-700">01911-050270</strong> হোয়াটসঅ্যাপে চলে যাবে 👋
+                মেসেজ লিখলেই সরাসরি <strong className="text-emerald-700 font-mono">01911-050270</strong> হোয়াটসঅ্যাপে চলে যাবে 👋
               </p>
               <div className="mt-2 flex items-center gap-2">
                 <button
@@ -122,7 +127,7 @@ export const WhatsAppChat: React.FC = () => {
                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1 border-2 border-emerald-400 overflow-hidden shadow-xs">
                   <img
                     src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791744358/ghurbe_bd_logo.png"
-                    alt="Ghurbe Tours & Travel লোগো"
+                    alt="ঘুরবে ট্যুর অ্যান্ড ট্রাভেল লোগো"
                     className="w-full h-full object-contain"
                     referrerPolicy="no-referrer"
                   />
@@ -132,7 +137,7 @@ export const WhatsAppChat: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-sm sm:text-base font-black leading-tight flex items-center gap-1.5">
-                  <span className="text-white font-extrabold tracking-tight">Ghurbe Tours & Travel</span>
+                  <span className="text-white font-extrabold tracking-tight">ঘুরবে ট্যুর অ্যান্ড ট্রাভেল</span>
                   <span className="text-[10px] bg-emerald-400 text-slate-950 font-black px-1.5 py-0.5 rounded-full">অফিসিয়াল</span>
                 </h4>
                 <p className="text-[11px] text-emerald-100 flex items-center gap-1 font-medium mt-0.5">
@@ -274,28 +279,39 @@ export const WhatsAppChat: React.FC = () => {
 
       {/* 3. Authentic WhatsApp Floating Action Zone */}
       <div className="flex items-center gap-2">
-        {/* Floating pill link directly to WhatsApp */}
+        {/* Floating pill link directly to WhatsApp with Bangla name */}
         <a
-          href="https://wa.me/8801911050270?text=Hello%20Ghurbe%20Tours%20and%20Travel"
+          href="https://wa.me/8801911050270?text=আসসালামু%20আলাইকুম!%20ঘুরবে%20ট্যুর%20অ্যান্ড%20ট্রাভেল,%20আমি%20ট্যুর%20সম্পর্কে%20জানতে%20চাই"
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white text-slate-800 text-xs font-bold rounded-full shadow-lg border border-slate-200 hover:bg-slate-50 hover:text-emerald-700 cursor-pointer transition-all active:scale-95"
-          title="সরাসরি WhatsApp এ মেসেজ দিন (01911050270)"
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-white/95 backdrop-blur-md text-slate-800 text-xs font-bold rounded-full shadow-lg border border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 cursor-pointer transition-all active:scale-95"
+          title="ঘুরবে ট্যুর অ্যান্ড ট্রাভেল - WhatsApp: 01911-050270"
         >
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>WhatsApp: 01911-050270</span>
+          <span className="font-black text-emerald-800">ঘুরবে ট্যুর অ্যান্ড ট্রাভেল</span>
+          <span className="text-[11px] font-mono text-slate-600 hidden sm:inline">(01911-050270)</span>
         </a>
 
-        {/* Iconic Green WhatsApp Circle Button */}
+        {/* Iconic Ghurbe Logo WhatsApp Circle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="relative w-14 h-14 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white shadow-2xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 group cursor-pointer border-2 border-white ring-4 ring-emerald-500/20"
-          title="Ghurbe Tours & Travel - WhatsApp এ কথা বলুন"
+          className="relative w-14 h-14 rounded-full bg-white shadow-2xl flex items-center justify-center transition-all hover:scale-105 active:scale-95 group cursor-pointer border-2 border-[#25D366] ring-4 ring-emerald-500/25 p-1 overflow-hidden"
+          title="ঘুরবে ট্যুর অ্যান্ড ট্রাভেল - WhatsApp এ কথা বলুন"
         >
-          {/* Authentic WhatsApp SVG Logo */}
-          <svg className="w-8 h-8 fill-current drop-shadow-xs" viewBox="0 0 24 24">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.771.855 2.791.856 3.183 0 5.768-2.586 5.769-5.766.001-3.18-2.585-5.765-5.769-5.765zm3.385 8.136c-.141.396-.725.753-1.026.797-.282.042-.647.074-1.921-.456-1.579-.656-2.597-2.26-2.676-2.366-.079-.104-.643-.855-.643-1.632 0-.777.407-1.16.552-1.319.145-.158.316-.197.422-.197.106 0 .211.002.304.007.098.005.23-.037.359.273.132.316.45 1.096.489 1.176.039.079.066.172.013.277-.052.106-.079.172-.158.264-.079.092-.166.205-.237.276-.079.079-.161.164-.069.322.092.158.411.677.882 1.096.607.541 1.119.708 1.277.787.158.079.25.066.342-.039.092-.106.395-.461.501-.619.105-.158.211-.132.355-.079.145.053.918.433 1.076.512.158.079.263.118.303.185.039.066.039.382-.102.778zM12 2C6.477 2 2 6.477 2 12c0 1.891.527 3.662 1.442 5.176L2 22l4.981-1.398A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
-          </svg>
+          {/* Ghurbe Official Logo */}
+          <img
+            src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791744358/ghurbe_bd_logo.png"
+            alt="ঘুরবে ট্যুর অ্যান্ড ট্রাভেল"
+            className="w-full h-full object-contain rounded-full"
+            referrerPolicy="no-referrer"
+          />
+
+          {/* Mini WhatsApp Badge at corner */}
+          <span className="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-[#25D366] text-white flex items-center justify-center border-2 border-white shadow-md">
+            <svg className="w-3 h-3 fill-white" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.54 1.771.855 2.791.856 3.183 0 5.768-2.586 5.769-5.766.001-3.18-2.585-5.765-5.769-5.765zm3.385 8.136c-.141.396-.725.753-1.026.797-.282.042-.647.074-1.921-.456-1.579-.656-2.597-2.26-2.676-2.366-.079-.104-.643-.855-.643-1.632 0-.777.407-1.16.552-1.319.145-.158.316-.197.422-.197.106 0 .211.002.304.007.098.005.23-.037.359.273.132.316.45 1.096.489 1.176.039.079.066.172.013.277-.052.106-.079.172-.158.264-.079.092-.166.205-.237.276-.079.079-.161.164-.069.322.092.158.411.677.882 1.096.607.541 1.119.708 1.277.787.158.079.25.066.342-.039.092-.106.395-.461.501-.619.105-.158.211-.132.355-.079.145.053.918.433 1.076.512.158.079.263.118.303.185.039.066.039.382-.102.778zM12 2C6.477 2 2 6.477 2 12c0 1.891.527 3.662 1.442 5.176L2 22l4.981-1.398A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
+            </svg>
+          </span>
 
           {/* Unread notification ping badge */}
           <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-rose-600 text-white font-black text-[10px] flex items-center justify-center border-2 border-white shadow-md animate-pulse">

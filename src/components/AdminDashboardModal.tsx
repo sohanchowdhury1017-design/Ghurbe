@@ -478,25 +478,51 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
 
                     <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
                       <span className="text-[11px] font-bold text-slate-500 shrink-0">ফিল্টার:</span>
-                      {['all', 'confirmed', 'pending', 'cancelled'].map((st) => (
+                      {[
+                        { key: 'all', label: `সব (${bookings.length})` },
+                        { key: 'pending', label: `⏳ যাচাই অপেক্ষমান (${bookings.filter(b => b.paymentStatus === 'pending').length})` },
+                        { key: 'confirmed', label: `✓ অনুমোদিত (${bookings.filter(b => b.paymentStatus === 'confirmed').length})` },
+                        { key: 'cancelled', label: 'বাতিল' },
+                      ].map((item) => (
                         <button
-                          key={st}
+                          key={item.key}
                           type="button"
-                          onClick={() => setStatusFilter(st)}
+                          onClick={() => setStatusFilter(item.key)}
                           className={`text-[11px] font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer whitespace-nowrap ${
-                            statusFilter === st
+                            statusFilter === item.key
                               ? 'bg-blue-600 text-white'
                               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                           }`}
                         >
-                          {st === 'all' && 'সব'}
-                          {st === 'confirmed' && 'কনফার্মড'}
-                          {st === 'pending' && 'অপেক্ষমান'}
-                          {st === 'cancelled' && 'বাতিল'}
+                          {item.label}
                         </button>
                       ))}
                     </div>
                   </div>
+
+                  {/* Pending Payment Verification High-Priority Alert */}
+                  {bookings.filter(b => b.paymentStatus === 'pending').length > 0 && (
+                    <div className="bg-amber-100 border-2 border-amber-400 text-amber-950 p-3 sm:p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs animate-fade-in">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-3 h-3 rounded-full bg-amber-500 animate-ping shrink-0" />
+                        <div>
+                          <h5 className="text-xs sm:text-sm font-black text-amber-950">
+                            {bookings.filter(b => b.paymentStatus === 'pending').length}টি নতুন পেমেন্ট যাচাই রিকোয়েস্ট জমা রয়েছে!
+                          </h5>
+                          <p className="text-[11px] text-amber-850">
+                            গ্রাহকরা বিকাশ বাংলা কিউআরে পেমেন্ট করে ভেরিফিকেশনের জন্য রিকোয়েস্ট পাঠিয়েছেন। নিচে যাচাই করে অনুমোদন দিন। অনুমোদন সম্পন্ন হলে গ্রাহক তার ‘আমার বুকিং’ থেকে অফিসিয়াল ইনভয়েস ডাউনলোড করতে পারবেন।
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setStatusFilter('pending')}
+                        className="px-3.5 py-1.5 bg-amber-800 hover:bg-amber-900 text-white text-xs font-bold rounded-xl shrink-0 cursor-pointer self-start sm:self-center"
+                      >
+                        শুধুমাত্র অপেক্ষমান দেখুন
+                      </button>
+                    </div>
+                  )}
 
                   {/* Bookings List */}
                   {filteredBookings.length > 0 ? (
@@ -600,6 +626,42 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
                               )}
                             </div>
                           </div>
+
+                          {/* Quick Verification & Approval Action for Pending Payments */}
+                          {b.paymentStatus === 'pending' && (
+                            <div className="bg-amber-50/90 border-2 border-amber-300 rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                              <div className="flex items-center gap-2.5">
+                                <Clock className="w-5 h-5 text-amber-700 shrink-0" />
+                                <div>
+                                  <strong className="text-xs sm:text-sm font-black text-amber-950 block">
+                                    পেমেন্ট যাচাই ও অনুমোদন প্রয়োজন
+                                  </strong>
+                                  <span className="text-[11px] text-amber-850">
+                                    গ্রাহকের বিকাশ TrxID/লাস্ট ৪ ডিজিট ও পেমেন্ট মিলিয়ে নিয়ে নিচে অনুমোদন দিন।
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2 flex-wrap shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => onUpdateBookingStatus(b.id, 'confirmed')}
+                                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl shadow-md flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                                >
+                                  <CheckCircle2 className="w-4 h-4" />
+                                  <span>✓ যাচাই সম্পন্ন ও অনুমোদন</span>
+                                </button>
+                                <a
+                                  href={`https://wa.me/88${b.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`আসসালামু আলাইকুম ${b.travelerName}! ঘুরবে টিম থেকে আপনার বুকিং কোড ${b.bookingCode} এর বিকাশ পেমেন্ট যাচাই সংক্রান্ত তথ্যের জন্য যোগাযোগ করছি।`)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="px-3 py-2 bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-xs rounded-xl flex items-center gap-1 cursor-pointer transition-all active:scale-95"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                                  <span>WhatsApp</span>
+                                </a>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>

@@ -514,13 +514,37 @@ export const AdminPage: React.FC<AdminPageProps> = ({
                       className="px-3 py-2 text-xs rounded-xl bg-slate-950 border border-slate-700 text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                     >
                       <option value="all">সকল স্ট্যাটাস ({bookings.length})</option>
+                      <option value="pending">⏳ যাচাই অপেক্ষমান ({pendingCount})</option>
                       <option value="confirmed">কনফার্মড ({confirmedCount})</option>
-                      <option value="pending">পেন্ডিং ({pendingCount})</option>
                       <option value="completed">সম্পন্ন</option>
                       <option value="cancelled">বাতিলকৃত</option>
                     </select>
                   </div>
                 </div>
+
+                {/* Pending Verification Notice */}
+                {pendingCount > 0 && (
+                  <div className="bg-amber-950/70 border-2 border-amber-500/70 text-amber-200 p-3 sm:p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md animate-fade-in">
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-3 h-3 rounded-full bg-amber-400 animate-ping shrink-0" />
+                      <div>
+                        <h5 className="text-xs sm:text-sm font-black text-amber-100">
+                          {pendingCount}টি নতুন পেমেন্ট যাচাই রিকোয়েস্ট জমা রয়েছে!
+                        </h5>
+                        <p className="text-[11px] text-amber-300/90">
+                          গ্রাহকরা বিকাশ বাংলা কিউআরে পেমেন্ট করে ভেরিফিকেশনের জন্য রিকোয়েস্ট পাঠিয়েছেন। যাচাই সম্পন্ন হলে গ্রাহকের কাছে অফিসিয়াল ইনভয়েস উন্মুক্ত হবে।
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setStatusFilter('pending')}
+                      className="px-3.5 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 text-xs font-black rounded-xl shrink-0 cursor-pointer self-start sm:self-center transition-all"
+                    >
+                      অপেক্ষমান দেখুন ({pendingCount})
+                    </button>
+                  </div>
+                )}
 
                 {/* Bookings List Cards */}
                 {filteredBookings.length > 0 ? (
@@ -618,6 +642,33 @@ export const AdminPage: React.FC<AdminPageProps> = ({
                             <span className="text-slate-400 font-mono"> / ৳{b.totalPrice}</span>
                           </div>
                         </div>
+
+                        {/* Quick Verification & Approval Action for Pending Payments */}
+                        {b.paymentStatus === 'pending' && (
+                          <div className="bg-amber-950/60 border border-amber-500/60 rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-4 h-4 text-amber-400 shrink-0" />
+                              <div>
+                                <strong className="text-xs font-black text-amber-200 block">
+                                  পেমেন্ট যাচাই ও অনুমোদন প্রয়োজন
+                                </strong>
+                                <span className="text-[11px] text-amber-300/80">
+                                  গ্রাহকের বিকাশ TrxID/লাস্ট ৪ ডিজিট ও পেমেন্ট মিলিয়ে নিয়ে অনুমোদন দিন।
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2 flex-wrap shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => onUpdateBookingStatus(b.id, 'confirmed')}
+                                className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-black text-xs rounded-lg shadow-md flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                              >
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                <span>✓ যাচাই সম্পন্ন ও অনুমোদন</span>
+                              </button>
+                            </div>
+                          </div>
+                        )}
 
                         {/* Status Change Buttons Strip */}
                         <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-slate-800/60">

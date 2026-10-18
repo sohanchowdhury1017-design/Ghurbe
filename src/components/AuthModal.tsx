@@ -28,7 +28,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
-    const finalName = name || (isRegister ? 'সোহান চৌধুরী' : 'সম্মানিত পর্যটক');
+    const finalName = name || 'সম্মানিত পর্যটক';
     onLoginSuccess({ name: finalName, phone });
     onClose();
   };
@@ -78,7 +78,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <input
                     type="text"
                     required
-                    placeholder="যেমন: সোহান চৌধুরী"
+                    placeholder="আপনার পূর্ণ নাম লিখুন"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full pl-11 pr-3.5 py-3 text-base sm:text-sm rounded-xl border border-slate-300 focus:border-blue-600 outline-hidden bg-slate-50 min-h-[46px]"

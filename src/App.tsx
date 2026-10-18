@@ -24,11 +24,12 @@ import { KuakataTourPopupModal } from './components/KuakataTourPopupModal';
 import { MemberProfilePage } from './components/MemberProfilePage';
 import { AdminDashboardModal } from './components/AdminDashboardModal';
 import { AdminPage } from './components/AdminPage';
+import { KuakataPage } from './components/KuakataPage';
 import { POPULAR_PACKAGES } from './data/packagesData';
 import { TEAM_MEMBERS } from './data/blogAndTeamData';
 import { TourPackage, BookingRecord, SearchFilterState, ContactMessage } from './types/travel';
 
-type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about' | 'member-profile' | 'adminn';
+type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about' | 'member-profile' | 'adminn' | 'kuakata';
 
 export default function App() {
   const [packages] = useState<TourPackage[]>(POPULAR_PACKAGES);
@@ -55,6 +56,12 @@ export default function App() {
       return { route: 'adminn', pkg: null };
     }
 
+    // Dedicated Kuakata Special Tour & Payment Page (ghurbe.com/kuakata)
+    if (clean === 'kuakata' || clean === 'kuakata-beach' || clean === 'kuakata-package' || clean === 'kuakata-tour') {
+      const kuakataPkg = packages.find((p) => p.id === 'kuakata-beach') || packages[0];
+      return { route: 'kuakata', pkg: kuakataPkg };
+    }
+
     // Check individual executive profile pages:
     // e.g. ghurbe.com/SAMSUL-ARAFIN, ghurbe.com/mahim-ibn-khudi, ghurbe.com/md-rifat-islam, ghurbe.com/sidra-islam
     const matchedMember = TEAM_MEMBERS.find(
@@ -73,12 +80,11 @@ export default function App() {
       return { route: 'member-profile', pkg: null, memberSlug: matchedMember.slug };
     }
 
-    // Check if it matches any package slug or id e.g. /Kuakata or /sajek-valley
+    // Check if it matches any other package slug or id e.g. /coxs-bazar or /sajek-valley
     const matched = packages.find(
       (p) =>
         p.slug.toLowerCase() === clean ||
-        p.id.toLowerCase() === clean ||
-        (clean === 'kuakata' && (p.slug === 'kuakata' || p.id === 'kuakata-beach'))
+        p.id.toLowerCase() === clean
     );
     if (matched) {
       return { route: 'package-detail', pkg: matched };
@@ -138,15 +144,8 @@ export default function App() {
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
+  // Kuakata popup state disabled by user request ('eta thakbe nah')
   const [kuakataPopupOpen, setKuakataPopupOpen] = useState(false);
-
-  // Trigger Kuakata 12th tour announcement modal 2 seconds after entering website
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setKuakataPopupOpen(true);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // User state
   const [currentUser, setCurrentUser] = useState<{ name: string; phone: string } | null>(() => {
@@ -278,6 +277,8 @@ export default function App() {
       subPath = '/stats';
     } else if (route === 'adminn') {
       subPath = '/adminn';
+    } else if (route === 'kuakata') {
+      subPath = '/kuakata';
     } else if (route === 'member-profile') {
       const memSlug = memberSlug || selectedMemberSlug || 'SAMSUL-ARAFIN';
       subPath = `/${memSlug}`;
@@ -334,6 +335,8 @@ export default function App() {
         }
       } else if (route === 'blog' && resolved.blogSlug === 'kuakata-travel-guide') {
         document.title = 'কুয়াকাটা ভ্রমণ গাইড ২০২৬ | Kuakata Travel Guide | Ghurbe Tours & Travel';
+      } else if (route === 'kuakata') {
+        document.title = 'কুয়াকাটা স্পেশাল ট্যুর ও পেমেন্ট প্রক্রিয়া | ঘুরবে ট্যুর অ্যান্ড ট্রাভেল (ghurbe.com/kuakata)';
       } else if (route === 'packages') {
         document.title = 'সকল ভ্রমণ প্যাকেজ | ঘুরবে (Ghurbe)';
       } else if (route === 'gallery') {
@@ -448,8 +451,13 @@ export default function App() {
       subPath = '/stats';
       newTitle = 'আমাদের অর্জন ও ট্রাভেলার রিভিউ | ঘুরবে (Ghurbe)';
       newRoute = 'stats';
+    } else if (target === 'kuakata' || (target === 'package-detail' && pkg && (pkg.id === 'kuakata-beach' || pkg.slug === 'kuakata'))) {
+      subPath = '/kuakata';
+      newTitle = 'কুয়াকাটা স্পেশাল ট্যুর ও পেমেন্ট প্রক্রিয়া | ঘুরবে ট্যুর অ্যান্ড ট্রাভেল (ghurbe.com/kuakata)';
+      newRoute = 'kuakata';
+      targetPkg = packages.find((p) => p.id === 'kuakata-beach') || packages[0];
     } else if ((target === 'package-detail' || target === 'detail') && pkg) {
-      const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
+      const slugName = pkg.slug;
       subPath = `/${slugName}`;
       newTitle = `${pkg.title} | ghurbe.com/${slugName}`;
       newRoute = 'package-detail';
@@ -600,6 +608,14 @@ export default function App() {
 
       {/* Main Content Area: Each page is completely dedicated and separate */}
       <main className="flex-1 pb-16 sm:pb-0">
+        {currentRoute === 'kuakata' && (
+          <KuakataPage
+            onBackToHome={() => navigateTo('home')}
+            onBookNow={handleBookNow}
+            onOpenContact={() => navigateTo('contact')}
+          />
+        )}
+
         {currentRoute === 'package-detail' && currentRoutePackage && (
           <PackageDetailPage
             pkg={currentRoutePackage}
@@ -773,41 +789,23 @@ export default function App() {
         onLoginSuccess={(user) => setCurrentUser(user)}
       />
 
-      {/* Kuakata 12th Tour Announcement Popup Modal (2-sec delay with Countdown & Scarcity) */}
-      <KuakataTourPopupModal
-        pkg={packages.find((p) => p.id === 'kuakata-beach') || packages[0]}
-        isOpen={kuakataPopupOpen}
-        onClose={() => setKuakataPopupOpen(false)}
-        onBookNow={(pkg) => {
-          setKuakataPopupOpen(false);
-          handleBookNow(pkg);
-        }}
-        onViewDetails={(pkg) => {
-          setKuakataPopupOpen(false);
-          handleViewDetails(pkg);
-        }}
-      />
 
-      {/* Floating Badge for Kuakata 12 Nov Tour Countdown (Attractive Emerald & Sky Blue Theme, No Red, No Ping) */}
-      {!kuakataPopupOpen && currentRoute !== 'about' && (
-        <button
-          onClick={() => {
-            const kuakataPkg = packages.find((p) => p.id === 'kuakata-beach');
-            if (kuakataPkg) {
-              handleViewDetails(kuakataPkg);
-            } else {
-              setKuakataPopupOpen(true);
-            }
+
+      {/* Kuakata Tour Announcement Modal */}
+      {kuakataPopupOpen && (
+        <KuakataTourPopupModal
+          pkg={packages.find((p) => p.id === 'kuakata-beach') || packages[0]}
+          isOpen={kuakataPopupOpen}
+          onClose={() => setKuakataPopupOpen(false)}
+          onBookNow={(pkg) => {
+            setKuakataPopupOpen(false);
+            handleBookNow(pkg);
           }}
-          className="fixed bottom-20 sm:bottom-6 left-3 sm:left-6 z-30 px-3.5 py-2.5 bg-gradient-to-r from-slate-950 via-blue-950 to-slate-900 text-white rounded-full shadow-2xl border-2 border-emerald-400 text-[11px] sm:text-xs font-black flex items-center gap-2 hover:scale-105 active:scale-95 transition-all cursor-pointer backdrop-blur-md hover:border-emerald-300 ring-2 ring-emerald-500/20"
-          title="১২ নভেম্বর কুয়াকাটা ট্যুরের বিস্তারিত পেজ দেখুন"
-        >
-          <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_#34d399]" />
-          <span className="text-emerald-300">🌊 ১২ নভেম্বর কুয়াকাটা</span>
-          <span className="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/30 text-[10px] font-bold">
-            ২৪ সিট বাকি
-          </span>
-        </button>
+          onViewDetails={(pkg) => {
+            setKuakataPopupOpen(false);
+            handleViewDetails(pkg);
+          }}
+        />
       )}
     </div>
   );

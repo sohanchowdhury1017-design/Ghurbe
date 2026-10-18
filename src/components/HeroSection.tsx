@@ -1,53 +1,113 @@
 import React, { useState } from 'react';
-import { MapPin, Calendar, Users, Search, ArrowRight, ShieldCheck, Star, Sparkles } from 'lucide-react';
-import { SearchFilterState } from '../types/travel';
+import { 
+  Calendar, 
+  Users, 
+  ShieldCheck, 
+  Star, 
+  Sparkles, 
+  Compass, 
+  CheckCircle2, 
+  ArrowRight,
+  ChevronDown,
+  User,
+  Heart
+} from 'lucide-react';
+import { TourPackage, SearchFilterState } from '../types/travel';
+import { POPULAR_PACKAGES } from '../data/packagesData';
 
 interface HeroSectionProps {
   onSearch: (filters: SearchFilterState) => void;
   onSelectDestinationQuick: (dest: string) => void;
+  onBookNow?: (pkg: TourPackage) => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onSearch,
   onSelectDestinationQuick,
+  onBookNow,
 }) => {
-  const [destination, setDestination] = useState('');
-  const [date, setDate] = useState('');
-  const [travelers, setTravelers] = useState(2);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSearch({
-      destination,
-      date,
-      travelers,
-      category: 'all',
-      maxPrice: 50000,
-    });
+  // Helper to determine scheduled tour departure date by package
+  const getScheduledDate = (pkgId: string): string => {
+    switch (pkgId) {
+      case 'kuakata-beach':
+      case 'kuakata':
+        return '2026-11-12';
+      case 'sajek-valley':
+      case 'sajek':
+        return '2026-11-20';
+      case 'coxs-bazar':
+      case 'cox':
+        return '2026-11-28';
+      case 'saint-martin':
+      case 'saintmartin':
+        return '2026-12-05';
+      case 'tanguar-haor':
+      case 'tangua':
+        return '2026-11-15';
+      case 'bandarban':
+        return '2026-11-25';
+      case 'sreemangal':
+        return '2026-11-18';
+      case 'sundarban':
+        return '2026-12-10';
+      default:
+        return '2026-11-12';
+    }
   };
 
-  const destinationsList = [
-    { value: '', label: 'সব গন্তব্য (সকল বাংলাদেশ স্পট)' },
-    { value: 'কুয়াকাটা', label: '🔥 কুয়াকাটা সাগরকন্যা (৩৫৯৯৳ ধামাকা অফার)' },
-    { value: 'সাজেক ভ্যালি', label: 'সাজেক ভ্যালি (মেঘের রাজ্য)' },
-    { value: 'সেন্টমার্টিন', label: 'সেন্টমার্টিন দ্বীপ (প্রবাল দ্বীপ)' },
-    { value: 'টাঙ্গুয়ার হাওর', label: 'টাঙ্গুয়ার হাওর ও নীলাদ্রি (হাউসবোট)' },
-    { value: 'কক্সবাজার', label: 'কক্সবাজার সমুদ্র সৈকত ও ইনানী' },
-    { value: 'বান্দরবান', label: 'বান্দরবান নীলগিরি ও নাফাখুম' },
-    { value: 'সিলেট', label: 'সিলেট রাতারগুল ও বিছানাকান্দি' },
-    { value: 'শ্রীমঙ্গল', label: 'শ্রীমঙ্গল চা বাগান ও লাউয়াছড়া' },
-    { value: 'সুন্দরবন', label: 'সুন্দরবন রয়্যাল সাফারি ক্রুজ' },
-    { value: 'রাঙ্গামাটি', label: 'রাঙ্গামাটি কাপ্তাই লেক ও শুভলং' },
-  ];
+  // 1. Package Selection (Kuakata, Cox's Bazar, Sajek, etc.)
+  const [selectedPkgId, setSelectedPkgId] = useState<string>('kuakata-beach');
+  
+  // 2. Date: Auto-fills with departure date when package is selected
+  const [date, setDate] = useState<string>(() => getScheduledDate('kuakata-beach'));
+
+  // 3. Plan Type: Single (সিঙ্গেল) or Couple (কাপল)
+  const [planType, setPlanType] = useState<'single' | 'couple'>('single');
+
+  // 4. Single Travelers count: 1 to 40
+  const [singleGuestsCount, setSingleGuestsCount] = useState<number>(1);
+
+  // Active package details
+  const activePkg: TourPackage = 
+    POPULAR_PACKAGES.find((p) => p.id === selectedPkgId) || POPULAR_PACKAGES[0];
+
+  // Handle package change -> auto-fills departure date
+  const handlePackageChange = (pkgId: string) => {
+    setSelectedPkgId(pkgId);
+    setDate(getScheduledDate(pkgId));
+  };
+
+  // Bill Calculations
+  const totalPrice = planType === 'couple' && activePkg.couplePrice
+    ? activePkg.couplePrice
+    : activePkg.price * singleGuestsCount;
+
+  // Advance booking money: ৳1,000 per person for single, ৳2,000 for couple
+  const advanceAmount = planType === 'couple' ? 2000 : 1000 * singleGuestsCount;
+
+  const handleProceedBooking = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onBookNow) {
+      onBookNow(activePkg);
+    } else {
+      onSearch({
+        destination: activePkg.location,
+        date,
+        travelers: planType === 'couple' ? 2 : singleGuestsCount,
+        category: 'all',
+        maxPrice: 50000,
+      });
+    }
+  };
 
   const quickBadges = [
-    'কুয়াকাটা (৩৫৯৯৳)',
-    'সাজেক ভ্যালি',
-    'সেন্টমার্টিন',
-    'টাঙ্গুয়ার হাওর',
-    'কক্সবাজার',
-    'বান্দরবান',
-    'সিলেট',
+    { id: 'kuakata-beach', name: 'কুয়াকাটা' },
+    { id: 'coxs-bazar', name: 'কক্সবাজার' },
+    { id: 'sajek-valley', name: 'সাজেক ভ্যালি' },
+    { id: 'tanguar-haor', name: 'টাঙ্গুয়ার হাওর' },
+    { id: 'saint-martin', name: 'সেন্টমার্টিন' },
+    { id: 'bandarban', name: 'বান্দরবান' },
+    { id: 'sreemangal', name: 'শ্রীমঙ্গল' },
   ];
 
   return (
@@ -61,13 +121,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           referrerPolicy="no-referrer"
         />
         {/* Soft atmospheric gradient scrim ensuring WCAG contrast for text */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/60 to-slate-950/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-slate-900/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-900/65 to-slate-950/55" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-900/40" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 lg:py-24 w-full">
         <div className="max-w-3xl space-y-3.5 sm:space-y-4 text-left">
-          {/* Subtle trust kicker with Social Media and Promotion Badges */}
+          {/* Trust kicker with Social Media and Promotion Badges */}
           <div className="flex items-center gap-2 flex-wrap">
             <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white/95 text-[11px] sm:text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-sky-300" />
@@ -99,7 +159,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </a>
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#881337] to-[#9f1239] text-white text-[11px] sm:text-xs font-black shadow-md border border-rose-300/30">
-              <span>🌊 কুয়াকাটা মেগা অফার ৩৫৯৯৳ (১২ নভেম্বর)</span>
+              <span>🌊 কুয়াকাটা স্পেশাল ট্যুর অফার (১২ নভেম্বর)</span>
             </div>
           </div>
 
@@ -123,104 +183,194 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
               {quickBadges.map((badge) => (
                 <button
-                  key={badge}
+                  key={badge.id}
                   type="button"
                   onClick={() => {
-                    setDestination(badge);
-                    onSelectDestinationQuick(badge);
+                    handlePackageChange(badge.id);
                   }}
-                  className="px-3 py-1.5 bg-white/15 hover:bg-white/30 active:bg-white/40 active:scale-95 backdrop-blur-xs rounded-xl text-white text-xs font-semibold transition-all border border-white/25 hover:border-white/40 whitespace-nowrap shrink-0 cursor-pointer"
+                  className={`px-3 py-1.5 backdrop-blur-xs rounded-xl text-white text-xs font-semibold transition-all border whitespace-nowrap shrink-0 cursor-pointer ${
+                    selectedPkgId === badge.id 
+                      ? 'bg-sky-500/80 border-sky-300 ring-2 ring-sky-400/40 font-bold' 
+                      : 'bg-white/15 hover:bg-white/30 border-white/25 hover:border-white/40'
+                  }`}
                 >
-                  {badge}
+                  {badge.name}
                 </button>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Floating Search / Booking Filter Bar */}
+        {/* Dynamic Package & Plan Selection Booking Box */}
         <div className="mt-6 sm:mt-10 max-w-5xl">
           <form
-            onSubmit={handleSubmit}
-            className="bg-white rounded-3xl sm:rounded-2xl shadow-2xl p-3.5 sm:p-4 border border-slate-200/90 backdrop-blur-xl grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3 items-center"
+            onSubmit={handleProceedBooking}
+            className="bg-white rounded-3xl sm:rounded-2xl shadow-2xl p-4 sm:p-5 border border-slate-200/90 backdrop-blur-xl text-left space-y-3.5"
           >
-            {/* Field 1: Destination */}
-            <div className="md:col-span-4 flex items-center gap-3 px-3.5 py-2.5 rounded-2xl sm:rounded-xl bg-slate-50 border border-slate-200/80 focus-within:border-blue-500 focus-within:bg-white transition-all min-h-[50px]">
-              <div className="w-9 h-9 rounded-xl bg-blue-100/70 flex items-center justify-center shrink-0 text-blue-600">
-                <MapPin className="w-5 h-5 stroke-[2.25]" />
+            {/* Header / Instructions */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-black text-slate-900 uppercase tracking-wide">
+                  ট্যুর প্যাকেজ ও সিট নির্বাচন
+                </span>
               </div>
-              <div className="flex-1 min-w-0">
-                <label className="block text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  গন্তব্য (Destination)
-                </label>
-                <select
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  className="w-full bg-transparent text-base sm:text-sm font-bold text-slate-900 outline-hidden cursor-pointer"
+              <span className="text-[11px] font-bold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded-full self-start sm:self-auto">
+                প্যাকেজ নির্বাচন করলে তারিখ স্বয়ংক্রিয়ভাবে পূরণ হবে
+              </span>
+            </div>
+
+            {/* Inputs Grid: Package, Plan (Single/Couple), Travelers, Date */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+              
+              {/* Field 1: Package Selector (Kuakata, Cox's Bazar, Sajek, Saint Martin, etc.) */}
+              <div className="lg:col-span-4 flex items-center gap-3 px-3.5 py-2.5 rounded-2xl sm:rounded-xl bg-slate-50 border border-slate-200/90 focus-within:border-blue-500 focus-within:bg-white transition-all min-h-[52px]">
+                <div className="w-9 h-9 rounded-xl bg-blue-100/80 flex items-center justify-center shrink-0 text-blue-600">
+                  <Compass className="w-5 h-5 stroke-[2.25]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                    ট্যুর প্যাকেজ (Package)
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={selectedPkgId}
+                      onChange={(e) => handlePackageChange(e.target.value)}
+                      className="w-full bg-transparent text-sm sm:text-xs font-bold text-slate-900 outline-hidden cursor-pointer appearance-none pr-5 truncate"
+                    >
+                      {POPULAR_PACKAGES.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.title}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-0 top-1 pointer-events-none" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Field 2: Plan Type Selector (Single or Couple) */}
+              <div className="lg:col-span-3 flex items-center gap-2 p-1.5 rounded-2xl sm:rounded-xl bg-slate-100 border border-slate-200 min-h-[52px]">
+                {/* Single Plan Button */}
+                <button
+                  type="button"
+                  onClick={() => setPlanType('single')}
+                  className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    planType === 'single'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-700 hover:text-slate-900 hover:bg-white/60'
+                  }`}
                 >
-                  {destinationsList.map((d) => (
-                    <option key={d.value} value={d.value}>
-                      {d.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+                  <User className="w-3.5 h-3.5" />
+                  <span>সিঙ্গেল</span>
+                </button>
 
-            {/* Field 2: Date */}
-            <div className="md:col-span-3 flex items-center gap-3 px-3.5 py-2.5 rounded-2xl sm:rounded-xl bg-slate-50 border border-slate-200/80 focus-within:border-blue-500 focus-within:bg-white transition-all min-h-[50px]">
-              <div className="w-9 h-9 rounded-xl bg-sky-100/70 flex items-center justify-center shrink-0 text-sky-600">
-                <Calendar className="w-5 h-5 stroke-[2.25]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <label className="block text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  ভ্রমণের তারিখ (Date)
-                </label>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="w-full bg-transparent text-base sm:text-sm font-semibold text-slate-900 outline-hidden cursor-pointer"
-                />
-              </div>
-            </div>
-
-            {/* Field 3: Travelers */}
-            <div className="md:col-span-3 flex items-center gap-3 px-3.5 py-2.5 rounded-2xl sm:rounded-xl bg-slate-50 border border-slate-200/80 focus-within:border-blue-500 focus-within:bg-white transition-all min-h-[50px]">
-              <div className="w-9 h-9 rounded-xl bg-blue-100/70 flex items-center justify-center shrink-0 text-blue-600">
-                <Users className="w-5 h-5 stroke-[2.25]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <label className="block text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  ভ্রমণকারী (Travelers)
-                </label>
-                <select
-                  value={travelers}
-                  onChange={(e) => setTravelers(Number(e.target.value))}
-                  className="w-full bg-transparent text-base sm:text-sm font-bold text-slate-900 outline-hidden cursor-pointer"
+                {/* Couple Plan Button */}
+                <button
+                  type="button"
+                  onClick={() => setPlanType('couple')}
+                  className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    planType === 'couple'
+                      ? 'bg-rose-600 text-white shadow-xs'
+                      : 'text-slate-700 hover:text-slate-900 hover:bg-white/60'
+                  }`}
                 >
-                  <option value={1}>১ জন (একক ভ্রমণ)</option>
-                  <option value={2}>২ জন (কাপল / বন্ধু)</option>
-                  <option value={3}>৩ জন (ফ্যামিলি রুম)</option>
-                  <option value={4}>৪ জন (গ্রুপ শেয়ারিং)</option>
-                  <option value={6}>৬+ জন (বড় দল/কর্পোরেট)</option>
-                </select>
+                  <Heart className="w-3.5 h-3.5 fill-current" />
+                  <span>কাপল</span>
+                </button>
+              </div>
+
+              {/* Field 3: Travelers Count (1 to 40 for Single, Fixed 2 for Couple) */}
+              <div className="lg:col-span-2 flex items-center gap-3 px-3.5 py-2.5 rounded-2xl sm:rounded-xl bg-slate-50 border border-slate-200/90 focus-within:border-blue-500 focus-within:bg-white transition-all min-h-[52px]">
+                <div className="w-9 h-9 rounded-xl bg-indigo-100/80 flex items-center justify-center shrink-0 text-indigo-600">
+                  <Users className="w-5 h-5 stroke-[2.25]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                    ভ্রমণকারী {planType === 'single' ? '(১-৪০)' : ''}
+                  </label>
+                  {planType === 'single' ? (
+                    <div className="relative">
+                      <select
+                        value={singleGuestsCount}
+                        onChange={(e) => setSingleGuestsCount(Number(e.target.value))}
+                        className="w-full bg-transparent text-sm sm:text-xs font-bold text-slate-900 outline-hidden cursor-pointer appearance-none pr-5"
+                      >
+                        {Array.from({ length: 40 }, (_, i) => i + 1).map((num) => (
+                          <option key={num} value={num}>
+                            {num} জন
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-0 top-1 pointer-events-none" />
+                    </div>
+                  ) : (
+                    <span className="text-sm sm:text-xs font-bold text-rose-800 block">
+                      ২ জন (কাপল)
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Field 4: Departure Date (Auto-filled on package change) */}
+              <div className="lg:col-span-3 flex items-center gap-3 px-3.5 py-2.5 rounded-2xl sm:rounded-xl bg-slate-50 border border-slate-200/90 focus-within:border-blue-500 focus-within:bg-white transition-all min-h-[52px]">
+                <div className="w-9 h-9 rounded-xl bg-sky-100/80 flex items-center justify-center shrink-0 text-sky-600">
+                  <Calendar className="w-5 h-5 stroke-[2.25]" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                    যাত্রার তারিখ (Date)
+                  </label>
+                  <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full bg-transparent text-sm sm:text-xs font-bold text-slate-900 outline-hidden cursor-pointer"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Field 4: Search CTA Button */}
-            <div className="md:col-span-2">
+            {/* Bottom Row: Selected Tour Summary Strip & Book Button (No Tk shown) */}
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-gradient-to-r from-blue-50/70 via-indigo-50/50 to-slate-50 p-3 sm:p-3.5 rounded-2xl border border-blue-200/80">
+              {/* Tour Summary Display (No Tk/money shown) */}
+              <div className="flex items-center gap-4 flex-wrap">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-600" />
+                    <span className="text-xs sm:text-sm font-black text-slate-900">
+                      {activePkg.title}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[11px] text-slate-600 mt-0.5">
+                    <span className="font-bold text-blue-700 bg-blue-100/70 px-2 py-0.5 rounded-md">
+                      {planType === 'couple' ? 'কাপল প্যাকেজ (২ জন)' : `সিঙ্গেল প্ল্যান (${singleGuestsCount} জন ভ্রমণকারী)`}
+                    </span>
+                    <span>·</span>
+                    <span>{activePkg.duration.textBn || '৩ রাত ২ দিন'}</span>
+                  </div>
+                </div>
+
+                <div className="hidden md:block h-8 w-px bg-blue-200" />
+
+                <div className="hidden md:block text-xs text-slate-600">
+                  <span className="font-semibold block text-[11px] text-slate-700">পিকআপ পয়েন্ট:</span>
+                  <span className="text-[11px] text-slate-500">রংপুর, বগুড়া ও গাইবান্ধা পিকআপ</span>
+                </div>
+              </div>
+
+              {/* Book Button (No Tk amount in button) */}
               <button
                 type="submit"
-                className="w-full min-h-[50px] flex items-center justify-center gap-2 px-5 text-base sm:text-sm font-extrabold text-white rounded-2xl sm:rounded-xl bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 shadow-md shadow-blue-500/25 transition-all active:scale-97 cursor-pointer"
+                className="min-h-[48px] px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 hover:from-blue-800 hover:to-blue-900 text-white font-black text-sm shadow-md shadow-blue-500/25 flex items-center justify-center gap-2 transition-all active:scale-97 cursor-pointer shrink-0"
               >
-                <Search className="w-5 h-5 stroke-[2.5]" />
-                <span>সার্চ করুন</span>
+                <span>সিট বুকিং শুরু করুন</span>
+                <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </button>
             </div>
           </form>
 
-          {/* Quick value props strip below search */}
+          {/* Quick value props strip below booking */}
           <div className="mt-4 grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center sm:justify-start gap-3 sm:gap-6 text-xs text-white/90">
             <div className="flex items-center gap-1.5 drop-shadow-sm font-medium">
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -232,7 +382,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
             <div className="flex items-center gap-1.5 drop-shadow-sm font-medium col-span-2 sm:col-span-1">
               <span className="w-2 h-2 rounded-full bg-sky-400 shrink-0" />
-              <span>সহজ বুকিং ও রিফান্ড সুবিধা</span>
+              <span>সহজ বুকিং ও কনফার্মেশন সুবিধা</span>
             </div>
           </div>
         </div>

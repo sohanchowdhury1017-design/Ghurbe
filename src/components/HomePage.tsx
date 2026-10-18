@@ -96,6 +96,7 @@ export const HomePage: React.FC<HomePageProps> = ({
       <HeroSection
         onSearch={onSearch}
         onSelectDestinationQuick={onSelectDestinationQuick}
+        onBookNow={onBookNow}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-16">
@@ -219,7 +220,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
         )}
 
-        {/* 2.5 High-Impact Live Stats Strip (১,১৮৮+ হ্যাপি পর্যটক, ৩৬৭+ সফল ট্যুর, ৪.৯ রেটিং) */}
+        {/* 2.5 High-Impact Live Stats Strip (১১,০৪৪+ হ্যাপি পর্যটক, ৩৬৭+ সফল ট্যুর, ৪.৯ রেটিং) */}
         <div 
           onClick={onNavigateToStats}
           className="bg-white/95 backdrop-blur-md rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-xs hover:shadow-md hover:border-sky-300 transition-all cursor-pointer group"
@@ -238,13 +239,13 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
 
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4 text-center">
-            {/* Stat 1 */}
+            {/* Stat 1: 11,044+ Happy Travelers */}
             <div className="p-3 sm:p-4 rounded-2xl bg-sky-50/70 border border-sky-100/90 hover:bg-sky-100/70 transition-colors">
               <div className="flex items-center justify-center gap-1 text-blue-600 mb-1">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="text-lg sm:text-3xl font-black text-slate-900 font-mono tracking-tight">
-                ১,১৮৮+
+                ১১,০৪৪+
               </div>
               <p className="text-[10px] sm:text-xs text-slate-600 font-bold mt-0.5">
                 টোটাল হ্যাপি পর্যটক
@@ -468,7 +469,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="text-center max-w-xl mx-auto mb-8">
             <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block">সহজ প্রক্রিয়া</span>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900">মাত্র ৪টি সহজ ধাপে আপনার ভ্রমণ নিশ্চিত করুন</h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">কোনো ঝামেলা ছাড়াই অনলাইনে বিকাশ বা নগদে সিট বুকিং করুন</p>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">কোনো ঝামেলা ছাড়াই সহজে আপনার পছন্দের সিট বুকিং করুন</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative">
@@ -492,8 +493,8 @@ export const HomePage: React.FC<HomePageProps> = ({
               <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white font-black text-sm flex items-center justify-center mx-auto mb-3 shadow-md shadow-emerald-500/20">
                 ০৩
               </div>
-              <h4 className="font-bold text-sm text-slate-900 mb-1">বিকাশ/নগদে বুকিং মানি</h4>
-              <p className="text-xs text-slate-600 leading-relaxed">মাত্র ৩০% অগ্রিম প্রদান করে নিরাপদে আপনার কাঙ্ক্ষিত আসন লক করুন।</p>
+              <h4 className="font-bold text-sm text-slate-900 mb-1">আসন কনফার্মেশন</h4>
+              <p className="text-xs text-slate-600 leading-relaxed">আপনার বুকিং তথ্য যাচাই করে সহজে কাঙ্ক্ষিত আসন কনফার্ম করুন।</p>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-center relative group hover:border-sky-300 transition-all">
@@ -525,7 +526,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 hover:border-sky-400/60 transition-all">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-black text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-300/30">১২ নভেম্বর ২০২৬</span>
-                <span className="text-[11px] text-emerald-300 font-bold">২৪ সিট বাকি</span>
+                <span className="text-[11px] text-emerald-300 font-bold">বুকিং চলছে</span>
               </div>
               <h4 className="font-bold text-sm text-white">🌊 কুয়াকাটা সাগরকন্যা ৩ রাত ২ দিন</h4>
               <p className="text-xs text-slate-300 mt-1">রংপুর, বগুড়া ও গাইবান্ধা পিকআপ। মেগা অফার: ৩৫৯৯৳ (নিয়মিত ৯,৮৭০৳)</p>
@@ -575,7 +576,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
               <div>
                 <h3 className="font-bold text-sm text-slate-900">সাশ্রয়ী ও স্বচ্ছ বাজেট</h3>
-                <p className="text-xs text-slate-600 mt-1 leading-relaxed">কোনো লুকানো চার্জ নেই। মাত্র ১,০০০৳ অগ্রিম বুকিং দিয়ে সিট নিশ্চিত করুন।</p>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">কোনো লুকানো চার্জ নেই। স্বচ্ছ ও সাশ্রয়ী মূল্যে সেরা ট্যুর প্যাকেজ।</p>
               </div>
             </div>
 
