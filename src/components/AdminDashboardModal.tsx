@@ -243,20 +243,24 @@ export const AdminDashboardModal: React.FC<AdminDashboardModalProps> = ({
 
   if (!isOpen) return null;
 
+  const safeBookings = Array.isArray(bookings) ? bookings : [];
+  const safeMessages = Array.isArray(messages) ? messages : [];
+
   // Filter Bookings
-  const filteredBookings = bookings.filter((b) => {
+  const filteredBookings = safeBookings.filter((b) => {
+    if (!b) return false;
     const matchesSearch = 
-      b.travelerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      b.phone.includes(searchTerm) ||
-      b.bookingCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      b.packageTitle.toLowerCase().includes(searchTerm.toLowerCase());
+      (b.travelerName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (b.phone || '').includes(searchTerm) ||
+      (b.bookingCode || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (b.packageTitle || '').toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus = statusFilter === 'all' || b.paymentStatus === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const totalAdvance = bookings.reduce((sum, b) => sum + (b.advancePaid || 0), 0);
-  const totalRevenue = bookings.reduce((sum, b) => sum + (b.totalPrice || 0), 0);
+  const totalAdvance = safeBookings.reduce((sum, b) => sum + (b?.advancePaid || 0), 0);
+  const totalRevenue = safeBookings.reduce((sum, b) => sum + (b?.totalPrice || 0), 0);
 
   return (
     <div 

@@ -37,6 +37,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
   onNewBookingClick,
 }) => {
   const [selectedInvoiceBooking, setSelectedInvoiceBooking] = useState<BookingRecord | null>(null);
+  const safeBookings = Array.isArray(bookings) ? bookings : [];
 
   if (!isOpen) return null;
 
@@ -63,7 +64,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
             <div>
               <h2 className="text-lg sm:text-xl font-bold">আমার ট্যুর বুকিং সমূহ</h2>
               <p className="text-xs text-slate-400">
-                আপনার ডিভাইস থেকে করা সক্রিয় বুকিং: <span className="text-sky-400 font-bold tabular-nums">{bookings.length}</span> টি
+                আপনার ডিভাইস থেকে করা সক্রিয় বুকিং: <span className="text-sky-400 font-bold tabular-nums">{safeBookings.length}</span> টি
               </p>
             </div>
           </div>
@@ -81,14 +82,14 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
 
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          {bookings.length > 0 ? (
+          {safeBookings.length > 0 ? (
             <div className="space-y-4">
               <div className="bg-sky-50 border border-sky-200/80 rounded-2xl p-3 flex items-center gap-2 text-xs text-blue-900">
                 <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
                 <span>এখানে শুধুমাত্র আপনার ব্যক্তিগত বুকিংগুলো সংরক্ষিত রয়েছে। অ্যাডমিন যাচাই সম্পন্ন হলে অফিসিয়াল ইনভয়েস ডাউনলোড করা যাবে।</span>
               </div>
 
-              {bookings.map((b) => (
+              {safeBookings.map((b) => (
                 <div
                   key={b.id}
                   className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-xs hover:border-blue-500/50 transition-all space-y-3"

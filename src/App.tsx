@@ -106,9 +106,6 @@ export default function App() {
 
     // 2. Check query parameter (e.g., ?p=/packages from 404 redirect, or ?g=true / ?admin=true)
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('g') || urlParams.get('admin') === 'true' || urlParams.get('g') === 'true') {
-      setTimeout(() => setAdminModalOpen(true), 0);
-    }
     const queryRoute = urlParams.get('p') || urlParams.get('page');
     if (queryRoute) {
       const matchedByQuery = matchRoute(queryRoute);
@@ -144,14 +141,36 @@ export default function App() {
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  // Kuakata popup state disabled by user request ('eta thakbe nah')
+  // Kuakata 12 Nov Tour Countdown Special Offer Popup
   const [kuakataPopupOpen, setKuakataPopupOpen] = useState(false);
+
+  // Auto trigger the Kuakata Special Offer popup 2 seconds after page load as requested:
+  // "kuakata r je offer ta bolcilam 2 secand por same pop up korbe and ar koto din ache oita sow korbe time soho oita deo"
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setKuakataPopupOpen(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Safe check for admin trigger query params (?g=true or ?admin=true)
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('g') || params.get('admin') === 'true' || params.get('g') === 'true') {
+        setAdminModalOpen(true);
+      }
+    } catch {}
+  }, []);
 
   // User state
   const [currentUser, setCurrentUser] = useState<{ name: string; phone: string } | null>(() => {
     try {
       const saved = localStorage.getItem('ghurbe_user') || localStorage.getItem('bhaboghure_user');
-      return saved ? JSON.parse(saved) : null;
+      if (!saved) return null;
+      const parsed = JSON.parse(saved);
+      return (parsed && typeof parsed === 'object') ? parsed : null;
     } catch {
       return null;
     }
@@ -161,7 +180,9 @@ export default function App() {
   const [myBookingIds, setMyBookingIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('ghurbe_my_booking_ids');
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
@@ -171,8 +192,9 @@ export default function App() {
   const [bookings, setBookings] = useState<BookingRecord[]>(() => {
     try {
       const saved = localStorage.getItem('ghurbe_bookings') || localStorage.getItem('bhaboghure_bookings');
-      if (saved) return JSON.parse(saved);
-      return [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
@@ -182,7 +204,9 @@ export default function App() {
   const [messages, setMessages] = useState<ContactMessage[]>(() => {
     try {
       const saved = localStorage.getItem('ghurbe_messages');
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
@@ -193,7 +217,10 @@ export default function App() {
     const reloadMessages = () => {
       try {
         const saved = localStorage.getItem('ghurbe_messages');
-        if (saved) setMessages(JSON.parse(saved));
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) setMessages(parsed);
+        }
       } catch {}
     };
     window.addEventListener('storage', reloadMessages);
@@ -206,8 +233,11 @@ export default function App() {
 
   // Filter bookings so regular users ONLY see THEIR OWN bookings!
   // Admin sees ALL bookings inside AdminDashboardModal.
-  const userBookings = bookings.filter((b) => {
-    const isIdMatch = myBookingIds.includes(b.id);
+  const safeBookings = Array.isArray(bookings) ? bookings : [];
+  const safeMyBookingIds = Array.isArray(myBookingIds) ? myBookingIds : [];
+  const userBookings = safeBookings.filter((b) => {
+    if (!b) return false;
+    const isIdMatch = safeMyBookingIds.includes(b.id);
     const isPhoneMatch = Boolean(
       currentUser?.phone &&
       b.phone &&
@@ -740,11 +770,13 @@ export default function App() {
       )}
 
       {/* Booking Dialog */}
-      <BookingModal
-        pkg={bookingModalPackage}
-        onClose={() => setBookingModalPackage(null)}
-        onBookingConfirmed={handleBookingConfirmed}
-      />
+      {bookingModalPackage && (
+        <BookingModal
+          pkg={bookingModalPackage}
+          onClose={() => setBookingModalPackage(null)}
+          onBookingConfirmed={handleBookingConfirmed}
+        />
+      )}
 
       {/* My Bookings Dialog (Shows ONLY personal bookings for current device/user) */}
       <MyBookingsModal

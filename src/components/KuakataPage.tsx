@@ -310,17 +310,43 @@ export const KuakataPage: React.FC<KuakataPageProps> = ({
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* bKash Bangla QR Box */}
+              {/* bKash Bangla QR & Official Payment Number Box */}
               <div className="p-5 rounded-2xl bg-gradient-to-b from-pink-50 via-white to-pink-50/50 border-2 border-pink-300 flex flex-col justify-between space-y-3">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between border-b border-pink-200 pb-2">
-                    <span className="font-black text-sm text-[#E2136E]">bKash (বিকাশ বাংলা কিউআর)</span>
+                    <span className="font-black text-sm text-[#E2136E]">bKash (বিকাশ বাংলা কিউআর ও পেমেন্ট নম্বর)</span>
                     <span className="text-[10px] bg-[#E2136E] text-white px-2 py-0.5 rounded-full font-bold">অফিসিয়াল QR</span>
                   </div>
                   <p className="text-xs text-slate-600">
-                    আপনার বিকাশ অ্যাপে <strong>কিউআর স্ক্যান</strong> অপশনে গিয়ে নিচের কিউআর কোড স্ক্যান করে বুকিং মানি পরিশোধ করুন।
+                    বিকাশ অ্যাপে <strong>কিউআর স্ক্যান</strong> করুন অথবা নিচে দেওয়া অফিসিয়াল মার্চেন্ট / পেমেন্ট নম্বরে সরাসরি বুকিং মানি পরিশোধ করুন।
                   </p>
                 </div>
+
+                {/* Official bKash Number Box with Copy */}
+                <div className="bg-white p-3 rounded-xl border-2 border-pink-200 flex items-center justify-between gap-2 shadow-xs">
+                  <div>
+                    <span className="text-[10px] font-bold text-pink-700 block">বিকাশ পেমেন্ট / মার্চেন্ট নম্বর:</span>
+                    <span className="text-base font-black font-mono text-slate-900 tracking-wider">01711-085960</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard('01711085960', 'bkash_kuakata')}
+                    className="px-2.5 py-1 bg-[#E2136E] hover:bg-[#c20f5e] text-white text-xs font-bold rounded-lg flex items-center gap-1 transition-all cursor-pointer active:scale-95 shrink-0"
+                  >
+                    {copiedKey === 'bkash_kuakata' ? (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>কপি হয়েছে</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>নম্বর কপি</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
                 <div className="bg-white p-2.5 rounded-xl border border-pink-200 text-center">
                   <img
                     src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1792223909/WhatsApp_Image_2026-10-17_at_1.54.57_PM.jpg"

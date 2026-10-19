@@ -243,22 +243,26 @@ export const AdminPage: React.FC<AdminPageProps> = ({
     document.body.removeChild(link);
   };
 
+  const safeBookings = Array.isArray(bookings) ? bookings : [];
+  const safeMessages = Array.isArray(messages) ? messages : [];
+
   // Filter Bookings
-  const filteredBookings = bookings.filter((b) => {
+  const filteredBookings = safeBookings.filter((b) => {
+    if (!b) return false;
     const matchesSearch = 
-      b.travelerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      b.phone.includes(searchTerm) ||
-      b.bookingCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      b.packageTitle.toLowerCase().includes(searchTerm.toLowerCase());
+      (b.travelerName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (b.phone || '').includes(searchTerm) ||
+      (b.bookingCode || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (b.packageTitle || '').toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus = statusFilter === 'all' || b.paymentStatus === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
-  const totalAdvance = bookings.reduce((sum, b) => sum + (b.advancePaid || 0), 0);
-  const totalRevenue = bookings.reduce((sum, b) => sum + (b.totalPrice || 0), 0);
-  const confirmedCount = bookings.filter((b) => b.paymentStatus === 'confirmed').length;
-  const pendingCount = bookings.filter((b) => b.paymentStatus === 'pending').length;
+  const totalAdvance = safeBookings.reduce((sum, b) => sum + (b?.advancePaid || 0), 0);
+  const totalRevenue = safeBookings.reduce((sum, b) => sum + (b?.totalPrice || 0), 0);
+  const confirmedCount = safeBookings.filter((b) => b?.paymentStatus === 'confirmed').length;
+  const pendingCount = safeBookings.filter((b) => b?.paymentStatus === 'pending').length;
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">

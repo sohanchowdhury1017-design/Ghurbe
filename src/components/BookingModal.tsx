@@ -114,7 +114,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
   }, [pkg?.id]);
 
-  if (!activePkg) return null;
+  if (!pkg || !activePkg) return null;
 
   // Bill Calculations
   const effectiveGuests = planType === 'couple' ? 2 : singleGuestsCount;

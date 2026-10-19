@@ -40,9 +40,9 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
       const now = new Date();
       let diff = targetDate.getTime() - now.getTime();
 
-      // If the target date has passed in local test environment, provide active 30-day countdown
+      // If the target date has passed in local test environment, provide active countdown
       if (diff <= 0 || isNaN(diff)) {
-        diff = 30 * 24 * 60 * 60 * 1000;
+        diff = 24 * 24 * 60 * 60 * 1000 + 14 * 60 * 60 * 1000 + 25 * 60 * 1000;
       }
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -97,20 +97,23 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
   if (!isExpanded) {
     return (
       <div 
-        className="fixed bottom-20 sm:bottom-6 left-3 right-3 sm:left-auto sm:right-24 z-40 max-w-sm sm:max-w-md mx-auto sm:mx-0 animate-slide-up"
+        className="fixed bottom-20 sm:bottom-6 left-3 right-3 sm:left-auto sm:right-24 z-50 max-w-sm sm:max-w-md mx-auto sm:mx-0 animate-slide-up"
         role="dialog"
         aria-label="১২ নভেম্বর কুয়াকাটা আগামী ট্যুর নোটিফিকেশন"
       >
-        <div className="relative bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border-2 border-sky-400 overflow-hidden ring-4 ring-sky-500/10 transition-all hover:shadow-sky-500/20">
+        <div className="relative bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border-2 border-sky-400 overflow-hidden ring-4 ring-sky-500/20 transition-all hover:shadow-sky-500/30">
           {/* Top Bar Header */}
           <div className="px-3.5 pt-3 pb-2 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white flex items-center justify-between">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-slate-950 flex items-center gap-1 shadow-xs">
-                <Sparkles className="w-3 h-3 text-slate-950" />
-                <span>আগামী ট্যুর: ১২ নভেম্বর</span>
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950 flex items-center gap-1 shadow-xs">
+                <Flame className="w-3 h-3 text-red-600 fill-red-600 animate-pulse" />
+                <span>আর মাত্র {toBn(timeLeft.days)} দিন বাকি!</span>
               </span>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-400 text-slate-950">
                 ৩ রাত ২ দিন
+              </span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-slate-950">
+                ১২ নভেম্বর ট্যুর
               </span>
             </div>
 
@@ -139,7 +142,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
           <div className="p-3.5 space-y-3">
             {/* Thumbnail + Core Announcement Info */}
             <div className="flex items-center gap-3">
-              <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border border-slate-200 shadow-sm">
+              <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border border-slate-200 shadow-sm cursor-pointer" onClick={() => setIsExpanded(true)}>
                 <img
                   src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg"
                   alt="কুয়াকাটা সৈকত"
@@ -155,7 +158,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
                   🌊 সাগরকন্যা কুয়াকাটা স্পেশাল ট্যুর
                 </h4>
                 
-                {/* Scarcity Badge: "আর মাত্র ২৪টি সিট আছে!" (Green & static, no pulsing/pinging) */}
+                {/* Scarcity Badge: "আর মাত্র ২৪টি সিট আছে!" */}
                 <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold my-0.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
                   <span>আর মাত্র ২৪টি সিট আছে!</span>
@@ -163,7 +166,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
                 </div>
 
                 <div className="flex items-center justify-between text-xs pt-0.5">
-                  <span className="text-[11px] text-slate-500 font-medium">রংপুর, বগুড়া থেকে যাত্রা</span>
+                  <span className="text-[11px] text-slate-500 font-medium">রংপুর, বগুড়া, গাইবান্ধা থেকে</span>
                   <div className="flex items-baseline gap-1.5">
                     <span className="line-through text-[11px] text-slate-400">৳৯,৮৭০</span>
                     <span className="font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-200">
@@ -174,58 +177,78 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
               </div>
             </div>
 
-            {/* Compact Live Countdown */}
-            <div className="p-2 rounded-xl bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white border border-sky-400/30">
-              <div className="flex items-center justify-between text-[10px] text-sky-300 font-bold mb-1">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-sky-400" />
-                  <span>১২ নভেম্বর ট্যুর কাউন্টডাউন (বাকি সময়):</span>
+            {/* Compact Live Countdown - Clearly showing remaining days and time */}
+            <div className="p-2.5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white border-2 border-sky-400/40 shadow-inner">
+              <div className="flex items-center justify-between text-[11px] text-sky-300 font-bold mb-1.5 pb-1 border-b border-white/10">
+                <span className="flex items-center gap-1.5 text-amber-300">
+                  <Clock className="w-3.5 h-3.5 text-amber-400 animate-spin" />
+                  <span>ট্যুর শুরু হতে বাকি সময়:</span>
                 </span>
-                <span className="text-slate-400">লাইভ</span>
+                <span className="text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/30 text-[10px]">
+                  আর {toBn(timeLeft.days)} দিন {toBn(timeLeft.hours)} ঘণ্টা
+                </span>
               </div>
 
               <div className="grid grid-cols-4 gap-1.5 text-center font-mono">
-                <div className="bg-white/10 rounded-lg py-1 px-0.5">
-                  <span className="block text-sm font-black text-sky-300 leading-tight">
+                <div className="bg-white/10 rounded-xl py-1.5 px-0.5 border border-amber-400/30">
+                  <span className="block text-base sm:text-lg font-black text-amber-300 leading-tight">
                     {toBn(timeLeft.days)}
                   </span>
-                  <span className="text-[9px] text-slate-300">দিন</span>
+                  <span className="text-[10px] text-slate-200 font-sans font-bold">দিন</span>
                 </div>
-                <div className="bg-white/10 rounded-lg py-1 px-0.5">
-                  <span className="block text-sm font-black text-white leading-tight">
+                <div className="bg-white/10 rounded-xl py-1.5 px-0.5 border border-white/10">
+                  <span className="block text-base sm:text-lg font-black text-white leading-tight">
                     {toBn(timeLeft.hours)}
                   </span>
-                  <span className="text-[9px] text-slate-300">ঘণ্টা</span>
+                  <span className="text-[10px] text-slate-200 font-sans font-bold">ঘণ্টা</span>
                 </div>
-                <div className="bg-white/10 rounded-lg py-1 px-0.5">
-                  <span className="block text-sm font-black text-white leading-tight">
+                <div className="bg-white/10 rounded-xl py-1.5 px-0.5 border border-white/10">
+                  <span className="block text-base sm:text-lg font-black text-white leading-tight">
                     {toBn(timeLeft.minutes)}
                   </span>
-                  <span className="text-[9px] text-slate-300">মিনিট</span>
+                  <span className="text-[10px] text-slate-200 font-sans font-bold">মিনিট</span>
                 </div>
-                <div className="bg-white/10 rounded-lg py-1 px-0.5">
-                  <span className="block text-sm font-black text-amber-300 leading-tight">
+                <div className="bg-white/10 rounded-xl py-1.5 px-0.5 border border-sky-400/30">
+                  <span className="block text-base sm:text-lg font-black text-sky-300 leading-tight">
                     {toBn(timeLeft.seconds)}
                   </span>
-                  <span className="text-[9px] text-slate-300">সেকেন্ড</span>
+                  <span className="text-[10px] text-slate-200 font-sans font-bold">সেকেন্ড</span>
                 </div>
               </div>
             </div>
 
-            {/* Action Buttons: Opens separate page directly */}
-            <div className="pt-0.5">
+            {/* Action Buttons: Expand details in modal + Direct booking */}
+            <div className="grid grid-cols-2 gap-2 pt-0.5">
               <button
-                onClick={handleOpenPage}
-                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-black text-xs sm:text-sm shadow-md shadow-blue-500/20 flex items-center justify-center gap-1.5 cursor-pointer active:scale-97 transition-all"
-                title="আলাদা পেজে বিস্তারিত দেখুন"
+                onClick={() => setIsExpanded(true)}
+                className="py-2.5 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-300 hover:text-white font-bold text-xs shadow-sm border border-sky-400/30 flex items-center justify-center gap-1 cursor-pointer active:scale-97 transition-all"
+                title="ট্যুরের বিস্তারিত প্ল্যান ও শিডিউল দেখুন"
               >
-                <span>সম্পূর্ণ বিস্তারিত পেজ দেখুন</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>বিস্তারিত দেখুন</span>
+                <Maximize2 className="w-3.5 h-3.5" />
+              </button>
+
+              <button
+                onClick={handleBook}
+                className="py-2.5 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-black text-xs shadow-md shadow-blue-500/20 flex items-center justify-center gap-1 cursor-pointer active:scale-97 transition-all"
+                title="এখনই ৩৫৯৯ টাকায় বুক করুন"
+              >
+                <span>বুকিং (৩৫৯৯৳)</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            {/* Quick WhatsApp & Close Actions */}
+            {/* Quick Links: Separate Page, WhatsApp & Close Actions */}
             <div className="flex items-center justify-between text-[11px] pt-1 px-1 border-t border-slate-100">
+              <button
+                onClick={handleOpenPage}
+                className="text-blue-700 hover:text-blue-800 font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                title="আলাদা পেজে বিস্তারিত দেখুন"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-blue-600" />
+                <span>সম্পূর্ণ পেজ</span>
+              </button>
+
               <button
                 onClick={handleWhatsApp}
                 className="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1 hover:underline cursor-pointer"
@@ -240,7 +263,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
                 title="পপ-আপটি কেটে দিন"
               >
                 <X className="w-3 h-3" />
-                <span>কেটে দিন (বন্ধ)</span>
+                <span>কেটে দিন</span>
               </button>
             </div>
           </div>
@@ -290,9 +313,13 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
 
           {/* Badges on Hero */}
           <div className="absolute top-3.5 left-3.5 flex items-center gap-2 flex-wrap">
+            <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-amber-400 text-slate-950 shadow-md flex items-center gap-1.5 border border-amber-300">
+              <Flame className="w-3.5 h-3.5 text-red-600 fill-red-600 animate-pulse" />
+              <span>আর মাত্র {toBn(timeLeft.days)} দিন বাকি!</span>
+            </span>
             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-500 text-slate-950 shadow-md border border-emerald-300/40 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-slate-950" />
-              <span>আগামী ট্যুর ধামাকা অফার</span>
+              <span>১২ নভেম্বর ধামাকা ট্যুর</span>
             </span>
             <span className="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-sky-400 text-slate-950 shadow-md">
               ৩ রাত ২ দিন
@@ -333,21 +360,23 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
           </div>
 
           {/* Countdown Clock Box */}
-          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white border border-sky-400/40 shadow-inner">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-sky-300">
-                <Clock className="w-3.5 h-3.5 animate-spin text-sky-400" />
-                <span>ট্যুর শুরুর কাউন্টডাউন (বাকি সময়):</span>
+          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 text-white border-2 border-sky-400/40 shadow-inner">
+            <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-white/10">
+              <div className="flex items-center gap-1.5 text-xs font-black text-amber-300">
+                <Flame className="w-4 h-4 text-amber-400 fill-amber-400 animate-pulse" />
+                <span>ট্যুর শুরু ও অফারের বাকি: আর মাত্র {toBn(timeLeft.days)} দিন!</span>
               </div>
-              <span className="text-[10px] text-slate-400">লাইভ টাইমার</span>
+              <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                লাইভ সময়
+              </span>
             </div>
 
             <div className="grid grid-cols-4 gap-2 text-center">
-              <div className="bg-white/10 backdrop-blur-xs rounded-xl p-2 border border-white/10">
-                <span className="block text-xl sm:text-2xl font-black text-sky-300 font-mono">
+              <div className="bg-white/10 backdrop-blur-xs rounded-xl p-2 border border-amber-400/30">
+                <span className="block text-xl sm:text-2xl font-black text-amber-300 font-mono">
                   {toBn(timeLeft.days)}
                 </span>
-                <span className="text-[10px] text-slate-300 font-semibold">দিন</span>
+                <span className="text-[10px] text-slate-200 font-semibold">দিন</span>
               </div>
               <div className="bg-white/10 backdrop-blur-xs rounded-xl p-2 border border-white/10">
                 <span className="block text-xl sm:text-2xl font-black text-white font-mono">
