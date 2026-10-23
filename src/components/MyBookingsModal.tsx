@@ -228,7 +228,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
 
         {/* Footer info strip */}
         <div className="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 px-5">
-          <span className="text-[11px]">হেল্পলাইন: <strong>09658-865593</strong></span>
+          <span className="text-[11px]">হেল্পলাইন: <strong>01980-297939</strong></span>
           <span className="text-[11px]">WhatsApp: <strong>01911-050270</strong></span>
         </div>
       </div>
@@ -396,7 +396,7 @@ export const MyBookingsModal: React.FC<MyBookingsModalProps> = ({
               <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-[11px] text-slate-600 space-y-1">
                 <span className="font-bold text-slate-800 block">পিকআপ ও সহায়তা নির্দেশিকা:</span>
                 <p>• পিকআপ পয়েন্ট: রংপুর, বগুড়া ও গাইবান্ধা। যাত্রার ১২ ঘণ্টা পূর্বে ট্যুর গাইড আপনার সাথে যোগাযোগ করবেন।</p>
-                <p>• যেকোনো প্রয়োজনে অফিসিয়াল হটলাইন: <strong>09658-865593</strong> অথবা WhatsApp: <strong>01911-050270</strong> এ যোগাযোগ করুন।</p>
+                <p>• যেকোনো প্রয়োজনে অফিসিয়াল হটলাইন: <strong>01980-297939</strong> অথবা WhatsApp: <strong>01911-050270</strong> এ যোগাযোগ করুন।</p>
               </div>
             </div>
           </div>

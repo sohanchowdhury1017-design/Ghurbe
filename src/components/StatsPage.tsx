@@ -280,11 +280,11 @@ export const StatsPage: React.FC<StatsPageProps> = ({
               সকল প্যাকেজ দেখুন
             </button>
             <a
-              href="tel:09658865593"
+              href="tel:01980297939"
               className="py-3 px-6 rounded-xl bg-blue-900/60 hover:bg-blue-900 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all flex items-center gap-2"
             >
               <PhoneCall className="w-4 h-4 text-sky-300" />
-              <span>০৯৬৫৮-৮৬৫৫৯৩</span>
+              <span>০১৯৮০-২৯৭৯৩৯</span>
             </a>
           </div>
         </div>

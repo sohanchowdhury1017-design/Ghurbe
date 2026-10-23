@@ -24,6 +24,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
   // Starts in small / compact mode as requested: "pop up akare shoto kore asbe"
   // When user clicks "বিস্তারিত", it expands: "tar pore oitar modhe bistarito clik korle tokhon ditels ta asbe"
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
 
   // Live Countdown state
   const [timeLeft, setTimeLeft] = useState<{
@@ -48,7 +49,7 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((diff / 1000 / 60) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
+      const seconds = Math.floor((diff / 1000 / 60) % 60);
 
       return { days, hours, minutes, seconds };
     };
@@ -61,7 +62,30 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
     return () => clearInterval(interval);
   }, []);
 
-  if (!isOpen || !pkg) return null;
+  // Keyboard Escape listener to dismiss
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const handleClose = (e?: React.MouseEvent | React.KeyboardEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setIsDismissed(true);
+    try {
+      sessionStorage.setItem('ghurbe_kuakata_popup_closed', 'true');
+    } catch {}
+    onClose();
+  };
+
+  if (!isOpen || !pkg || isDismissed) return null;
 
   // Convert numbers to Bengali digits
   const toBn = (num: number) => {
@@ -74,20 +98,32 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
       .join('');
   };
 
-  const handleBook = () => {
-    onClose();
+  const handleBook = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    handleClose();
     onBookNow(pkg);
   };
 
-  const handleWhatsApp = () => {
+  const handleWhatsApp = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     const message = encodeURIComponent(
       'আসসালামু আলাইকুম! ঘুরবে ট্রাভেলস, আমি ১২ নভেম্বর ২০২৬ তারিখের কুয়াকাটা স্পেশাল ট্যুরের (৩ রাত ২ দিন) অবশিষ্ট ২৪টি সিটের একটি বুক করতে চাই।'
     );
     window.open(`https://wa.me/8801911050270?text=${message}`, '_blank');
   };
 
-  const handleOpenPage = () => {
-    onClose();
+  const handleOpenPage = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    handleClose();
     onViewDetails(pkg);
   };
 
@@ -103,37 +139,41 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
       >
         <div className="relative bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border-2 border-sky-400 overflow-hidden ring-4 ring-sky-500/20 transition-all hover:shadow-sky-500/30">
           {/* Top Bar Header */}
-          <div className="px-3.5 pt-3 pb-2 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white flex items-center justify-between">
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950 flex items-center gap-1 shadow-xs">
+          <div className="px-3.5 pt-3 pb-2 bg-gradient-to-r from-slate-950 via-slate-900 to-blue-950 text-white flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 flex-wrap min-w-0">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-slate-950 flex items-center gap-1 shadow-xs shrink-0">
                 <Flame className="w-3 h-3 text-red-600 fill-red-600 animate-pulse" />
                 <span>আর মাত্র {toBn(timeLeft.days)} দিন বাকি!</span>
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-400 text-slate-950">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-400 text-slate-950 shrink-0">
                 ৩ রাত ২ দিন
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-slate-950">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-slate-950 shrink-0">
                 ১২ নভেম্বর ট্যুর
               </span>
             </div>
 
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5 shrink-0">
               {/* Open to Dedicated Page Icon Button */}
               <button
+                type="button"
                 onClick={handleOpenPage}
-                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-sky-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-sky-300 hover:text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 border border-white/10"
                 title="আলাদা পেজে বিস্তারিত দেখুন"
+                aria-label="আলাদা পেজে বিস্তারিত দেখুন"
               >
-                <Maximize2 className="w-3.5 h-3.5" />
+                <Maximize2 className="w-4 h-4" />
               </button>
 
-              {/* Close Icon Button */}
+              {/* Close / Cancel Icon Button */}
               <button
-                onClick={onClose}
-                className="w-7 h-7 rounded-full bg-white/10 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
-                title="বন্ধ করুন"
+                type="button"
+                onClick={handleClose}
+                className="w-8 h-8 rounded-full bg-white/20 hover:bg-rose-600 active:bg-rose-700 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-md border border-white/30 group"
+                title="পপ-আপটি বন্ধ করুন (Cancel)"
+                aria-label="পপ-আপটি বন্ধ করুন"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
               </button>
             </div>
           </div>
@@ -141,14 +181,14 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
           {/* Compact Body Content */}
           <div className="p-3.5 space-y-3">
             {/* Thumbnail + Core Announcement Info */}
-            <div className="flex items-center gap-3">
-              <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border border-slate-200 shadow-sm cursor-pointer" onClick={() => setIsExpanded(true)}>
+            <div className="flex items-center gap-3.5">
+              <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden shrink-0 border-2 border-sky-400 shadow-md cursor-pointer group" onClick={() => setIsExpanded(true)}>
                 <img
                   src="https://res.cloudinary.com/b5z0n3sl/image/upload/v1791875447/360_F_1237996093_CtWZOkLaDCAMq6jqB95Tb9cPXZc8HewY.jpg"
                   alt="কুয়াকাটা সৈকত"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
                 />
-                <span className="absolute bottom-1 left-1 right-1 text-[9px] font-black text-center text-white bg-slate-950/80 rounded-md py-0.5 backdrop-blur-xs">
+                <span className="absolute bottom-1 left-1 right-1 text-[10px] font-black text-center text-white bg-slate-950/85 rounded-md py-0.5 backdrop-blur-xs">
                   কুয়াকাটা
                 </span>
               </div>
@@ -258,12 +298,14 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
               </button>
 
               <button
-                onClick={onClose}
-                className="text-slate-400 hover:text-rose-600 font-medium flex items-center gap-1 cursor-pointer transition-colors"
-                title="পপ-আপটি কেটে দিন"
+                type="button"
+                onClick={handleClose}
+                className="text-slate-500 hover:text-white hover:bg-rose-600 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1.5 cursor-pointer transition-colors active:scale-95 text-xs shadow-xs"
+                title="পপ-আপটি বন্ধ করুন (Cancel)"
+                aria-label="পপ-আপটি বন্ধ করুন"
               >
-                <X className="w-3 h-3" />
-                <span>কেটে দিন</span>
+                <X className="w-3.5 h-3.5 text-rose-500 group-hover:text-white" />
+                <span>বন্ধ করুন (Cancel)</span>
               </button>
             </div>
           </div>
@@ -284,18 +326,22 @@ export const KuakataTourPopupModal: React.FC<KuakataTourPopupModalProps> = ({
         aria-label="১২ নভেম্বর কুয়াকাটা ট্যুরের সম্পূর্ণ বিস্তারিত"
       >
         {/* Top Controls: Minimize button and Close button */}
-        <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-1.5">
+        <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-2">
           <button
+            type="button"
             onClick={() => setIsExpanded(false)}
-            className="w-8 h-8 rounded-full bg-slate-900/80 hover:bg-slate-900 text-sky-300 hover:text-white flex items-center justify-center backdrop-blur-md transition-all shadow-md cursor-pointer border border-white/20"
+            className="w-9 h-9 rounded-full bg-slate-900/80 hover:bg-slate-900 text-sky-300 hover:text-white flex items-center justify-center backdrop-blur-md transition-all shadow-md cursor-pointer border border-white/20 active:scale-95"
             title="ছোট করুন (পপ-আপ মিনিমাইজ)"
+            aria-label="মিনিমাইজ করুন"
           >
             <Minimize2 className="w-4 h-4" />
           </button>
           <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-900/80 hover:bg-rose-600 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-md cursor-pointer border border-white/20"
-            title="বন্ধ করুন"
+            type="button"
+            onClick={handleClose}
+            className="w-9 h-9 rounded-full bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white flex items-center justify-center backdrop-blur-md transition-all shadow-lg cursor-pointer border border-white/20 active:scale-95"
+            title="বন্ধ করুন (Close)"
+            aria-label="বন্ধ করুন"
           >
             <X className="w-4 h-4" />
           </button>

@@ -265,8 +265,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings, onOp
             <ul className="space-y-2.5 text-xs text-slate-400">
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-sky-400 shrink-0" />
-                <a href="tel:09658865593" className="hover:text-white tabular-nums tracking-wide font-medium">
-                  09658-865593
+                <a href="tel:01980297939" className="hover:text-white tabular-nums tracking-wide font-medium">
+                  01980-297939
                 </a>
               </li>
               <li className="space-y-1">

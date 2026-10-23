@@ -851,7 +851,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </div>
 
                 <div className="pt-2 border-t border-slate-200 text-[11px] text-slate-500 flex flex-wrap justify-between items-center gap-2">
-                  <span>হটলাইন: <strong>09658-865593</strong> · WhatsApp: <strong>01911-050270</strong></span>
+                  <span>হটলাইন: <strong>01980-297939</strong> · WhatsApp: <strong>01911-050270</strong></span>
                   <span className="text-amber-700 font-bold">স্ট্যাটাস: অ্যাডমিন যাচাই প্রক্রিয়াধীন</span>
                 </div>
               </div>

@@ -46,6 +46,9 @@ export interface TourPackage {
   seatNotice?: string;
   tagline?: string;
   targetAudience?: string;
+  archived?: boolean;
+  seatsLeft?: number;
+  totalSeats?: number;
 }
 
 export interface BookingRecord {

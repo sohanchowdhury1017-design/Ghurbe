@@ -10,10 +10,10 @@ FN:Ghurbe Tours & Travel
 ORG:Ghurbe Tours & Travel Bangladesh
 TITLE:Official Tour Operator
 TEL;TYPE=CELL,VOICE,WHATSAPP:+8801911050270
-TEL;TYPE=WORK,VOICE:09658865593
+TEL;TYPE=WORK,VOICE:01980297939
 EMAIL;TYPE=INTERNET,WORK:ghurbebd@gmail.com
 URL:https://ghurbe.com
-NOTE:WhatsApp: 01911050270 | Hotline: 09658865593 | bKash QR: 01711085960
+NOTE:WhatsApp: 01911050270 | Hotline: 01980297939 | bKash QR: 01711085960
 END:VCARD`;
 
   const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8;' });
@@ -30,7 +30,8 @@ END:VCARD`;
 export const OFFICIAL_WHATSAPP_NUMBER = '01911050270';
 export const OFFICIAL_WHATSAPP_INTERNATIONAL = '8801911050270';
 export const OFFICIAL_BKASH_NUMBER = '01711085960'; // Merchant / Bangla QR
-export const OFFICIAL_HOTLINE = '09658-865593';
+export const OFFICIAL_HOTLINE = '01980-297939';
+export const OFFICIAL_HOTLINE_RAW = '01980297939';
 
 /**
  * Generates direct official WhatsApp message link

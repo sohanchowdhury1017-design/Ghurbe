@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, 
   Calendar, 
@@ -22,11 +22,100 @@ import {
   Camera,
   Utensils,
   Bus,
-  Hotel
+  Hotel,
+  Luggage,
+  CheckSquare,
+  Square,
+  RotateCcw,
+  Download,
+  Image as ImageIcon,
+  X
 } from 'lucide-react';
 import { TourPackage } from '../types/travel';
 import { POPULAR_PACKAGES } from '../data/packagesData';
 import { downloadGhurbeContactCard } from '../utils/contactCard';
+import { getSEOForRoute, updatePageSEO } from '../utils/seo';
+
+interface ChecklistItem {
+  id: string;
+  name: string;
+  hint?: string;
+  importance: 'essential' | 'recommended';
+  badge: string;
+}
+
+const KUAKATA_CHECKLIST_ITEMS: ChecklistItem[] = [
+  { 
+    id: 'b1', 
+    name: 'জাতীয় পরিচয়পত্র (NID) বা জন্ম সনদের কপি', 
+    hint: 'হোটেল চেক-ইনের জন্য বাধ্যতামূলক', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b2', 
+    name: 'পর্যাপ্ত নগদ ক্যাশ টাকা (বিকাশ/নগদ ব্যালেন্সসহ)', 
+    hint: 'সৈকতের লোকাল দোকানগুলোতে কার্ড চলে না', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b3', 
+    name: 'ওয়াটারপ্রুফ মোবাইল পাউচ ব্যাগ', 
+    hint: 'সমুদ্রের জলে ছবি তোলার সময় ফোন সুরক্ষিত রাখবে', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b4', 
+    name: 'সানগ্লাস (UV প্রটেকশনযুক্ত) ও সান হ্যাট', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b5', 
+    name: 'সানস্ক্রিন লোশন (SPF 50+)', 
+    hint: 'ত্বক পোড়া থেকে রক্ষা করতে', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b6', 
+    name: 'গ্রিপযুক্ত ওয়াটারপ্রুফ স্যান্ডেল/বিচ স্লিপার', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b7', 
+    name: 'হালকা সুতি বা কুইক-ড্রাই পোশাক (২-৩ জোড়া)', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b8', 
+    name: 'এক্সট্রা পলিথিন/জিপলক ব্যাগ (ভেজা কাপড়ের জন্য)', 
+    importance: 'recommended',
+    badge: 'প্রয়োজনীয়'
+  },
+  { 
+    id: 'b9', 
+    name: 'পাওয়ার ব্যাংক (১০,০০০ - ২০,০০০ mAh)', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b10', 
+    name: 'ফার্স্ট এইড ও স্যালাইন (ওআরএস, প্যারাসিটামল, এন্টাসিড)', 
+    importance: 'essential',
+    badge: 'জরুরি'
+  },
+  { 
+    id: 'b11', 
+    name: 'ছোট ফ্লাস্ক বা পানির বোতল', 
+    importance: 'recommended',
+    badge: 'প্রয়োজনীয়'
+  },
+];
 
 interface KuakataPageProps {
   onBackToHome: () => void;
@@ -40,11 +129,65 @@ export const KuakataPage: React.FC<KuakataPageProps> = ({
   onOpenContact,
 }) => {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [showCardModal, setShowCardModal] = useState<boolean>(false);
 
   // Retrieve Kuakata package
   const kuakataPkg: TourPackage = 
     POPULAR_PACKAGES.find((p) => p.id === 'kuakata-beach' || p.slug === 'kuakata') || 
     POPULAR_PACKAGES[0];
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const seoData = getSEOForRoute('kuakata', kuakataPkg);
+    updatePageSEO(seoData);
+  }, [kuakataPkg]);
+
+  // Close modal on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showCardModal) {
+        setShowCardModal(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showCardModal]);
+
+  const toggleChecklistItem = (id: string) => {
+    setCheckedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleSelectAll = () => {
+    const allChecked: Record<string, boolean> = {};
+    KUAKATA_CHECKLIST_ITEMS.forEach((item) => {
+      allChecked[item.id] = true;
+    });
+    setCheckedItems(allChecked);
+  };
+
+  const handleResetChecklist = () => {
+    setCheckedItems({});
+  };
+
+  const completedCount = Object.values(checkedItems).filter(Boolean).length;
+  const totalCount = KUAKATA_CHECKLIST_ITEMS.length;
+  const progressPercent = Math.round((completedCount / totalCount) * 100);
+
+  const handleCopyChecklist = () => {
+    const listText = `📋 ঘুরবে কুয়াকাটা ট্যুর প্যাকিং চেকলিস্ট:\n\n` +
+      KUAKATA_CHECKLIST_ITEMS.map((item) => {
+        const isDone = !!checkedItems[item.id];
+        return `${isDone ? '✅ [প্রস্তুত]' : '⬜ [বাকি]'} ${item.name} (${item.badge})${item.hint ? ` - ${item.hint}` : ''}`;
+      }).join('\n') +
+      `\n\n📌 মোট গোছানো সম্পন্ন: ${completedCount}/${totalCount} টি\n🌿 ঘুরবে ট্যুর অ্যান্ড ট্রাভেল (01911-050270 | 01980-297939)\n🌐 https://ghurbe.com/kuakata`;
+    navigator.clipboard.writeText(listText);
+    setCopiedKey('checklist_copied');
+    setTimeout(() => setCopiedKey(null), 2500);
+  };
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -138,11 +281,11 @@ export const KuakataPage: React.FC<KuakataPageProps> = ({
               </a>
 
               <a
-                href="tel:09658865593"
+                href="tel:01980297939"
                 className="py-3.5 px-5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm font-bold border border-white/20 transition-all active:scale-95 cursor-pointer flex items-center gap-2"
               >
                 <Phone className="w-4 h-4 text-sky-300" />
-                <span>হটলাইন: 09658865593</span>
+                <span>হটলাইন: 01980-297939</span>
               </a>
             </div>
           </div>
@@ -381,11 +524,11 @@ export const KuakataPage: React.FC<KuakataPageProps> = ({
                   </a>
 
                   <a
-                    href="tel:09658865593"
+                    href="tel:01980297939"
                     className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all active:scale-95 cursor-pointer"
                   >
                     <Phone className="w-4 h-4 text-sky-400" />
-                    <span>হটলাইন: 09658865593</span>
+                    <span>হটলাইন: 01980-297939</span>
                   </a>
                 </div>
               </div>
@@ -553,7 +696,254 @@ export const KuakataPage: React.FC<KuakataPageProps> = ({
           </div>
         </div>
 
+        {/* 4. Kuakata Tour Packing Checklist & Essentials (User Requested) */}
+        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6 text-left">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-100 pb-5">
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold">
+                <Luggage className="w-3.5 h-3.5" />
+                <span>ট্যুর প্যাকিং নির্দেশিকা</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                🎒 কুয়াকাটা ট্যুরের প্যাকিং চেকলিস্ট
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                কুয়াকাটা সৈকত ভ্রমণের পূর্বে আপনার ব্যাগের সমস্ত প্রয়োজনীয় সামগ্রী ঠিকঠাক আছে কিনা মিলিয়ে নিন এবং বক্সে ক্লিক করে প্রস্তুতি সম্পন্ন করুন।
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={handleCopyChecklist}
+                className="inline-flex items-center gap-1.5 py-2 px-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
+                title="চেকলিস্ট কপি করুন"
+              >
+                {copiedKey === 'checklist_copied' ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                    <span className="text-emerald-300">কপি হয়েছে!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>লিস্ট কপি করুন</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleSelectAll}
+                className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-white hover:bg-slate-50 text-blue-600 text-xs font-bold border border-slate-200 shadow-xs transition-all active:scale-95 cursor-pointer"
+              >
+                <span>সব সিলেক্ট</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleResetChecklist}
+                className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-white hover:bg-slate-50 text-slate-600 text-xs font-semibold border border-slate-200 shadow-xs transition-all active:scale-95 cursor-pointer"
+                title="সব আনচেক করুন"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>রিসেট</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowCardModal(true)}
+                className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold border border-emerald-200 shadow-xs transition-all active:scale-95 cursor-pointer"
+                title="অফিসিয়াল কার্ড ইমেজ দেখুন"
+              >
+                <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
+                <span>কার্ড ভিউ</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Progress Strip */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50/50 to-teal-50 border border-sky-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-black text-blue-950">কুয়াকাটা সৈকত ভ্রমণ প্রস্তুতি হাব</span>
+                <span className="text-[10px] font-bold bg-white text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200">
+                  {totalCount} টি প্রয়োজনীয় আইটেম
+                </span>
+              </div>
+              <p className="text-xs text-slate-600">
+                💡 রোদের উত্তাপ ও নোনা বাতাসের জন্য ওয়াটারপ্রুফ পাউচ, সানস্ক্রিন ও সানগ্লাস সঙ্গে রাখা জরুরি।
+              </p>
+            </div>
+
+            {/* Live Progress Pill */}
+            <div className="flex items-center gap-3 shrink-0 bg-white px-3.5 py-2 rounded-xl border border-sky-200 shadow-xs">
+              <div className="w-28 bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                <div
+                  className={`h-2.5 rounded-full transition-all duration-300 ${
+                    progressPercent === 100 ? 'bg-emerald-500' : 'bg-blue-600'
+                  }`}
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-black text-slate-800">
+                  {completedCount}/{totalCount}
+                </span>
+                <span className="text-[10px] text-slate-500 ml-1 font-semibold">({progressPercent}%)</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Checklist Cards Grid (Exactly matches user screenshot) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            {KUAKATA_CHECKLIST_ITEMS.map((item) => {
+              const isChecked = !!checkedItems[item.id];
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => toggleChecklistItem(item.id)}
+                  className={`flex items-start justify-between gap-3 p-3.5 sm:p-4 rounded-2xl border transition-all cursor-pointer select-none ${
+                    isChecked
+                      ? 'bg-emerald-50/60 border-emerald-300/80 text-slate-900 shadow-xs'
+                      : 'bg-white hover:bg-slate-50 border-slate-200/90 text-slate-800 shadow-xs'
+                  }`}
+                >
+                  <div className="flex items-start gap-3 min-w-0 flex-1">
+                    <button
+                      type="button"
+                      className="mt-0.5 shrink-0 focus:outline-none cursor-pointer"
+                      aria-label={isChecked ? 'Uncheck' : 'Check'}
+                    >
+                      {isChecked ? (
+                        <CheckSquare className="w-5 h-5 text-emerald-600 fill-emerald-100" />
+                      ) : (
+                        <Square className="w-5 h-5 text-slate-400 hover:text-slate-600" />
+                      )}
+                    </button>
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className={`text-xs sm:text-sm font-bold leading-snug ${
+                          isChecked ? 'line-through text-slate-400' : 'text-slate-900'
+                        }`}
+                      >
+                        {item.name}
+                      </p>
+                      {item.hint && (
+                        <p className="text-[11px] sm:text-xs text-slate-500 mt-1 leading-tight">
+                          {item.hint}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <span
+                    className={`shrink-0 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full border ${
+                      item.importance === 'essential'
+                        ? 'text-rose-700 bg-rose-50 border-rose-200/80'
+                        : 'text-amber-800 bg-amber-50 border-amber-200/80'
+                    }`}
+                  >
+                    {item.badge}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Bottom Card Footer with Image Download & Hotline */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+            <div className="flex items-center gap-2 text-slate-700">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="font-bold">ঘুরবে ট্যুর অ্যান্ড ট্রাভেল (01911-050270 • 01980-297939)</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setShowCardModal(true)}
+                className="inline-flex items-center gap-1 font-bold text-slate-700 hover:text-blue-600 cursor-pointer"
+              >
+                <ImageIcon className="w-3.5 h-3.5 text-blue-600" />
+                <span>কার্ড বড় করে দেখুন</span>
+              </button>
+              <a
+                href="/assets/aistudio/image_e81d40b6.png"
+                download="Ghurbe-Kuakata-Packing-Checklist.png"
+                className="inline-flex items-center gap-1 font-bold text-blue-600 hover:text-blue-800"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>ইমেজ সংরক্ষণ</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      {/* Infographic Modal Preview with Reliable Cancel Button */}
+      {showCardModal && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => setShowCardModal(false)}
+        >
+          <div 
+            className="relative bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl border border-slate-100"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
+              <div className="flex items-center gap-2">
+                <Luggage className="w-5 h-5 text-blue-600" />
+                <h3 className="text-base font-black text-slate-900">
+                  কুয়াকাটা ট্যুর প্যাকিং চেকলিস্ট ইনফোগ্রাফিক কার্ড
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCardModal(false)}
+                className="p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 transition-colors cursor-pointer"
+                aria-label="বন্ধ করুন"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Body with Image */}
+            <div className="p-4 sm:p-6 overflow-y-auto flex items-center justify-center bg-slate-100/50">
+              <img
+                src="/assets/aistudio/image_e81d40b6.png"
+                alt="কুয়াকাটা ট্যুর প্যাকিং চেকলিস্ট"
+                className="rounded-2xl max-w-full h-auto max-h-[65vh] object-contain shadow-md border border-slate-200"
+              />
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-between px-6 py-3.5 border-t border-slate-100 bg-white">
+              <span className="text-xs text-slate-500 font-semibold">
+                ঘুরবে ট্যুর অ্যান্ড ট্রাভেল • কুয়াকাটা ৩ রাত ২ দিন
+              </span>
+              <div className="flex items-center gap-2">
+                <a
+                  href="/assets/aistudio/image_e81d40b6.png"
+                  download="Ghurbe-Kuakata-Packing-Checklist.png"
+                  className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>ইমেজ ডাউনলোড</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setShowCardModal(false)}
+                  className="py-2 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+                >
+                  বাতিল / বন্ধ করুন
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

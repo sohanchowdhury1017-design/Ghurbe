@@ -45,22 +45,42 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
       {/* Top Professional Agency Announcement Strip */}
       <div className="bg-gradient-to-r from-slate-950 via-blue-950 to-slate-900 text-white text-[11px] py-1.5 px-3.5 border-b border-sky-400/20">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-3">
           <div className="flex items-center gap-2 truncate">
             <span className="bg-emerald-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full shrink-0">
               আগামী ট্যুর
             </span>
-            <span className="truncate text-slate-200 font-medium">
+            <span className="truncate text-slate-200 font-semibold text-[11px] sm:text-xs">
               🌊 কুয়াকাটা ৩ রাত ২ দিন (১২ নভেম্বর) — রংপুর ও বগুড়া থেকে নিশ্চিত যাত্রা
             </span>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <a
+              href={getWhatsAppLink('Hello Ghurbe Tours Team')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-black text-[10px] shadow-xs transition-all active:scale-95"
+              title="ঘুরবে হোয়াটসঅ্যাপ 01911-050270"
+            >
+              <MessageCircle className="w-3 h-3 fill-white" />
+              <span>WhatsApp</span>
+            </a>
+
+            <a
+              href="tel:01980297939"
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-sky-300 font-bold text-[10px] border border-slate-700"
+            >
+              <PhoneCall className="w-3 h-3 text-sky-400" />
+              <span className="hidden sm:inline">01980-297939</span>
+              <span className="sm:hidden">কল</span>
+            </a>
+
             <a
               href="https://facebook.com/ghurbe.bd"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
+              className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
               title="ঘুরবে ফেসবুক পেজ"
             >
               <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
@@ -73,39 +93,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               href="https://youtube.com/@Ghurbe-ঘুরবে"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FF0000] hover:bg-[#FF0000]/90 text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
+              className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FF0000] hover:bg-[#FF0000]/90 text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
               title="ঘুরবে ইউটিউব চ্যানেল"
             >
               <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
               <span>YouTube</span>
-            </a>
-
-            <a
-              href={getWhatsAppLink('Hello Ghurbe Tours Team')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-[10px] shadow-xs transition-all active:scale-95"
-              title="ঘুরবে হোয়াটসঅ্যাপ 01911-050270"
-            >
-              <MessageCircle className="w-3 h-3 fill-white" />
-              <span>WhatsApp: 01911-050270</span>
-            </a>
-
-            <button
-              type="button"
-              onClick={downloadGhurbeContactCard}
-              className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold text-[10px] border border-slate-700 transition-all cursor-pointer"
-              title="ফোনে Ghurbe Tours & Travel নাম সেভ করুন"
-            >
-              <Download className="w-2.5 h-2.5 text-emerald-400" />
-              <span>নাম সেভ করুন (.vcf)</span>
-            </button>
-
-            <a href="tel:09658865593" className="hidden sm:inline-flex items-center gap-1 text-slate-300 hover:text-white font-bold text-[10px] ml-2">
-              <PhoneCall className="w-3 h-3 text-sky-400" />
-              <span>09658-865593</span>
             </a>
           </div>
         </div>
@@ -320,11 +314,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Direct hotline & user account bar */}
             <div className="pt-3 border-t border-slate-100 space-y-2.5">
               <a
-                href="tel:09658865593"
+                href="tel:01980297939"
                 className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-2 border border-slate-200/90 transition-colors"
               >
                 <PhoneCall className="w-4 h-4 text-blue-600" />
-                <span>24/7 Helpline: 09658-865593</span>
+                <span>24/7 Helpline: 01980-297939</span>
               </a>
 
               {user ? (

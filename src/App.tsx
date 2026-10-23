@@ -28,11 +28,30 @@ import { KuakataPage } from './components/KuakataPage';
 import { POPULAR_PACKAGES } from './data/packagesData';
 import { TEAM_MEMBERS } from './data/blogAndTeamData';
 import { TourPackage, BookingRecord, SearchFilterState, ContactMessage } from './types/travel';
+import { getSEOForRoute, updatePageSEO } from './utils/seo';
 
 type RouteName = 'home' | 'packages' | 'package-detail' | 'gallery' | 'why-us' | 'contact' | 'stats' | 'blog' | 'about' | 'member-profile' | 'adminn' | 'kuakata';
 
 export default function App() {
-  const [packages] = useState<TourPackage[]>(POPULAR_PACKAGES);
+  const [packages, setPackages] = useState<TourPackage[]>(() => {
+    try {
+      const saved = localStorage.getItem('ghurbe_packages');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      }
+    } catch {}
+    return POPULAR_PACKAGES;
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('ghurbe_packages', JSON.stringify(packages));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [packages]);
+
   const [searchFilter, setSearchFilter] = useState<SearchFilterState | null>(null);
 
   // Helper to match a slug or route token
@@ -147,11 +166,28 @@ export default function App() {
   // Auto trigger the Kuakata Special Offer popup 2 seconds after page load as requested:
   // "kuakata r je offer ta bolcilam 2 secand por same pop up korbe and ar koto din ache oita sow korbe time soho oita deo"
   useEffect(() => {
+    try {
+      if (sessionStorage.getItem('ghurbe_kuakata_popup_closed') === 'true') {
+        return;
+      }
+    } catch {}
+
     const timer = setTimeout(() => {
       setKuakataPopupOpen(true);
     }, 2000);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Initialize SEO and social card tags on page load
+  useEffect(() => {
+    const seoData = getSEOForRoute(
+      initialRouteInfo.route,
+      initialRouteInfo.pkg,
+      initialRouteInfo.memberSlug,
+      initialRouteInfo.blogSlug
+    );
+    updatePageSEO(seoData);
   }, []);
 
   // Safe check for admin trigger query params (?g=true or ?admin=true)
@@ -352,38 +388,10 @@ export default function App() {
         } catch {}
       }
 
-      const { route, pkg, memberSlug } = resolved;
-      if (route === 'package-detail' && pkg) {
-        const slugName = pkg.slug === 'kuakata' ? 'Kuakata' : pkg.slug;
-        document.title = `${pkg.title} | ghurbe.com/${slugName}`;
-      } else if (route === 'member-profile' && memberSlug) {
-        const mem = TEAM_MEMBERS.find((m) => m.slug.toLowerCase() === memberSlug.toLowerCase());
-        if (mem) {
-          document.title = `${mem.name} — ${mem.role.split('(')[0].trim()} | ঘুরবে (Ghurbe)`;
-        } else {
-          document.title = 'লিডারশিপ প্রোফাইল | ঘুরবে (Ghurbe)';
-        }
-      } else if (route === 'blog' && resolved.blogSlug === 'kuakata-travel-guide') {
-        document.title = 'কুয়াকাটা ভ্রমণ গাইড ২০২৬ | Kuakata Travel Guide | Ghurbe Tours & Travel';
-      } else if (route === 'kuakata') {
-        document.title = 'কুয়াকাটা স্পেশাল ট্যুর ও পেমেন্ট প্রক্রিয়া | ঘুরবে ট্যুর অ্যান্ড ট্রাভেল (ghurbe.com/kuakata)';
-      } else if (route === 'packages') {
-        document.title = 'সকল ভ্রমণ প্যাকেজ | ঘুরবে (Ghurbe)';
-      } else if (route === 'gallery') {
-        document.title = 'ভ্রমণ ফটো গ্যালারি | ঘুরবে (Ghurbe)';
-      } else if (route === 'why-us') {
-        document.title = 'কেন ঘুরবে সেরা পছন্দ | ঘুরবে (Ghurbe)';
-      } else if (route === 'contact') {
-        document.title = 'যোগাযোগ ও সাপোর্ট | ঘুরবে (Ghurbe)';
-      } else if (route === 'blog') {
-        document.title = 'ট্রাভেল ব্লগ ও গাইড | ঘুরবে (Ghurbe)';
-      } else if (route === 'about') {
-        document.title = 'আমাদের টিম ও কর্মকর্তা | ঘুরবে (Ghurbe)';
-      } else if (route === 'stats') {
-        document.title = 'আমাদের অর্জন ও ট্রাভেলার রিভিউ | ঘুরবে (Ghurbe)';
-      } else {
-        document.title = 'ঘুরবে (Ghurbe) — সাশ্রয়ী ও নিরাপদ ট্যুর প্যাকেজ';
-      }
+      const { route, pkg, memberSlug, blogSlug } = resolved;
+      // Dynamically update <title>, meta description, og:image, twitter:card, and canonical tags
+      const seoData = getSEOForRoute(route, pkg, memberSlug, blogSlug);
+      updatePageSEO(seoData);
     };
 
     window.addEventListener('popstate', handleLocationChange);
@@ -409,6 +417,7 @@ export default function App() {
         setBookingModalPackage(null);
         setMyBookingsOpen(false);
         setAuthModalOpen(false);
+        setKuakataPopupOpen(false);
       }
     };
 
@@ -427,6 +436,7 @@ export default function App() {
     let newRoute: RouteName = 'home';
     let targetPkg: TourPackage | null = null;
     let targetMemberSlug: string | null = null;
+    let targetBlogSlug: string | null | undefined = undefined;
 
     // Check if target is a team member slug or id e.g. 'SAMSUL-ARAFIN', 'mahim-ibn-khudi'
     const matchedMember = TEAM_MEMBERS.find(
@@ -467,11 +477,19 @@ export default function App() {
       subPath = '/kuakata-travel-guide';
       newTitle = 'কুয়াকাটা ভ্রমণ গাইড ২০২৬ | Kuakata Travel Guide | Ghurbe Tours & Travel';
       newRoute = 'blog';
+      targetBlogSlug = 'kuakata-travel-guide';
       setSelectedBlogSlug('kuakata-travel-guide');
+    } else if (target === 'coxs-bazar-tour-package' || target === 'coxs-bazar-travel-guide') {
+      subPath = '/coxs-bazar-tour-package';
+      newTitle = 'কক্সবাজার ট্যুর প্যাকেজ ও ভ্রমণ গাইড ২০২৬ | Ghurbe Tour & Travel';
+      newRoute = 'blog';
+      targetBlogSlug = 'coxs-bazar-tour-package';
+      setSelectedBlogSlug('coxs-bazar-tour-package');
     } else if (target === 'blog' || target === 'blogs' || target === 'travel-tips') {
       subPath = '/blog';
       newTitle = 'ট্রাভেল ব্লগ ও গাইড | ঘুরবে (Ghurbe)';
       newRoute = 'blog';
+      targetBlogSlug = null;
       setSelectedBlogSlug(null);
     } else if (target === 'about' || target === 'team') {
       subPath = '/about';
@@ -523,7 +541,10 @@ export default function App() {
 
     setCurrentRoute(newRoute);
     setCurrentRoutePackage(targetPkg);
-    document.title = newTitle;
+    // Dynamically update document title, og:image, twitter:card, meta description, and social tags
+    const activeBlogSlug = targetBlogSlug !== undefined ? targetBlogSlug : selectedBlogSlug;
+    const seoData = getSEOForRoute(newRoute, targetPkg, targetMemberSlug, activeBlogSlug);
+    updatePageSEO(seoData);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
@@ -618,6 +639,20 @@ export default function App() {
             return updated;
           });
         }}
+        packages={packages}
+        onUpdatePackage={(updatedPkg) => {
+          setPackages((prev) => prev.map((p) => (p.id === updatedPkg.id ? updatedPkg : p)));
+        }}
+        onAddPackage={(newPkg) => {
+          setPackages((prev) => [newPkg, ...prev]);
+        }}
+        onDeletePackage={(id) => {
+          setPackages((prev) => prev.filter((p) => p.id !== id));
+        }}
+        onViewPackage={(pkg) => navigateTo('package-detail', pkg)}
+        onArchivePackage={(id, isArchived) => {
+          setPackages((prev) => prev.map((p) => (p.id === id ? { ...p, archived: isArchived } : p)));
+        }}
       />
     );
   }
@@ -637,7 +672,7 @@ export default function App() {
       />
 
       {/* Main Content Area: Each page is completely dedicated and separate */}
-      <main className="flex-1 pb-16 sm:pb-0">
+      <main className="flex-1 pb-24 sm:pb-10">
         {currentRoute === 'kuakata' && (
           <KuakataPage
             onBackToHome={() => navigateTo('home')}
@@ -828,7 +863,12 @@ export default function App() {
         <KuakataTourPopupModal
           pkg={packages.find((p) => p.id === 'kuakata-beach') || packages[0]}
           isOpen={kuakataPopupOpen}
-          onClose={() => setKuakataPopupOpen(false)}
+          onClose={() => {
+            setKuakataPopupOpen(false);
+            try {
+              sessionStorage.setItem('ghurbe_kuakata_popup_closed', 'true');
+            } catch {}
+          }}
           onBookNow={(pkg) => {
             setKuakataPopupOpen(false);
             handleBookNow(pkg);

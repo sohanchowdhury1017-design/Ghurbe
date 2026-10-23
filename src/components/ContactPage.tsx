@@ -87,7 +87,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         {/* Quick Hotline, WhatsApp, Facebook & YouTube Action Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <a
-            href="tel:09658865593"
+            href="tel:01980297939"
             className="p-5 rounded-2xl bg-white border border-slate-200/90 hover:border-blue-500 shadow-xs hover:shadow-md transition-all flex items-center justify-between group"
           >
             <div className="flex items-center gap-3">
@@ -97,7 +97,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               <div className="min-w-0">
                 <span className="text-[11px] text-slate-500 font-semibold block truncate">হটলাইন (২৪/৭)</span>
                 <strong className="text-sm sm:text-base font-black text-slate-900 block group-hover:text-blue-600 transition-colors truncate">
-                  09658-865593
+                  01980-297939
                 </strong>
               </div>
             </div>
@@ -298,11 +298,11 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   <span>WhatsApp এ TrxID পাঠান (01911-050270)</span>
                 </a>
                 <a
-                  href="tel:09658865593"
+                  href="tel:01980297939"
                   className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
                 >
                   <PhoneCall className="w-4 h-4 text-sky-400" />
-                  <span>হটলাইন: ০৯৬৫৮-৮৬৫৫৯৩</span>
+                  <span>হটলাইন: ০১৯৮০-২৯৭৯৩৯</span>
                 </a>
               </div>
             </div>

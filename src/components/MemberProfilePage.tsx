@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft,
   ShieldCheck,
@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { TeamMember } from '../types/travel';
 import { TEAM_MEMBERS } from '../data/blogAndTeamData';
+import { getSEOForRoute, updatePageSEO } from '../utils/seo';
 
 interface MemberProfilePageProps {
   member: TeamMember;
@@ -40,6 +41,12 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
   onNavigateToMember,
 }) => {
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    const seoData = getSEOForRoute('member-profile', null, member.slug);
+    updatePageSEO(seoData);
+  }, [member]);
 
   const handleShare = () => {
     const url = window.location.href;

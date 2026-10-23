@@ -3,6 +3,7 @@ import { ArrowLeft, BookOpen, Clock, User, Calendar, MapPin, Tag, ChevronRight, 
 import { BLOG_POSTS } from '../data/blogAndTeamData';
 import { BlogPost } from '../types/travel';
 import { TravelTipsSection } from './TravelTipsSection';
+import { getSEOForRoute, updatePageSEO, DEFAULT_SHARE_IMAGE } from '../utils/seo';
 
 interface BlogPageProps {
   onBackToHome: () => void;
@@ -53,20 +54,20 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 
   useEffect(() => {
     if (selectedPost) {
-      document.title = selectedPost.seo?.metaTitle || `${selectedPost.title} | ঘুরবে (Ghurbe)`;
-      const desc = document.querySelector('meta[name="description"]');
-      if (desc) {
-        desc.setAttribute('content', selectedPost.seo?.metaDescription || selectedPost.summary);
-      }
+      updatePageSEO({
+        title: selectedPost.seo?.metaTitle || `${selectedPost.title} | ঘুরবে (Ghurbe)`,
+        description: selectedPost.seo?.metaDescription || selectedPost.summary,
+        image: selectedPost.coverImage || DEFAULT_SHARE_IMAGE,
+        path: `/${selectedPost.slug}`,
+        type: 'article',
+        keywords: selectedPost.seo?.primaryKeywords?.join(', '),
+      });
       try {
         window.history.replaceState(null, '', `/${selectedPost.slug}`);
       } catch {}
     } else {
-      document.title = "ট্রাভেল ব্লগ ও ভ্রমণ নির্দেশিকা | ঘুরবে (Ghurbe) Tours & Travel";
-      const desc = document.querySelector('meta[name="description"]');
-      if (desc) {
-        desc.setAttribute('content', "ঘুরবে ট্রাভেল ব্লগে পড়ুন কুয়াকাটা, কক্সবাজার, সাজেক, সুন্দরবন সহ বাংলাদেশের জনপ্রিয় পর্যটন গন্তব্যের ভ্রমণ গাইড, বাজেট ও সেরা ট্রাভেল টিপস।");
-      }
+      const seoData = getSEOForRoute('blog');
+      updatePageSEO(seoData);
     }
   }, [selectedPost]);
 

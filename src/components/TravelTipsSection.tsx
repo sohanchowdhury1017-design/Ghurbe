@@ -110,7 +110,7 @@ const DESTINATION_TIPS: DestinationTips[] = [
       { id: 'g4', name: 'পরিবেশবান্ধব কাপড়ের শপিং ব্যাগ', category: 'safety', importance: 'recommended', hint: 'প্লাস্টিক বর্জ্য ফেলা রোধ করতে' },
       { id: 'g5', name: 'পেনকিলার ও পেটের পীড়ার অ্যান্টিবায়োটিক/ওষুধ', category: 'health', importance: 'essential' },
       { id: 'g6', name: 'টুথব্রাশ, পেস্ট ও পার্সোনাল টয়লেট্রিজ কিট', category: 'health', importance: 'essential' },
-      { id: 'g7', name: 'জরুরি হেল্পলাইন নম্বর নোট রাখা (09658865593)', category: 'docs', importance: 'essential', hint: 'ঘুরবে ২৪/৭ কাস্টমার সাপোর্ট হটলাইন' },
+      { id: 'g7', name: 'জরুরি হেল্পলাইন নম্বর নোট রাখা (01980297939)', category: 'docs', importance: 'essential', hint: 'ঘুরবে ২৪/৭ কাস্টমার সাপোর্ট হটলাইন' },
     ],
   },
 ];
@@ -181,7 +181,7 @@ export const TravelTipsSection: React.FC<TravelTipsSectionProps> = ({ onNavigate
   const handleCopyList = () => {
     const listText = `📋 ঘুরবে ট্রাভেল প্যাকিং চেকলিস্ট: ${currentTabGroup.title}\n\n` +
       items.map((it, idx) => `${checkedItems[it.id] ? '✅' : '⬜'} ${idx + 1}. ${it.name}${it.hint ? ` (${it.hint})` : ''}`).join('\n') +
-      `\n\nব্যাগ গোছানো সম্পন্ন: ${progressPercent}%\nঘুরবে - ভ্রমণ হোক সহজ ও নিরাপদ | হটলাইন: 09658865593 | https://ghurbe.com`;
+      `\n\nব্যাগ গোছানো সম্পন্ন: ${progressPercent}%\nঘুরবে - ভ্রমণ হোক সহজ ও নিরাপদ | হটলাইন: 01980297939 | https://ghurbe.com`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(listText).then(() => {

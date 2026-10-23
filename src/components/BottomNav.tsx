@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Home, 
   Compass, 
@@ -7,17 +7,17 @@ import {
   PhoneCall, 
   Image, 
   Award, 
-  ShieldCheck, 
   CalendarCheck, 
-  LayoutGrid, 
+  Menu, 
   X, 
   User, 
   ChevronRight,
   MessageCircle,
   Phone,
-  Lock,
   Download,
-  Sparkles
+  Waves,
+  Sparkles,
+  ShieldCheck
 } from 'lucide-react';
 import { downloadGhurbeContactCard, getWhatsAppLink } from '../utils/contactCard';
 
@@ -40,45 +40,47 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   bookingsCount,
   user,
 }) => {
-  const [gridDrawerOpen, setGridDrawerOpen] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const activeTabRef = useRef<HTMLButtonElement>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // All buttons requested for mobile view
-  const navButtons = [
-    { id: 'hero', label: 'Home', bangla: 'হোম', icon: Home, color: 'text-blue-600', activeBg: 'bg-blue-50 text-blue-700' },
-    { id: 'packages', label: 'Packages', bangla: 'প্যাকেজ', icon: Compass, color: 'text-sky-600', activeBg: 'bg-sky-50 text-sky-700' },
-    { id: 'blog', label: 'Vlog', bangla: 'ভ্লগ', icon: BookOpen, color: 'text-amber-600', activeBg: 'bg-amber-50 text-amber-700' },
-    { id: 'about', label: 'About', bangla: 'এবাউট', icon: Users, color: 'text-emerald-600', activeBg: 'bg-emerald-50 text-emerald-700' },
-    { id: 'bookings', label: 'Bookings', bangla: 'বুকিং', icon: CalendarCheck, color: 'text-rose-600', activeBg: 'bg-rose-50 text-rose-700', badge: bookingsCount },
-    { id: 'contact', label: 'Contact', bangla: 'যোগাযোগ', icon: PhoneCall, color: 'text-teal-600', activeBg: 'bg-teal-50 text-teal-700' },
-    { id: 'gallery', label: 'Gallery', bangla: 'গ্যালারি', icon: Image, color: 'text-purple-600', activeBg: 'bg-purple-50 text-purple-700' },
-    { id: 'stats', label: 'Reviews', bangla: 'রিভিউ', icon: Award, color: 'text-orange-600', activeBg: 'bg-orange-50 text-orange-700' },
+  // 5 Primary ergonomic thumb-zone tabs
+  const primaryTabs = [
+    { id: 'hero', label: 'হোম', en: 'Home', icon: Home },
+    { id: 'packages', label: 'প্যাকেজ', en: 'Tours', icon: Compass },
+    { id: 'kuakata', label: 'কুয়াকাটা', en: 'Kuakata', icon: Waves, isSpecial: true },
+    { id: 'bookings', label: 'বুকিং', en: 'Bookings', icon: CalendarCheck, badge: bookingsCount },
+    { id: 'menu', label: 'মেনু', en: 'Menu', icon: Menu },
   ];
 
-  const handleItemClick = (id: string) => {
-    setGridDrawerOpen(false);
+  // All menu destinations inside the bottom sheet drawer
+  const drawerSections = [
+    {
+      title: 'প্রধান পেজসমূহ',
+      items: [
+        { id: 'hero', label: 'হোম পেজ', desc: 'অফার ও ভ্রমণ সার্চ', icon: Home, color: 'text-blue-600 bg-blue-50' },
+        { id: 'packages', label: 'ট্যুর প্যাকেজসমূহ', desc: 'কক্সবাজার, কুয়াকাটা, সাজেক', icon: Compass, color: 'text-sky-600 bg-sky-50' },
+        { id: 'kuakata', label: 'কুয়াকাটা স্পেশাল পেজ', desc: '১২ নভেম্বর ৩ রাত ২ দিন ট্যুর', icon: Waves, color: 'text-teal-600 bg-teal-50', badge: 'হট ডিল' },
+        { id: 'blog', label: 'ট্রাভেল ব্লগ ও ভ্লগ', desc: 'ভ্রমণ গাইড ও প্যাকিং টিপস', icon: BookOpen, color: 'text-amber-600 bg-amber-50' },
+        { id: 'gallery', label: 'ছবি ও ভিডিও গ্যালারি', desc: 'প্রাকৃতিক সৌন্দর্যের দৃশ্য', icon: Image, color: 'text-purple-600 bg-purple-50' },
+        { id: 'stats', label: 'রিভিউ ও অর্জন', desc: '১১,০৪৪+ ভ্রমণকারীর আস্থা', icon: Award, color: 'text-rose-600 bg-rose-50' },
+        { id: 'about', label: 'আমাদের টিম ও পরিচয়', desc: 'ঘুরবে টিম ও পরিচালনা পরিষদ', icon: Users, color: 'text-emerald-600 bg-emerald-50' },
+        { id: 'why-us', label: 'আমাদের কেন বেছে নেবেন?', desc: 'নিরাপত্তা ও আন্তরিক সেবা', icon: ShieldCheck, color: 'text-indigo-600 bg-indigo-50' },
+        { id: 'contact', label: 'যোগাযোগ ও সহায়তা', desc: 'সার্বক্ষণিক কাস্টমার কেয়ার', icon: PhoneCall, color: 'text-blue-700 bg-blue-50' },
+      ],
+    },
+  ];
+
+  const handleTabClick = (id: string) => {
+    if (id === 'menu') {
+      setDrawerOpen(true);
+      return;
+    }
+    setDrawerOpen(false);
     if (id === 'bookings') {
       onOpenBookings();
     } else {
       onNavigate(id);
     }
   };
-
-  // Auto-scroll active item into view within the horizontal rail
-  useEffect(() => {
-    if (activeTabRef.current && scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
-      const element = activeTabRef.current;
-      const elementLeft = element.offsetLeft;
-      const elementWidth = element.offsetWidth;
-      const containerWidth = container.offsetWidth;
-      container.scrollTo({
-        left: elementLeft - containerWidth / 2 + elementWidth / 2,
-        behavior: 'smooth',
-      });
-    }
-  }, [activeSection]);
 
   const isCurrentActive = (id: string) => {
     if (id === 'hero') return activeSection === 'hero' || activeSection === 'home';
@@ -88,29 +90,29 @@ export const BottomNav: React.FC<BottomNavProps> = ({
 
   return (
     <>
-      {/* Full Grid Drawer Modal (Shows ALL buttons in an organized app grid on mobile) */}
-      {gridDrawerOpen && (
+      {/* 1. Mobile Bottom Sheet Drawer (Full Menu with Smooth Touch UX) */}
+      {drawerOpen && (
         <div className="fixed inset-0 z-50 sm:hidden">
-          {/* Backdrop */}
+          {/* Soft Blur Backdrop */}
           <div 
-            className="fixed inset-0 bg-slate-950/65 backdrop-blur-xs transition-opacity animate-fade-in"
-            onClick={() => setGridDrawerOpen(false)}
+            className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity animate-fade-in"
+            onClick={() => setDrawerOpen(false)}
           />
 
-          {/* Grid Sheet */}
-          <div className="fixed bottom-0 left-0 right-0 max-h-[85vh] bg-white rounded-t-3xl shadow-2xl border-t border-slate-200 z-50 flex flex-col overflow-hidden animate-slide-up">
-            {/* Sheet Header */}
-            <div className="pt-3 pb-2.5 px-5 flex items-center justify-between border-b border-slate-100 bg-slate-50/90">
+          {/* Drawer Sheet */}
+          <div className="fixed bottom-0 left-0 right-0 max-h-[88vh] bg-white rounded-t-3xl shadow-2xl border-t border-slate-200 z-50 flex flex-col overflow-hidden animate-slide-up">
+            {/* Grab Handle & Header */}
+            <div className="pt-2.5 pb-2 px-5 border-b border-slate-100 bg-slate-50/90 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="w-8 h-1 bg-slate-300 rounded-full inline-block mr-1"></span>
-                <span className="text-xs font-black text-slate-900 tracking-tight uppercase flex items-center gap-1.5">
-                  <LayoutGrid className="w-3.5 h-3.5 text-blue-600" />
-                  <span>ঘুরবে — সকল পেজ ও মেনু বাটন</span>
+                <span className="w-9 h-1.5 bg-slate-300 rounded-full inline-block mr-1"></span>
+                <span className="text-xs font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                  <span>ঘুরবে — সকল পেজ ও সেবা</span>
                 </span>
               </div>
               <button
                 type="button"
-                onClick={() => setGridDrawerOpen(false)}
+                onClick={() => setDrawerOpen(false)}
                 className="w-8 h-8 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="বন্ধ করুন"
               >
@@ -118,15 +120,15 @@ export const BottomNav: React.FC<BottomNavProps> = ({
               </button>
             </div>
 
-            {/* Quick Helpline Header */}
-            <div className="p-4 pb-2 space-y-2">
+            {/* Quick Contact & WhatsApp Action Strip */}
+            <div className="p-4 pb-2 space-y-2 border-b border-slate-100">
               <div className="grid grid-cols-2 gap-2">
                 <a
-                  href="tel:09658865593"
-                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs shadow-xs active:scale-95 transition-transform"
+                  href="tel:01980297939"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-slate-900 text-white font-bold text-xs shadow-xs active:scale-95 transition-transform"
                 >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>09658-865593</span>
+                  <Phone className="w-3.5 h-3.5 text-sky-400" />
+                  <span>01980-297939</span>
                 </a>
                 <a
                   href={getWhatsAppLink('Hello Ghurbe Tours Team')}
@@ -134,68 +136,81 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-[#25D366] text-white font-bold text-xs shadow-xs active:scale-95 transition-transform"
                 >
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  <span>WhatsApp: 01911-050270</span>
+                  <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                  <span>01911-050270</span>
                 </a>
               </div>
 
               <button
                 type="button"
-                onClick={downloadGhurbeContactCard}
-                className="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-emerald-50 text-slate-800 hover:text-emerald-800 text-xs font-bold border border-slate-200 transition-colors flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                onClick={() => {
+                  downloadGhurbeContactCard();
+                  setDrawerOpen(false);
+                }}
+                className="w-full py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold border border-emerald-200/80 transition-colors flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
               >
                 <Download className="w-3.5 h-3.5 text-emerald-600" />
-                <span>ফোনে Ghurbe Tours & Travel নাম সেভ করুন (.vcf)</span>
+                <span>ফোনে 'Ghurbe Tours & Travel' নাম সেভ করুন (.vcf)</span>
               </button>
             </div>
 
-            {/* 3x3 All Buttons Grid */}
-            <div className="p-4 pt-2 overflow-y-auto pb-10">
-              <p className="text-[11px] font-bold text-slate-400 mb-2 uppercase tracking-wider">
-                সকল মেনু বাটন নির্বাচন করুন ({navButtons.length}টি বাটন)
-              </p>
+            {/* Scrollable List of Destinations & Services */}
+            <div className="p-4 pt-3 overflow-y-auto space-y-3 pb-8">
+              {drawerSections.map((sec, idx) => (
+                <div key={idx} className="space-y-1.5">
+                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block px-1">
+                    {sec.title}
+                  </span>
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {sec.items.map((item) => {
+                      const active = isCurrentActive(item.id);
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => {
+                            setDrawerOpen(false);
+                            onNavigate(item.id);
+                          }}
+                          className={`w-full flex items-center justify-between p-2.5 rounded-2xl transition-all active:scale-98 cursor-pointer text-left border ${
+                            active
+                              ? 'bg-blue-50/90 border-blue-200 shadow-xs'
+                              : 'bg-white hover:bg-slate-50 border-slate-200/70'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${item.color}`}>
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2">
+                                <span className={`text-xs font-bold ${active ? 'text-blue-900 font-black' : 'text-slate-900'}`}>
+                                  {item.label}
+                                </span>
+                                {item.badge && (
+                                  <span className="text-[9px] font-black bg-rose-500 text-white px-1.5 py-0.2 rounded-full">
+                                    {item.badge}
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-[11px] text-slate-500 block truncate">
+                                {item.desc}
+                              </span>
+                            </div>
+                          </div>
+                          <ChevronRight className={`w-4 h-4 shrink-0 ${active ? 'text-blue-600' : 'text-slate-400'}`} />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
 
-              <div className="grid grid-cols-3 gap-2.5">
-                {navButtons.map((btn) => {
-                  const active = isCurrentActive(btn.id);
-                  const Icon = btn.icon;
-                  return (
-                    <button
-                      key={btn.id}
-                      type="button"
-                      onClick={() => handleItemClick(btn.id)}
-                      className={`relative flex flex-col items-center justify-center p-3 rounded-2xl border transition-all active:scale-95 cursor-pointer text-center ${
-                        active
-                          ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
-                          : 'bg-slate-50 hover:bg-blue-50/50 border-slate-200/90 text-slate-700'
-                      }`}
-                    >
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-1.5 ${
-                        active ? 'bg-white/20 text-white' : 'bg-white text-blue-600 shadow-xs'
-                      }`}>
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <span className="text-xs font-bold leading-tight block">
-                        {btn.label}
-                      </span>
-                      <span className={`text-[10px] ${active ? 'text-blue-100' : 'text-slate-400'} leading-tight block`}>
-                        {btn.bangla}
-                      </span>
-
-                      {btn.badge !== undefined && btn.badge > 0 && (
-                        <span className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-black flex items-center justify-center">
-                          {btn.badge}
-                        </span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* User Account Bar */}
-              <div className="mt-4 pt-3 border-t border-slate-100">
+              {/* User Account Bar in Drawer */}
+              <div className="pt-2 border-t border-slate-100">
                 {user ? (
-                  <div className="bg-blue-50 border border-blue-200 rounded-2xl p-3 flex items-center justify-between">
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm">
                         {user.name.charAt(0)}
@@ -205,7 +220,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                         <p className="text-[11px] text-slate-500 tabular-nums">{user.phone}</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
                       লগইনকৃত
                     </span>
                   </div>
@@ -213,10 +228,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      setGridDrawerOpen(false);
+                      setDrawerOpen(false);
                       onOpenAuth();
                     }}
-                    className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-blue-700 via-sky-600 to-blue-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-blue-700 to-sky-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs cursor-pointer active:scale-98 transition-transform"
                   >
                     <User className="w-4 h-4" />
                     <span>সাইন ইন / অ্যাকাউন্ট খুলুন</span>
@@ -228,72 +243,56 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         </div>
       )}
 
-      {/* Main Bottom Navigation Bar for Mobile with ALL Buttons */}
+      {/* 2. Main Mobile Bottom Navigation Bar (Streamlined, Minimalist, Thumb-Ergonomic) */}
       <nav 
         aria-label="মোবাইল নেভিগেশন বার"
-        className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200/90 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] sm:hidden"
-        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0.5rem)' }}
+        className="fixed bottom-0 left-0 right-0 z-40 bg-white/90 backdrop-blur-xl border-t border-slate-200/80 shadow-[0_-4px_25px_rgba(0,0,0,0.06)] sm:hidden"
+        style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 0.35rem)' }}
       >
-        {/* Top Hint Pill / Quick Expand Handle */}
-        <div className="flex items-center justify-between px-3 pt-1 pb-0.5 border-b border-slate-100/80 bg-slate-50/60">
-          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
-            <Sparkles className="w-2.5 h-2.5 text-blue-500" />
-            <span>সব বাটন দেখুন ({navButtons.length}টি বাটন)</span>
-          </span>
-          <button
-            type="button"
-            onClick={() => setGridDrawerOpen(true)}
-            className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-600 hover:text-blue-800 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 active:scale-95 transition-all cursor-pointer"
-          >
-            <LayoutGrid className="w-3 h-3" />
-            <span>সকল মেনু গ্রিড</span>
-          </button>
-        </div>
-
-        {/* Smooth Horizontally Scrollable Rail Containing ALL Buttons */}
-        <div 
-          ref={scrollContainerRef}
-          className="flex items-center gap-1 px-2 py-1.5 overflow-x-auto scrollbar-none scroll-smooth touch-pan-x"
-        >
-          {navButtons.map((btn) => {
-            const active = isCurrentActive(btn.id);
-            const Icon = btn.icon;
+        <div className="grid grid-cols-5 items-center h-14 px-1.5">
+          {primaryTabs.map((tab) => {
+            const active = isCurrentActive(tab.id);
+            const Icon = tab.icon;
             return (
               <button
-                key={btn.id}
-                ref={active ? activeTabRef : null}
+                key={tab.id}
                 type="button"
-                onClick={() => handleItemClick(btn.id)}
-                className={`shrink-0 flex flex-col items-center justify-center min-w-[58px] sm:min-w-[64px] min-h-[46px] py-1 px-2 rounded-2xl transition-all active:scale-92 cursor-pointer relative ${
+                onClick={() => handleTabClick(tab.id)}
+                className={`relative flex flex-col items-center justify-center h-full py-1 rounded-xl transition-all duration-200 active:scale-92 cursor-pointer select-none ${
                   active
-                    ? 'text-blue-700 font-black bg-blue-50/90 shadow-xs border border-blue-200/60'
-                    : 'text-slate-600 hover:text-slate-900 active:bg-slate-100'
+                    ? 'text-blue-600 font-extrabold'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                <Icon className={`w-5 h-5 transition-transform ${active ? 'stroke-[2.5] scale-110 text-blue-600' : 'stroke-2 text-slate-500'}`} />
-                <span className="text-[10px] mt-0.5 font-bold leading-tight tracking-tight whitespace-nowrap">
-                  {btn.label}
+                {/* Special Kuakata glow badge */}
+                {tab.isSpecial && (
+                  <span className="absolute -top-1 px-1.5 py-0.2 bg-gradient-to-r from-rose-600 to-amber-600 text-white text-[8px] font-black rounded-full shadow-2xs">
+                    ট্যুর
+                  </span>
+                )}
+
+                <div className="relative">
+                  <Icon className={`w-5 h-5 transition-transform ${active ? 'scale-110 stroke-[2.4]' : 'stroke-[1.8]'}`} />
+
+                  {/* Badge */}
+                  {tab.badge !== undefined && tab.badge > 0 && (
+                    <span className="absolute -top-1.5 -right-2 min-w-[16px] h-4 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center px-1 border-2 border-white">
+                      {tab.badge}
+                    </span>
+                  )}
+                </div>
+
+                <span className={`text-[10px] mt-0.5 tracking-tight ${active ? 'font-black text-blue-700' : 'font-medium text-slate-500'}`}>
+                  {tab.label}
                 </span>
 
-                {btn.badge !== undefined && btn.badge > 0 && (
-                  <span className="absolute top-1 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+                {/* Active indicator dot */}
+                {active && (
+                  <span className="w-1 h-1 rounded-full bg-blue-600 mt-0.5 animate-pulse" />
                 )}
               </button>
             );
           })}
-
-          {/* Grid Launcher Pill at the end of the rail */}
-          <button
-            type="button"
-            onClick={() => setGridDrawerOpen(true)}
-            className="shrink-0 flex flex-col items-center justify-center min-w-[54px] min-h-[46px] py-1 px-2 rounded-2xl text-slate-500 hover:text-blue-600 active:bg-slate-100 transition-all cursor-pointer border border-dashed border-slate-300"
-            title="সব মেনু একসাথে দেখুন"
-          >
-            <LayoutGrid className="w-5 h-5 text-slate-400 stroke-2" />
-            <span className="text-[10px] mt-0.5 font-semibold text-slate-500 leading-tight whitespace-nowrap">
-              More
-            </span>
-          </button>
         </div>
       </nav>
     </>

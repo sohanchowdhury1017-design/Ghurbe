@@ -75,14 +75,14 @@ export const ContactAndFaq: React.FC = () => {
             {/* Quick Contact Info Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
               <a
-                href="tel:09658865593"
+                href="tel:01980297939"
                 className="p-3 bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-blue-500 transition-colors block group"
               >
                 <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-1.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                   <Phone className="w-4 h-4" />
                 </div>
                 <p className="text-[10px] font-bold text-slate-500 uppercase">হটলাইন</p>
-                <p className="text-xs font-bold text-slate-900 mt-0.5 tabular-nums">09658-865593</p>
+                <p className="text-xs font-bold text-slate-900 mt-0.5 tabular-nums">01980-297939</p>
                 <p className="text-[10px] text-slate-500">২৪/৭ কল করুন</p>
               </a>
 

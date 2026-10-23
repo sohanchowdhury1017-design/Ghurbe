@@ -27,6 +27,7 @@ import {
   BadgePercent
 } from 'lucide-react';
 import { TourPackage } from '../types/travel';
+import { getSEOForRoute, updatePageSEO } from '../utils/seo';
 
 interface PackageDetailPageProps {
   pkg: TourPackage;
@@ -57,7 +58,10 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
   useEffect(() => {
     // Scroll to top on page mount
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.title = `${pkg.title} | ghurbe.com/${displaySlug}`;
+    
+    // Dynamically update document title, og:image, twitter:card, meta description, and social tags
+    const seoData = getSEOForRoute('package-detail', pkg);
+    updatePageSEO(seoData);
 
     // Close page on Escape key press
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -817,11 +821,11 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({
               {/* Instant Call & WhatsApp Buttons */}
               <div className="grid grid-cols-2 gap-2.5 pt-1">
                 <a
-                  href="tel:09658865593"
+                  href="tel:01980297939"
                   className="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors border border-slate-300"
                 >
                   <PhoneCall className="w-4 h-4 text-blue-600" />
-                  <span>09658-865593</span>
+                  <span>01980-297939</span>
                 </a>
                 <a
                   href={`https://wa.me/8801911050270?text=${encodeURIComponent(`আসসালামু আলাইকুম! আমি ${pkg.title} বুকিং করতে চাই`)}`}
