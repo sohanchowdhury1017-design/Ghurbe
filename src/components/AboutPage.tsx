@@ -19,6 +19,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const doo = TEAM_MEMBERS.find((m) => m.id === 'director-of-operations');
   const bmd = TEAM_MEMBERS.find((m) => m.id === 'brand-marketing-director');
   const bm = TEAM_MEMBERS.find((m) => m.id === 'brand-manager');
+  const hr = TEAM_MEMBERS.find((m) => m.id === 'hr-manager');
 
   return (
     <div className="min-h-screen bg-sky-dots py-6 sm:py-10 space-y-8 sm:space-y-12">
@@ -807,6 +808,133 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <div className="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs">
                       <span className="font-black text-amber-900 block mb-1">ক্রিয়েটিভ ক্যাম্পেইন</span>
                       <p className="text-slate-600 text-[11px] leading-snug">সিজনাল আকর্ষণীয় প্যাকেজ ও নিখুঁত ট্রাভেল গাইড কমিউনিকেশন</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* HR Manager — Rangpur Branch Dedicated Section */}
+        {hr && (
+          <section className="relative bg-white rounded-3xl border-2 border-teal-500/20 shadow-xl overflow-hidden">
+            {/* Top Decorative Header Accent */}
+            <div className="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white px-6 sm:px-10 py-5 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center shrink-0">
+                  <Users className="w-5 h-5 text-teal-400" />
+                </div>
+                <div>
+                  <span className="text-[11px] uppercase font-black tracking-widest text-teal-400 block">
+                    HUMAN RESOURCES &amp; REGIONAL BRANCH
+                  </span>
+                  <h2 className="text-lg sm:text-xl font-black text-white">
+                    HR Manager (Rangpur Branch) | এইচআর ম্যানেজার, রংপুর ব্রাঞ্চ
+                  </h2>
+                </div>
+              </div>
+
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-xs font-bold text-slate-200 border border-white/20">
+                <MapPin className="w-4 h-4 text-teal-400" />
+                <span>Rangpur Branch Operations</span>
+              </div>
+            </div>
+
+            <div className="p-6 sm:p-10 lg:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                {/* Photo & Identity */}
+                <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
+                  <div className="relative group">
+                    <div className="w-56 h-56 sm:w-64 sm:h-64 rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-4 ring-teal-500/30 bg-slate-100">
+                      <img
+                        src={hr.avatar}
+                        alt={hr.name}
+                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+
+                    {/* Verified Badge */}
+                    <div className="absolute bottom-3 left-3 bg-teal-700/95 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5 border border-white/50 backdrop-blur-xs whitespace-nowrap">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-teal-200" />
+                      <span>HR MANAGER • RANGPUR</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 space-y-1.5 w-full">
+                    <a
+                      href="/ahonaf-shahariar"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onNavigateToMember?.('ahonaf-shahariar');
+                      }}
+                      className="inline-flex items-center gap-1.5 group cursor-pointer hover:text-teal-600 transition-colors"
+                      title="AHONAF SHAHARIAR-এর আলাদা পেজ দেখুন"
+                    >
+                      <h3 className="text-2xl font-black text-slate-900 group-hover:text-teal-600 tracking-tight transition-colors">
+                        {hr.name}
+                      </h3>
+                      <ChevronRight className="w-5 h-5 text-teal-500 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </a>
+                    <p className="text-xs sm:text-sm font-bold text-teal-700">
+                      HR Manager — Rangpur Branch (এইচআর ম্যানেজার, রংপুর ব্রাঞ্চ)
+                    </p>
+                    <p className="text-xs text-slate-500 font-medium">
+                      Ghurbe Tours &amp; Travels Bangladesh (Rangpur Branch)
+                    </p>
+                    <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
+                        <MapPin className="w-3 h-3 text-teal-600" />
+                        <span>রংপুর ব্রাঞ্চ ও টিম কোঅর্ডিনেশন</span>
+                      </span>
+                      <a
+                        href="/ahonaf-shahariar"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onNavigateToMember?.('ahonaf-shahariar');
+                        }}
+                        className="inline-flex items-center gap-1 text-[11px] font-extrabold text-teal-700 hover:text-teal-900 bg-teal-100/70 hover:bg-teal-100 px-2.5 py-0.5 rounded-full border border-teal-300 transition-all cursor-pointer"
+                      >
+                        <UserCheck className="w-3 h-3" />
+                        <span>ব্যক্তিগত পেজ দেখুন →</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description & HR Vision */}
+                <div className="lg:col-span-8 space-y-5 text-slate-800">
+                  <div className="border-l-4 border-teal-600 pl-4 sm:pl-5 space-y-1">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 leading-tight tracking-tight">
+                      "দক্ষ মানবসম্পদ, শৃঙ্খলাবদ্ধ টিম ও রংপুর ব্রাঞ্চের আন্তরিক আতিথেয়তাই আমাদের প্রতিটি সফল ট্যুরের ভিত্তি।"
+                    </h3>
+                    <p className="text-xs sm:text-sm font-bold text-teal-700 uppercase tracking-widest">
+                      Human Resource Excellence, Branch Management &amp; Team Coordination
+                    </p>
+                  </div>
+
+                  <div className="space-y-3.5 text-xs sm:text-sm lg:text-[15px] leading-relaxed text-slate-700">
+                    <p>
+                      ঘুরবে ট্যুরস অ্যান্ড ট্রাভেলসের <strong>রংপুর ব্রাঞ্চের</strong> মানবসম্পদ ব্যবস্থাপনা ও টিম পরিচালনায় নেতৃত্ব দিচ্ছেন <strong>{hr.name}</strong> (HR Manager — Rangpur Branch)। উত্তরবঙ্গের ভ্রমণপ্রেমীদের জন্য নির্বিঘ্ন, সময়ানুবর্তী ও নিরাপদ ট্যুর আয়োজনের নেপথ্যে তিনি নিরলস ভূমিকা রাখছেন।
+                    </p>
+                    <p>
+                      ট্যুর গাইড নির্বাচন ও প্রশিক্ষণ, ব্রাঞ্চের কর্মীদের দক্ষতা উন্নয়ন, যাত্রীদের প্রি-ডিপার্চার সাপোর্ট এবং রংপুর ও আশেপাশের অঞ্চলের কর্পোরেট ও গ্রুপ ট্যুর সমন্বয়ে তাঁর পেশাদার নেতৃত্ব ঘুরবে-কে উত্তরবঙ্গে অনন্য উচ্চতায় নিয়ে গেছে।
+                    </p>
+                  </div>
+
+                  {/* Highlights Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                    <div className="p-3.5 rounded-2xl bg-teal-50/80 border border-teal-200 text-xs">
+                      <span className="font-black text-teal-900 block mb-1">এইচআর ও ট্রেইনিং</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">দক্ষ ও ভদ্র ট্যুর গাইড ও অপারেশনস স্টাফ তৈরি এবং তত্ত্বাবধান</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-sky-50/80 border border-sky-200 text-xs">
+                      <span className="font-black text-blue-900 block mb-1">রংপুর ব্রাঞ্চ লিড</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">রংপুর, বগুড়া ও উত্তরবঙ্গ পিকআপ পয়েন্টের টিম ও অতিথি সমন্বয়</p>
+                    </div>
+                    <div className="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200 text-xs">
+                      <span className="font-black text-emerald-900 block mb-1">টিম ওয়েলফেয়ার</span>
+                      <p className="text-slate-600 text-[11px] leading-snug">শৃঙ্খলাবদ্ধ কর্মপরিবেশ ও প্রতিটি ভ্রমণার্থীর দ্রুত সহায়তা নিশ্চিতকরণ</p>
                     </div>
                   </div>
                 </div>

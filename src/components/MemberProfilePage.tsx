@@ -110,6 +110,18 @@ export const MemberProfilePage: React.FC<MemberProfilePageProps> = ({
         btnBg: 'bg-rose-600 hover:bg-rose-700',
       };
     }
+    if (member.id === 'hr-manager') {
+      return {
+        badgeBg: 'bg-teal-600',
+        badgeText: 'HR MANAGER • RANGPUR BRANCH',
+        ring: 'ring-teal-500/30',
+        border: 'border-teal-500/30',
+        accentBg: 'bg-teal-50',
+        accentText: 'text-teal-700',
+        gradient: 'from-slate-950 via-teal-950 to-slate-900',
+        btnBg: 'bg-teal-600 hover:bg-teal-700',
+      };
+    }
     return {
       badgeBg: 'bg-purple-600',
       badgeText: 'BRAND MANAGER',

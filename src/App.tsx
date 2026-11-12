@@ -20,7 +20,7 @@ import { WhatsAppChat } from './components/WhatsAppChat';
 import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
 import { BottomNav } from './components/BottomNav';
-import { KuakataTourPopupModal } from './components/KuakataTourPopupModal';
+import { CoxsBazarTourPopupModal } from './components/CoxsBazarTourPopupModal';
 import { MemberProfilePage } from './components/MemberProfilePage';
 import { AdminDashboardModal } from './components/AdminDashboardModal';
 import { AdminPage } from './components/AdminPage';
@@ -93,7 +93,8 @@ export default function App() {
         (clean === 'adhira' && m.id === 'brand-marketing-director') ||
         (clean === 'md-rifat-islam' && m.id === 'director-of-operations') ||
         (clean === 'rifat-islam' && m.id === 'director-of-operations') ||
-        (clean === 'sidra-islam' && m.id === 'brand-manager')
+        (clean === 'sidra-islam' && m.id === 'brand-manager') ||
+        (clean === 'ahonaf-shahariar' && m.id === 'hr-manager')
     );
     if (matchedMember) {
       return { route: 'member-profile', pkg: null, memberSlug: matchedMember.slug };
@@ -160,20 +161,19 @@ export default function App() {
   const [myBookingsOpen, setMyBookingsOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  // Kuakata 12 Nov Tour Countdown Special Offer Popup
-  const [kuakataPopupOpen, setKuakataPopupOpen] = useState(false);
+  // Cox's Bazar Tour Countdown Special Offer Popup
+  const [coxsBazarPopupOpen, setCoxsBazarPopupOpen] = useState(false);
 
-  // Auto trigger the Kuakata Special Offer popup 2 seconds after page load as requested:
-  // "kuakata r je offer ta bolcilam 2 secand por same pop up korbe and ar koto din ache oita sow korbe time soho oita deo"
+  // Auto trigger the Cox's Bazar Special Offer popup 2 seconds after page load
   useEffect(() => {
     try {
-      if (sessionStorage.getItem('ghurbe_kuakata_popup_closed') === 'true') {
+      if (sessionStorage.getItem('ghurbe_coxs_bazar_popup_closed') === 'true') {
         return;
       }
     } catch {}
 
     const timer = setTimeout(() => {
-      setKuakataPopupOpen(true);
+      setCoxsBazarPopupOpen(true);
     }, 2000);
 
     return () => clearTimeout(timer);
@@ -310,7 +310,7 @@ export default function App() {
       'packages', 'tours', 'gallery', 'why-us', 'about', 'contact', 'faq', 'home',
       'blog', 'blogs', 'stats', 'reviews', 'team', 'travel-tips', 'kuakata-travel-guide',
       'coxs-bazar-tour-package', 'coxs-bazar', 'samsul-arafin', 'mahim-ibn-khudi',
-      'adhira-nokshi', 'md-rifat-islam', 'sidra-islam', 'adminn', 'admin'
+      'adhira-nokshi', 'md-rifat-islam', 'sidra-islam', 'ahonaf-shahariar', 'adminn', 'admin'
     ];
     if (segments.length > 0) {
       const first = segments[0].toLowerCase();
@@ -417,7 +417,7 @@ export default function App() {
         setBookingModalPackage(null);
         setMyBookingsOpen(false);
         setAuthModalOpen(false);
-        setKuakataPopupOpen(false);
+        setCoxsBazarPopupOpen(false);
       }
     };
 
@@ -448,7 +448,8 @@ export default function App() {
         (target.toLowerCase() === 'adhira-nokshi' && m.id === 'brand-marketing-director') ||
         (target.toLowerCase() === 'adhira' && m.id === 'brand-marketing-director') ||
         (target.toLowerCase() === 'md-rifat-islam' && m.id === 'director-of-operations') ||
-        (target.toLowerCase() === 'sidra-islam' && m.id === 'brand-manager')
+        (target.toLowerCase() === 'sidra-islam' && m.id === 'brand-manager') ||
+        (target.toLowerCase() === 'ahonaf-shahariar' && m.id === 'hr-manager')
     );
 
     if (matchedMember) {
@@ -858,23 +859,23 @@ export default function App() {
 
 
 
-      {/* Kuakata Tour Announcement Modal */}
-      {kuakataPopupOpen && (
-        <KuakataTourPopupModal
-          pkg={packages.find((p) => p.id === 'kuakata-beach') || packages[0]}
-          isOpen={kuakataPopupOpen}
+      {/* Cox's Bazar Tour Announcement Modal */}
+      {coxsBazarPopupOpen && (
+        <CoxsBazarTourPopupModal
+          pkg={packages.find((p) => p.id === 'coxs-bazar' || p.slug === 'coxs-bazar') || packages[1] || packages[0]}
+          isOpen={coxsBazarPopupOpen}
           onClose={() => {
-            setKuakataPopupOpen(false);
+            setCoxsBazarPopupOpen(false);
             try {
-              sessionStorage.setItem('ghurbe_kuakata_popup_closed', 'true');
+              sessionStorage.setItem('ghurbe_coxs_bazar_popup_closed', 'true');
             } catch {}
           }}
           onBookNow={(pkg) => {
-            setKuakataPopupOpen(false);
+            setCoxsBazarPopupOpen(false);
             handleBookNow(pkg);
           }}
           onViewDetails={(pkg) => {
-            setKuakataPopupOpen(false);
+            setCoxsBazarPopupOpen(false);
             handleViewDetails(pkg);
           }}
         />

@@ -248,6 +248,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBookings, onOp
                   <span className="text-[10px] text-purple-300">(Brand Manager)</span>
                 </a>
               </li>
+              <li>
+                <a
+                  href="/ahonaf-shahariar"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('ahonaf-shahariar');
+                  }}
+                  className="hover:text-teal-400 transition-colors flex items-center gap-1.5"
+                >
+                  <span>AHONAF SHAHARIAR</span>
+                  <span className="text-[10px] text-teal-300">(HR Manager, Rangpur)</span>
+                </a>
+              </li>
             </ul>
 
             <h4 className="text-sm font-bold text-white uppercase tracking-wider pt-3">জনপ্রিয় বাংলাদেশ স্পট</h4>

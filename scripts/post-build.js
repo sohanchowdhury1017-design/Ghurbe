@@ -136,6 +136,11 @@ const routeMetadata = {
     description: 'সিদরা ইসলাম, ব্র্যান্ড ম্যানেজার — গ্রাহক অভিজ্ঞতা ও ক্যাম্পেইন ম্যানেজমেন্ট। ঘুরবে ট্যুর অ্যান্ড ট্রাভেল।',
     image: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1792049005/pexels-photo-29333677.avif',
   },
+  'ahonaf-shahariar': {
+    title: 'AHONAF SHAHARIAR — HR Manager (Rangpur Branch) | ঘুরবে (Ghurbe)',
+    description: 'AHONAF SHAHARIAR, HR Manager (Rangpur Branch) — মানবসম্পদ ব্যবস্থাপনা ও রংপুর ব্রাঞ্চ সমন্বয়। ঘুরবে ট্যুর অ্যান্ড ট্রাভেল।',
+    image: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1794508436/635d844c-0176-410b-a6c8-74c52a2457a1.png',
+  },
   'adminn': {
     title: 'অ্যাডমিন কন্ট্রোল পোর্টাল | ঘুরবে (Ghurbe)',
     description: 'ঘুরবে ট্যুর অ্যান্ড ট্রাভেল সুরক্ষিত অ্যাডমিন ড্যাশবোর্ড ও বুকিং যাচাইকরণ।',

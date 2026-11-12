@@ -87,6 +87,18 @@
     </image:image>
   </url>
 
+  <!-- 7. Dedicated Member Page: AHONAF SHAHARIAR (HR Manager, Rangpur Branch) -->
+  <url>
+    <loc>https://ghurbe.com/ahonaf-shahariar</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/b5z0n3sl/image/upload/v1794508436/635d844c-0176-410b-a6c8-74c52a2457a1.png</image:loc>
+      <image:title>AHONAF SHAHARIAR — HR Manager (Rangpur Branch), Ghurbe</image:title>
+    </image:image>
+  </url>
+
   <!-- 7. Packages Directory -->
   <url>
     <loc>https://ghurbe.com/packages</loc>

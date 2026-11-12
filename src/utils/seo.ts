@@ -62,6 +62,12 @@ export const MEMBER_PROFILES: Record<string, { name: string; role: string; image
     image: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1792049005/pexels-photo-29333677.avif',
     bio: 'গ্রাহক সেবা উন্নয়ন, সোশাল মিডিয়া ম্যানেজমেন্ট এবং প্যাকেজ ক্যাম্পেইন পরিচালনায় নিয়োজিত।',
   },
+  'ahonaf-shahariar': {
+    name: 'AHONAF SHAHARIAR',
+    role: 'HR Manager — Rangpur Branch (এইচআর ম্যানেজার, রংপুর ব্রাঞ্চ)',
+    image: 'https://res.cloudinary.com/b5z0n3sl/image/upload/v1794508436/635d844c-0176-410b-a6c8-74c52a2457a1.png',
+    bio: 'রংপুর ব্রাঞ্চের মানবসম্পদ ব্যবস্থাপনা, টিম সমন্বয় এবং উত্তরবঙ্গের ভ্রমণপ্রেমীদের মানসম্মত সেবা নিশ্চিতকরণে নিয়োজিত।',
+  },
 };
 
 /**
